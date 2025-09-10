@@ -1,24 +1,20 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../db/database');
+const Message = require('../models/Message');
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   const { name, email, phone, topic, message } = req.body;
 
   console.log('Received form submission:', { name, email, phone, topic, message });
 
-  db.run(
-    `INSERT INTO Messages (name, email, phone, topic, message)
-     VALUES (?, ?, ?, ?, ?)`,
-    [name, email, phone, topic, message],
-    function(err) {
-      if (err) {
-        console.error(err.message);
-        return res.status(500).send("Error saving message");
-      }
-      res.send("Message received!");
-    }
-  );
+  try {
+    const newMessage = new Message({ name, email, phone, topic, message });
+    await newMessage.save();
+    res.send("Message received!");
+  } catch (err) {
+    console.error(err.message);
+    return res.status(500).send("Error saving message");
+  }
 });
 
 module.exports = router;

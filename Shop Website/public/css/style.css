@@ -1,7 +1,7 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f8f9fa;
-  color: #333;
+  color: #000000;
 }
 
 main h3 {
@@ -16,14 +16,14 @@ main .row p {
   font-weight: 500;
 }
 
-.red-link {
-  color: red !important;
+.orange-link {
+  color: #FF7A00 !important;
 }
 
 /* Header styles */
 header {
-  background-color: #111;
-  color: #fff;
+  background-color: #0A192F;
+  color: #FFFFFF;
   text-align: center;
 }
 
@@ -39,19 +39,22 @@ header p {
 /* Navbar styles */
 .navbar {
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  background-color: #FFFFFF !important;
 }
 
 .navbar-brand {
   font-weight: bold;
   font-size: 1.2rem;
+  color: #0A192F !important;
 }
 
 .nav-link {
   font-weight: 500;
+  color: #0A192F !important;
 }
 
 .nav-link:hover {
-  color: #dc3545 !important;
+  color: #FF7A00 !important;
 }
 
 /* Product image hover effect */
@@ -89,7 +92,7 @@ header p {
   font-size: 1.5rem;
   font-weight: 600;
   text-align: center;
-  color: #333;
+  color: #000000;
 }
 
 /* Hide all product cards by default */
@@ -149,8 +152,8 @@ header p {
 
 /* Footer styles */
 footer {
-  background-color: #111;
-  color: #fff;
+  background-color: #0A192F;
+  color: #FFFFFF;
   font-size: 0.9rem;
   margin: 0.3rem 0;
 }
@@ -171,10 +174,10 @@ main .card:hover {
 
 /* Buttons */
 .btn-primary {
-  background-color: #dc3545;
+  background-color: #FF7A00;
   border: none;
 }
 
 .btn-primary:hover {
-  background-color: #b52b35;
+  background-color: #E66E00;
 }

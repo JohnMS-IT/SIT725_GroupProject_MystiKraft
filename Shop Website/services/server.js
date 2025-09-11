@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const mongoose = require('mongoose');
 const app = express();
+const PORT = 3000;
 
 // MongoDB Connection
 const mongoURI = 'mongodb://localhost:27017/mystikraft';
@@ -32,9 +33,12 @@ app.use(express.static('public'));
 app.use('/contact', contactRoutes);     
 app.use('/api/search', searchRoutes);   
 
-const port = 3000;
 
-app.listen(port, () => {
-  console.log(`Web server running at: http://localhost:${port}`);
-  console.log('Type Ctrl+C to shut down the web server');
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
 });
+/*app.listen(PORT, () => {
+  console.log(`Web server running at: http://localhost:${PORT}`);
+  console.log('Type Ctrl+C to shut down the web server');
+});*/
+

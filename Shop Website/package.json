@@ -4,7 +4,11 @@
   "description": "Starter express web server template",
   "main": "index.js",
   "scripts": {
+<<<<<<< HEAD
     "start": "node server.js",
+=======
+    "start": "node services/server.js",
+>>>>>>> 67283b53ba5d5008c915bb2b3c2cc6385674e2f8
     "test": "echo \"Error: no test specified\" && exit 1",
     "seed": "node services/seed.js"
   },

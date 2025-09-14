@@ -27,6 +27,8 @@ mongoose.connect(mongoURI).then(() => {
 const contactRoutes = require('../controllers/contact');
 const searchRoutes = require('../controllers/search');
 const productRoutes = require('../routes/products');
+const cartRoutes = require('../routes/cart');
+const orderRoutes = require('../routes/orders');
 
 console.log('contactRoutes:', contactRoutes);
 console.log('searchRoutes:', searchRoutes);
@@ -42,6 +44,8 @@ app.set('views', path.join(__dirname, '../views'));
 app.use('/contact', contactRoutes);     
 app.use('/api/search', searchRoutes);   
 app.use('/api/products', productRoutes);
+app.use('/api/cart', cartRoutes);
+app.use('/api/orders', orderRoutes);
 
 const port = process.env.PORT || 3000;
 

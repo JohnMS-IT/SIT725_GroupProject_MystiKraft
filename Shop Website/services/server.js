@@ -19,6 +19,8 @@ mongoose.connect(mongoURI, {
 
 const contactRoutes = require('../controllers/contact');
 const searchRoutes = require('../controllers/search');
+const productsRoutes = require('../controllers/products');  
+
 
 
 console.log('contactRoutes:', contactRoutes);
@@ -31,6 +33,7 @@ app.use(express.static('public'));
 
 app.use('/contact', contactRoutes);     
 app.use('/api/search', searchRoutes);   
+app.use('/api/products', productsRoutes);
 
 const port = 3000;
 

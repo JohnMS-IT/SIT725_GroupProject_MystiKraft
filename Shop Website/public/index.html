@@ -26,6 +26,12 @@
           <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
           <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
           <li class="nav-item"><a class="nav-link" href="search.html">Search</a></li>
+          <li class="nav-item">
+          <a class="nav-link" href="cart.html">
+            My Cart <span id="cart-count" class="badge bg-dark">0</span>
+          </a>
+        </li>
+
         </ul>
       </div>
     </div>
@@ -85,14 +91,16 @@
     let greetingText = 'Welcome to your ultimate sneaker destination';
 
     if (hour < 12) {
-      greetingText = 'Good morning, sneakerhead!';
+      greetingText = 'Good morning!';
     } else if (hour < 18) {
-      greetingText = 'Good afternoon, sneaker lover!';
+      greetingText = 'Good afternoon!';
     } else {
-      greetingText = 'Good evening, time to cop some kicks!';
+      greetingText = 'Good evening!';
     }
 
     greetingElement.textContent = greetingText;
   </script>
+  <script src="js/cart-count.js"></script>
+
 </body>
 </html>

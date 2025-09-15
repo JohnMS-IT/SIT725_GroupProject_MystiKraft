@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MystiKraft - Home</title>
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Materialize CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <meta name="description" content="basic template for MystiKraft">
+  <meta name="author" content="SitePoint">
+  <meta property="og:title" content="MystiKraft">
+  <meta property="og:type" content="website">
+  <meta property="og:description" content="basic template for MystiKraft">
+  <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+
+  <header class="center-align">
+    <h1>MystiKraft</h1>
+    <p>Your one-stop shop for the latest and greatest in footwear.</p>
+  </header>
+  <nav>
+    <div class="navbar-fixed">
+    <div class="nav-wrapper">
+
+      <!--register account icon-->
+      <a href="#" class="brand-logo right">
+        <img class="responsive-img" style="max-height: 40px;" src="/images/register.svg" alt="User Icon">
+        <img class="responsive-img" style="max-height: 40px;" src="/images/shopbag.svg" alt="User Icon">
+      </a>
+
+
+      <a href="#" data-target="mobile-nav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+      <ul id="nav-mobile" class="left hide-on-med-and-down">
+        <li><a href="index.html" class="active">Home</a></li>
+       <li><a href="/shop">Shop</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="search.html">Search</a></li>
+      </ul>
+    </div>
+    </div>
+    <ul class="sidenav" id="mobile-nav">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="/shop">Shop</a></li>
+
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="search.html">Search</a></li>
+    </ul>
+  </nav>
+
+  <main class="container">
+    <h4 class="center-align">Welcome to MystiKraft</h4>
+    <p class="center-align">Your one-stop shop for the latest and greatest in footwear.</p>
+   <!-- Filter Section -->
+  <div class="row">
+    <div class="col s12 m4">
+      <label for="category-filter">Category</label>
+      <select id="category-filter" class="browser-default">
+        <option value="all">All</option>
+        <option value="Running">Running</option>
+        <option value="Sneakers">Sneakers</option>
+        <option value="Basketball">Basketball</option>
+        <option value="Skate">Skate</option>
+      </select>
+    </div>
+    <div class="col s12 m4">
+      <label for="price-filter">Price Range</label>
+      <select id="price-filter" class="browser-default">
+        <option value="all">All</option>
+        <option value="0-50">$0 - $50</option>
+        <option value="50-100">$50 - $100</option>
+        <option value="100+">$100+</option>
+      </select>
+    </div>
+    <div class="col s12 m4">
+      <label for="sort-filter">Sort By</label>
+      <select id="sort-filter" class="browser-default">
+        <option value="newest">Newest First</option>
+        <option value="oldest">Oldest First</option>
+      </select>
+    </div>
+  </div>
+ <!--Filtration-->
+
+    <h3>Featured</h3>
+    <div class="row">
+      <div class="col s12 m6 l3">
+        <div class="card">
+          <div class="card-image">
+            <a href="/shop">
+              <img src="images/shoes/running.webp" class="responsive-img hoverable" alt="Running Shoe">
+            </a>
+          </div>
+          <div class="card-content">
+            <p><a href="/shop">Running</a></p>
+          </div>
+        </div>
+      </div>
+      <div class="col s12 m6 l3">
+        <div class="card">
+          <div class="card-image">
+            <a href="/shop">
+              <img src="images/shoes/Sneakers.jpg" class="responsive-img hoverable" alt="Sneaker Shoe">
+            </a>
+          </div>
+          <div class="card-content">
+            <p><a href="/shop">Sneakers</a></p>
+          </div>
+        </div>
+      </div>
+      <div class="col s12 m6 l3">
+        <div class="card">
+          <div class="card-image">
+            <a href="/shop">
+              <img src="images/shoes/basketball.jpg" class="responsive-img hoverable" alt="Basketball Shoe">
+            </a>
+          </div>
+          <div class="card-content">
+            <p><a href="/shop">Basketball</a></p>
+          </div>
+        </div>
+      </div>
+      <div class="col s12 m6 l3">
+        <div class="card">
+          <div class="card-image">
+            <a href="/shop">
+              <img src="images/shoes/skate.webp" class="responsive-img hoverable" alt="Skate Shoe">
+            </a>
+          </div>
+          <div class="card-content">
+            <p><a href="/shop">Skate</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!--Footer-->
+<footer class="page-footer">
+          <div class="container">
+            <div class="row">
+              <div class="col l6 s12">
+                <h5 class="white-text">Discover the latest products..</h5>
+                <p class="grey-text text-lighten-4">The best you can find from the best brands.
+                </p>
+              </div>
+              <div class="col l4 offset-l2 s12">
+                <h5 class="white-text">More about latest products</h5>
+                  <li><a class="grey-text text-lighten-3" href="#!">All at a cheaper and convenient prices</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">High quality demands</a></li>
+              </div> 
+            </div>
+          </div>
+          <div class="footer-copyright">
+            <div class="container"> © 2025 Copyright
+              <a class="grey-text text-lighten-4 right" href="#!">Find out more</a>
+            </div>
+          </div>
+        </footer>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <!-- Materialize JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</body>
+</html>

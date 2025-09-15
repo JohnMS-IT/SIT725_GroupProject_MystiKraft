@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MystiKraft - Shop</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <!-- Materialize CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <meta name="description" content="Shop page for MystiKraft">
+  <meta name="author" content="SitePoint">
+  <meta property="og:title" content="MystiKraft Shop">
+  <meta property="og:type" content="website">
+  <meta property="og:description" content="Shop the latest sneakers at MystiKraft">
+  <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+  <header class="center-align">
+    <h1>MystiKraft</h1>
+    <p>Shop the latest sneakers</p>
+  </header>
+
+  <nav>
+    <div class="nav-wrapper">
+      <a href="#" class="brand-logo right">
+        <img class="responsive-img" style="max-height: 40px;" src="/images/register.svg" alt="User Icon">
+        <img class="responsive-img" style="max-height: 40px;" src="/images/shopbag.svg" alt="User Icon"> 
+      </a>
+      <a href="#" data-target="mobile-nav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+      <ul id="nav-mobile" class="left hide-on-med-and-down">
+        <li><a href="/index.html">Home</a></li>
+        <li><a href="/shop" class="active">Shop</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+        <li><a href="/search.html">Search</a></li>
+      </ul>
+    </div>
+    <ul class="sidenav" id="mobile-nav">
+      <li><a href="/index.html">Home</a></li>
+      <li><a href="/shop">Shop</a></li>
+      <li><a href="/about.html">About</a></li>
+      <li><a href="/contact.html">Contact</a></li>
+      <li><a href="/search.html">Search</a></li>
+      <li><a href="#" class="valign-wrapper"><img class="responsive-img" style="max-height: 40px;" src="/images/register.svg" alt="User Icon"> <span>My Account</span></a></li>
+    </ul>
+  </nav>
+
+  <main class="container">
+    <div class="section">
+      <h4>Shop by Category</h4>
+      <!-- Filter Section -->
+      <form id="filter-form" action="/shop" method="GET">
+        <div class="row">
+          <div class="col s12 m4">
+            <label for="category-filter">Category</label>
+            <select id="category-filter" name="category" class="browser-default">
+              <option value="all" <%= selectedCategory === 'all' ? 'selected' : '' %>>All</option>
+              <option value="Mens" <%= selectedCategory === 'Mens' ? 'selected' : '' %>>Mens</option>
+              <option value="Womens" <%= selectedCategory === 'Womens' ? 'selected' : '' %>>Womens</option>
+              <option value="Kids" <%= selectedCategory === 'Kids' ? 'selected' : '' %>>Kids</option>
+            </select>
+          </div>
+          <div class="col s12 m4">
+            <label for="price-filter">Price Range</label>
+            <select id="price-filter" name="price" class="browser-default">
+              <option value="all" <%= selectedPrice === 'all' ? 'selected' : '' %>>All</option>
+              <option value="0-50" <%= selectedPrice === '0-50' ? 'selected' : '' %>>$0 - $50</option>
+              <option value="50-100" <%= selectedPrice === '50-100' ? 'selected' : '' %>>$50 - $100</option>
+              <option value="100+" <%= selectedPrice === '100+' ? 'selected' : '' %>>$100+</option>
+            </select>
+          </div>
+          <div class="col s12 m4">
+            <label for="sort-filter">Sort By</label>
+            <select id="sort-filter" name="sort" class="browser-default">
+              <option value="newest" <%= selectedSort === 'newest' ? 'selected' : '' %>>Newest First</option>
+              <option value="oldest" <%= selectedSort === 'oldest' ? 'selected' : '' %>>Oldest First</option>
+            </select>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <% if (selectedCategory === 'all') { %>
+      <!-- Men's Section -->
+      <h3 class="product-heading">Mens</h3>
+      <div class="row">
+        <% products.filter(product => product.category.includes('Mens') || product.category.includes('Unisex')).forEach(product => { %>
+          <div class="col s12 m6 l3">
+            <div class="card">
+              <div class="card-image">
+                <a href="#">
+                  <img src="/images/shoes/<%= product.image %>" class="responsive-img hoverable" alt="<%= product.name %>">
+                </a>
+              </div>
+              <div class="card-content">
+                <p><a href="#"><%= product.name %> - $<%= product.price %></a></p>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+
+      <!-- Women's Section -->
+      <h3 class="product-heading">Womens</h3>
+      <div class="row">
+        <% products.filter(product => product.category.includes('Womens') || product.category.includes('Unisex')).forEach(product => { %>
+          <div class="col s12 m6 l3">
+            <div class="card">
+              <div class="card-image">
+                <a href="#">
+                  <img src="/images/shoes/<%= product.image %>" class="responsive-img hoverable" alt="<%= product.name %>">
+                </a>
+              </div>
+              <div class="card-content">
+                <p><a href="#"><%= product.name %> - $<%= product.price %></a></p>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+
+      <!-- Kids Section -->
+      <h3 class="product-heading">Kids</h3>
+      <div class="row">
+        <% products.filter(product => product.category.includes('Kids') || product.category.includes('Unisex')).forEach(product => { %>
+          <div class="col s12 m6 l3">
+            <div class="card">
+              <div class="card-image">
+                <a href="#">
+                  <img src="/images/shoes/<%= product.image %>" class="responsive-img hoverable" alt="<%= product.name %>">
+                </a>
+              </div>
+              <div class="card-content">
+                <p><a href="#"><%= product.name %> - $<%= product.price %></a></p>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <!-- Filtered Products -->
+      <h3 class="product-heading"><%= selectedCategory || 'Products' %></h3>
+      <div class="row">
+        <% products.forEach(product => { %>
+          <div class="col s12 m6 l3">
+            <div class="card">
+              <div class="card-image">
+                <a href="#">
+                  <img src="/images/shoes/<%= product.image %>" class="responsive-img hoverable" alt="<%= product.name %>">
+                </a>
+              </div>
+              <div class="card-content">
+                <p><a href="#"><%= product.name %> - $<%= product.price %></a></p>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+  </main>
+
+  <!--Footer-->
+<footer class="page-footer">
+          <div class="container">
+            <div class="row">
+              <div class="col l6 s12">
+                <h5 class="white-text">Discover the latest products..</h5>
+                <p class="grey-text text-lighten-4">The best you can find from the best brands.
+                </p>
+              </div>
+              <div class="col l4 offset-l2 s12">
+                <h5 class="white-text">More about latest products</h5>
+                  <li><a class="grey-text text-lighten-3" href="#!">All at a cheaper and convenient prices</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">High quality demands</a></li>
+              </div> 
+            </div>
+          </div>
+          <div class="footer-copyright">
+            <div class="container"> © 2025 Copyright
+              <a class="grey-text text-lighten-4 right" href="#!">Find out more</a>
+            </div>
+          </div>
+        </footer>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      M.AutoInit();
+      const filterForm = document.getElementById('filter-form');
+      const selects = document.querySelectorAll('#filter-form select');
+      selects.forEach(select => {
+        select.addEventListener('change', () => {
+          filterForm.submit();
+        });
+      });
+    });
+  </script>
+</body>
+</html>

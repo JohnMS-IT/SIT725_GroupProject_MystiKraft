@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const passportLocalMongoose = require('passport-local-mongoose');
+const crypto = require('crypto'); // 确保引入crypto模块
 
 /**
  * User Schema for authentication and user management
@@ -41,5 +42,14 @@ const UserSchema = new Schema({
 
 // Add passport-local-mongoose plugin to handle authentication
 UserSchema.plugin(passportLocalMongoose, { usernameField: 'email' });
+
+// 添加生成验证token的方法
+UserSchema.methods.generateVerificationToken = function() {
+  // 生成token
+  this.emailVerificationToken = crypto.randomBytes(20).toString('hex');
+  // 设置过期时间（24小时后）
+  this.emailVerificationExpires = Date.now() + 24 * 60 * 60 * 1000;
+  return this.emailVerificationToken;
+};
 
 module.exports = mongoose.model('User', UserSchema);

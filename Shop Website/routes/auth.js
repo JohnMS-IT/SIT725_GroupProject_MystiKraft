@@ -24,6 +24,11 @@ router.post('/register', async (req, res) => {
     
     // Create new user
     const user = new User({ email });
+    
+    // Generate verification token
+    user.generateVerificationToken();
+    
+    // Register user
     await User.register(user, password);
     
     // Send verification email
@@ -50,6 +55,7 @@ router.post('/register', async (req, res) => {
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) {
+      console.error('Authentication error:', err);
       return res.status(500).json({ 
         success: false, 
         message: 'Internal server error' 
@@ -58,11 +64,12 @@ router.post('/login', (req, res, next) => {
     if (!user) {
       return res.status(401).json({ 
         success: false, 
-        message: info.message 
+        message: info?.message || 'Authentication failed' 
       });
     }
     req.logIn(user, (err) => {
       if (err) {
+        console.error('Login error:', err);
         return res.status(500).json({ 
           success: false, 
           message: 'Login failed' 
@@ -73,7 +80,8 @@ router.post('/login', (req, res, next) => {
         message: 'Login successful',
         user: {
           id: user._id,
-          email: user.email
+          email: user.email,
+          emailVerified: user.emailVerified
         }
       });
     });
@@ -120,11 +128,15 @@ router.get('/verify/:token', async (req, res) => {
  * POST /api/auth/logout
  * Log out the current user
  */
-router.post('/logout', (req, res) => {
-  req.logout();
-  res.json({ 
-    success: true, 
-    message: 'Logged out successfully' 
+router.post('/logout', (req, res, next) => {
+  req.logout(err => {
+    if (err) {
+      return next(err);
+    }
+    res.json({ 
+      success: true, 
+      message: 'Logged out successfully' 
+    });
   });
 });
 

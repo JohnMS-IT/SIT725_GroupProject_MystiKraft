@@ -1,4 +1,4 @@
-
+// Client-side JavaScript for product filtering and sorting on the shop page 
 document.addEventListener('DOMContentLoaded', () => {
   const grid = document.getElementById('product-grid');
 

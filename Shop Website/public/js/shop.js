@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
         </div>
       `;
-      grid.appendChild(card);
+      grid.appendChild(card);// Append card to grid
     });
   };
 

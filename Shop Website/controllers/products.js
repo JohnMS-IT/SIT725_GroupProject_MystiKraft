@@ -33,21 +33,25 @@ router.get('/', async (req, res) => {
       ? { createdAt: 1 }
       : { createdAt: -1 }; // default to newest
 
+    // Pagination
     const pageNum = Math.max(1, Number(page));
     const perPage = Math.max(1, Math.min(100, Number(limit)));
     const skip = (pageNum - 1) * perPage;
 
+    // Execute queries in parallel
     const [items, total] = await Promise.all([
       Product.find(filter).sort(sortOption).skip(skip).limit(perPage),
       Product.countDocuments(filter)
     ]);
 
+    // Return paginated results
     res.json({
       items,
       total,
       page: pageNum,
       pages: Math.ceil(total / perPage)
     });
+    // Log the fetched products for debugging
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Database query error' });

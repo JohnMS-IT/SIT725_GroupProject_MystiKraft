@@ -35,7 +35,9 @@ router.get('/', async (req, res) => {
 
     // Pagination
     const pageNum = Math.max(1, Number(page));
+    // Limit between 1 and 100
     const perPage = Math.max(1, Math.min(100, Number(limit)));
+    // Calculate how many documents to skip
     const skip = (pageNum - 1) * perPage;
 
     // Execute queries in parallel

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Product = require('../models/Product');
 
-const mongoURI = 'mongodb://localhost:27017/mystikraft';
+//const mongoURI = 'mongodb://localhost:27017/mystikraft';
 
 const products = [
   // SHOES

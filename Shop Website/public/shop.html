@@ -57,19 +57,38 @@
 
   <!--  Main Content -->
   <main class="container section">
-    <!-- Title -->
-    <h4 class="center-align">Shop by Category</h4>
-
-    <!-- Category Chips -->
-    <!-- Materialize uses "chip" for small filters -->
-    <!--<div class="center-align section">
-      <a class="chip category-chip" data-cat="">All</a>
-      <a class="chip category-chip" data-cat="tops">Tops</a>
-      <a class="chip category-chip" data-cat="bottoms">Bottoms</a>
-      <a class="chip category-chip" data-cat="shoes">Shoes</a>
-      <a class="chip category-chip" data-cat="accessories">Accessories</a>
-
-    </div>-->
+    <h5 class="center-align">Shop by Category</h5>
+    <!-- Filter Section -->
+<form id="filter-form">
+  <div class="row">
+    <div class="col s12 m4">
+      <label for="category-filter">Category</label>
+      <select id="category-filter" class="browser-default">
+        <option value="all">All</option>
+        <option value="shoes">Shoes</option>
+        <option value="tops">Tops</option>
+        <option value="bottoms">Bottoms</option>
+        <option value="accessories">Accessories</option>
+      </select>
+    </div>
+    <div class="col s12 m4">
+      <label for="price-filter">Price Range</label>
+      <select id="price-filter" class="browser-default">
+        <option value="all">All</option>
+        <option value="0-50">$0 - $50</option>
+        <option value="50-100">$50 - $100</option>
+        <option value="100+">$100+</option>
+      </select>
+    </div>
+    <div class="col s12 m4">
+      <label for="sort-filter">Sort By</label>
+      <select id="sort-filter" class="browser-default">
+        <option value="newest">Newest First</option>
+        <option value="oldest">Oldest First</option>
+      </select>
+    </div>
+  </div>
+</form>
 
     <!-- Product Grid -->
     <div class="row" id="product-grid"></div>
@@ -89,7 +108,7 @@
   <!-- Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   
-  <script type="module" src="js/shop.js"></script>
+  <script src="js/shop.js"></script>
   <script src="js/cart-count.js"></script>
 
 </body>

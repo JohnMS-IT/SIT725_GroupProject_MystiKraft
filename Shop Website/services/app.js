@@ -16,7 +16,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 // Routes
 app.get('/contact', contactController); // Use controller directly for simple route
 app.use('/api/search', searchRoutes);
-app.use('/api/products', productsRoutes);
+app.use('/api/products', productsRoutes);// New products route
 app.use('/api/contact', contactRoutes);
 
 module.exports = app;

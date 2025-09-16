@@ -3,32 +3,32 @@ const express = require('express');
 const router = express.Router();
 const Product = require('../models/Product');
 
-// GET /api/products?category=&q=&page=&limit=
+// GET /api/products and category = newest|oldest ( default to newest) 
 router.get('/', async (req, res) => {
   try {
-    const {
+    const {// Destructure query parameters with defaults
       category,
-      q = '',
-      price = 'all',
-      sort = 'newest',
-      page = 1,
-      limit = 12
+      q = '',// Default to empty search query 
+      price = 'all',// Default to all prices
+      sort = 'newest',// Default to newest 
+      page = 1,// Default to page 1
+      limit = 12// Default to 12 items per page 
     } = req.query;
-
-    const filter = {};
-    if (category) filter.category = category;
+    // Build filter object
+    const filter = {};// Category filtering
+    if (category) filter.category = category;// Search query filtering
     if (q) filter.name = { $regex: q, $options: 'i' };
 
     // Price filtering
     if (price === '0-50') {
-      filter.price = { $gte: 0, $lte: 50 };
+      filter.price = { $gte: 0, $lte: 50 };// Price between 0 and 50
     } else if (price === '50-100') {
-      filter.price = { $gte: 50, $lte: 100 };
+      filter.price = { $gte: 50, $lte: 100 };// Price between 50 and 100
     } else if (price === '100+') {
-      filter.price = { $gte: 100 };
+      filter.price = { $gte: 100 };// Price 100 and above 
     }
 
-    // Sorting by date
+    // Sorting by date  
     const sortOption = sort === 'oldest'
       ? { createdAt: 1 }
       : { createdAt: -1 }; // default to newest

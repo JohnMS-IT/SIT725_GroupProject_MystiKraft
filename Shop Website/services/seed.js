@@ -1,10 +1,8 @@
 const mongoose = require('mongoose');
 const Product = require('../models/Product');
 
-//const mongoURI = 'mongodb://localhost:27017/mystikraft';
-
 const products = [
-  // SHOES
+  // SHOES 
   { name: 'Nike Air Max', slug: 'nike-air-max', price: 120, category: 'shoes', image: '/images/shoes/NikeAir.jpg', description: 'Classic running shoes with air cushioning.', createdAt: new Date('2024-11-03') },
   { name: 'Ultraboost', slug: 'ultraboost', price: 220, category: 'shoes', image: '/images/shoes/ultraboost.jpg', description: 'High-performance running shoes.', createdAt: new Date('2025-01-15') },
   { name: 'Jordans', slug: 'jordans', price: 100, category: 'shoes', image: '/images/shoes/Jordans.webp', description: 'Basketball sneakers with iconic design.', createdAt: new Date('2025-03-22') },

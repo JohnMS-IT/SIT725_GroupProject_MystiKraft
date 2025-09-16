@@ -2,33 +2,43 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('../models/User');
 
+// Configure Passport to use LocalStrategy for authentication
 passport.use(new LocalStrategy(
   {
-    usernameField: 'email'
+    usernameField: 'email' // Use 'email' instead of default 'username'
   },
   async (email, password, done) => {
     try {
-      const user = await User.findOne({ email: email }).exec(); // 使用 async/await
+      // Find user by email using async/await
+      const user = await User.findOne({ email: email }).exec();
 
+      // If user not found
       if (!user) {
         return done(null, false, { message: 'Email not registered' });
       }
 
-      // 假设 user.authenticate 是你模型里定义的方法
+      // Check if password is correct
+      // Assume `user.authenticate` is a method defined in your User model
       if (!user.authenticate(password)) {
         return done(null, false, { message: 'Password incorrect' });
       }
 
+      // Check if email is verified
       if (!user.emailVerified) {
         return done(null, false, { message: 'Please verify your email first' });
       }
 
+      // Authentication successful
       return done(null, user);
     } catch (err) {
+      // Handle errors
       return done(err);
     }
   }
 ));
 
+// Serialize user instance to the session
 passport.serializeUser(User.serializeUser());
+
+// Deserialize user instance from the session
 passport.deserializeUser(User.deserializeUser());

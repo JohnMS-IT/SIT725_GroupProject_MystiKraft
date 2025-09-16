@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
  * @returns {Promise} Promise representing the email send operation
  */
 exports.sendVerificationEmail = (user, req) => {
-  // 确保token存在
+  // Ensure the verification token exists
   if (!user.emailVerificationToken) {
     throw new Error('No verification token found for user');
   }
@@ -43,5 +43,6 @@ exports.sendVerificationEmail = (user, req) => {
     `
   };
   
+  // Send the verification email
   return transporter.sendMail(mailOptions);
 };

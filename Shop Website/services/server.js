@@ -2,9 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const mongoose = require('mongoose');
-const session = require('express-session'); // New：session management
-const MongoStore = require('connect-mongo'); // New：MongoDB session storage
-const passport = require('passport'); // New：authentication middleware
+const session = require('express-session'); // New: session management
+const MongoStore = require('connect-mongo'); // New: MongoDB session storage
+const passport = require('passport'); // New: authentication middleware
 
 const app = express();
 
@@ -36,8 +36,6 @@ require('../config/passport');
 const mongoURI = 'mongodb://localhost:27017/mystikraft';
 
 mongoose.connect(mongoURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
 }).then(() => {
   console.log('MongoDB connected...');
 }).catch(err => {
@@ -45,30 +43,26 @@ mongoose.connect(mongoURI, {
   process.exit(1);
 });
 
-// 路由引入
+// Routes import
 const contactRoutes = require('../controllers/contact');
 const searchRoutes = require('../controllers/search');
+// console.log('contactRoutes:', contactRoutes);
+// console.log('searchRoutes:', searchRoutes);
+
 // ==================== New ====================
 const authRoutes = require('../routes/auth'); // New: Authentication Routing
 // ==================== /New ====================
 
-
-console.log('contactRoutes:', contactRoutes);
-console.log('searchRoutes:', searchRoutes);
-
-// 中间件
+// Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
-// 路由注册
+// Route registration
 app.use('/contact', contactRoutes);     
 app.use('/api/search', searchRoutes);   
 // ==================== New ====================
 app.use('/api/auth', authRoutes);
-app.get('/verify/:token', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'verify.html'));
-});
 // ==================== /New ====================
 
 const port = 3000;

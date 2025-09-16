@@ -1,7 +1,7 @@
 // Handles product listing page: category filters, infinite scroll, and rendering product cards
 
 // Helper to fetch JSON safely
-async function fetchJSON(url) {
+/*async function fetchJSON(url) {
   const res = await fetch(url);
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return res.json();
@@ -79,4 +79,47 @@ chips.forEach(chip => chip.addEventListener('click', () => {
 
 // Initialize page
 setActiveChip();
-loadPage();
+loadPage();*/
+document.addEventListener('DOMContentLoaded', () => {
+  const chips = document.querySelectorAll('.category-chip');
+  const grid = document.getElementById('product-grid');
+
+  const fetchProducts = async (category = '') => {
+    const res = await fetch(`/api/products${category ? `?category=${category}` : ''}`);
+    const products = await res.json();
+    renderProducts(products);
+  };
+// Render products into the grid 
+  const renderProducts = (products) => {
+    grid.innerHTML = '';
+    products.forEach(product => {
+      const card = document.createElement('div');
+      card.className = 'col s12 m6 l4';
+      card.innerHTML = `
+        <div class="card">
+          <div class="card-image">
+            <img src="${product.image}" alt="${product.name}">
+          </div>
+          <div class="card-content">
+            <span class="card-title">${product.name}</span>
+            <p>${product.description}</p>
+            <p><strong>$${product.price}</strong></p>
+          </div>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  };
+// Category chip click handler 
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      chips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      const category = chip.dataset.cat;
+      fetchProducts(category);
+    });
+  });
+
+  fetchProducts(); // Load all products initially
+});
+

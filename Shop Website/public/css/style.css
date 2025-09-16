@@ -1,10 +1,11 @@
+/* Base styles */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f8f9fa;
   color: #000000;
 }
 
-main h3 {
+main h3, main h4, main h5 {
   margin-top: 2rem;
   margin-bottom: 1rem;
   font-weight: 600;
@@ -16,11 +17,16 @@ main .row p {
   font-weight: 500;
 }
 
+/* Orange highlight links */
 .orange-link {
   color: #FF7A00 !important;
 }
 
-/* Header styles */
+.orange-link:hover {
+  color: #E66E00 !important;
+}
+
+/* Header */
 header {
   background-color: #0A192F;
   color: #FFFFFF;
@@ -36,28 +42,29 @@ header p {
   font-size: 1.2rem;
 }
 
-/* Navbar styles */
-.navbar {
+/* Navbar */
+/* Override Materialize navbar */
+nav {
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   background-color: #FFFFFF !important;
 }
 
-.navbar-brand {
+nav .brand-logo {
   font-weight: bold;
   font-size: 1.2rem;
   color: #0A192F !important;
 }
 
-.nav-link {
+nav ul li a {
   font-weight: 500;
   color: #0A192F !important;
 }
 
-.nav-link:hover {
+nav ul li a:hover {
   color: #FF7A00 !important;
 }
 
-/* Product image hover effect */
+/* Product hover effect */
 .product-hover {
   transition: transform 0.3s ease-in-out;
   border-radius: 4px;
@@ -86,7 +93,7 @@ header p {
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Product section heading */
+/* Product sections */
 .product-heading {
   margin-top: 3rem;
   font-size: 1.5rem;
@@ -95,30 +102,32 @@ header p {
   color: #000000;
 }
 
-/* Hide all product cards by default */
+/* Hide product sections by default */
 .product-card {
   display: none;
 }
 
-/* Show active product grid */
+/* Show active section */
 .product-card.active {
   display: block;
 }
 
-/* Equal card height and styling */
+/* Card adjustments */
+.card {
+  transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: scale(1.02);
+}
+
+/* Product grid cards */
 .product-card .card {
   height: 100%;
   display: flex;
   flex-direction: column;
-  border: 1px solid #e0e0e0;
   border-radius: 6px;
-  transition: transform 0.2s ease-in-out;
   background-color: #fff;
-}
-
-.product-card .card:hover {
-  transform: scale(1.03);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
 }
 
 .product-card .card-title {
@@ -131,7 +140,6 @@ header p {
   color: #666;
 }
 
-/* Uniform product images */
 .product-card img {
   height: 200px;
   object-fit: cover;
@@ -139,7 +147,7 @@ header p {
   border-radius: 5px;
 }
 
-/* Ensure mobile responsiveness */
+/* Responsive */
 @media (max-width: 768px) {
   .category-card, .product-card .card {
     padding: 1rem;
@@ -150,34 +158,47 @@ header p {
   }
 }
 
-/* Footer styles */
-footer {
-  background-color: #0A192F;
-  color: #FFFFFF;
+/* Footer */
+footer, .page-footer {
+  background-color: #0A192F !important;
+  color: #FFFFFF !important;
   font-size: 0.9rem;
   margin: 0.3rem 0;
 }
 
-/* Featured product grid */
-main .card {
-  transition: transform 0.2s ease-in-out;
+.page-footer a {
+  color: #FF7A00 !important;
 }
 
-main .card:hover {
-  transform: scale(1.02);
+.page-footer a:hover {
+  color: #E66E00 !important;
 }
 
-/* Form error messages */
-#formErrors p {
-  margin-bottom: 0.5rem;
+/* Forms */
+/* Helper text and errors for Materialize inputs */
+input:invalid, textarea:invalid, select:invalid {
+  border-bottom: 1px solid #e53935 !important;
+  box-shadow: none !important;
 }
 
-/* Buttons */
-.btn-primary {
-  background-color: #FF7A00;
-  border: none;
+.helper-text[data-error] {
+  color: #e53935 !important;
 }
 
-.btn-primary:hover {
-  background-color: #E66E00;
+/*  Buttons */
+.btn, .btn-large {
+  background-color: #FF7A00 !important;
+}
+
+.btn:hover, .btn-large:hover {
+  background-color: #E66E00 !important;
+}
+
+.btn.grey {
+  background-color: #f0f0f0 !important;
+  color: #000 !important;
+}
+
+.btn.grey:hover {
+  background-color: #e0e0e0 !important;
 }

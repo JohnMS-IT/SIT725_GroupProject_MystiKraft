@@ -2,47 +2,38 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Shop - MystiKraft</title>
+  <title>Product - MystiKraft</title>
 
+ 
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link rel="stylesheet" href="css/style.css">
 
   <style>
-    /* Custom styling for category chips */
-    .category-chip {
-      cursor: pointer;
-      margin: 0.25rem;
-    }
-    .category-chip.active {
-      background-color: #424242; /* Dark grey for active */
-      color: white;
-    }
-    /* Make product cards uniform */
-    .card img {
-      height: 200px;
-      object-fit: cover;
+    /* Ensure product images display nicely */
+    .product-img {
       width: 100%;
+      height: auto;
+      object-fit: cover;
     }
   </style>
 </head>
 <body>
-
+  <!-- Header -->
   <header class="center-align section">
     <h1>MystiKraft</h1>
   </header>
 
+  <!-- Navbar -->
   <nav class="white">
     <div class="nav-wrapper container">
- 
       <a href="index.html" class="brand-logo">
         <img src="images/Logo/Logo.jpg" alt="MystiKraft Logo" style="height: 40px; vertical-align: middle;">
         MystiKraft
       </a>
-
       <ul id="nav-mobile" class="right hide-on-med-and-down">
         <li><a href="index.html">Home</a></li>
-        <li class="active"><a href="shop.html">Shop</a></li>
+        <li><a href="shop.html">Shop</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="contact.html">Contact</a></li>
         <li><a href="search.html">Search</a></li>
@@ -55,40 +46,40 @@
     </div>
   </nav>
 
-  <!--  Main Content -->
+  <!-- Product Content -->
   <main class="container section">
-    <!-- Title -->
-    <h4 class="center-align">Shop by Category</h4>
+    <div class="row">
+      <!-- Product Image -->
+      <div class="col s12 m6">
+        <!-- Materialize "materialboxed" allows zoom on click -->
+        <img id="p-image" class="product-img materialboxed z-depth-1" src="" alt="Product image">
+      </div>
 
-    <!-- Category Chips -->
-    <!-- Materialize uses "chip" for small filters -->
-    <div class="center-align section">
-      <a class="chip category-chip" data-cat="">All</a>
-      <a class="chip category-chip" data-cat="tops">Tops</a>
-      <a class="chip category-chip" data-cat="bottoms">Bottoms</a>
-      <a class="chip category-chip" data-cat="shoes">Shoes</a>
-      <a class="chip category-chip" data-cat="accessories">Accessories</a>
+      <!-- Product Details -->
+      <div class="col s12 m6">
+        <h4 id="p-title">Loading...</h4>
+        <h5 id="p-price"></h5>
+        <p id="p-desc" class="grey-text"></p>
+
+        <!-- Action Buttons -->
+        <div class="section">
+          <a id="btn-add" class="btn black waves-effect waves-light">Add to Bag</a>
+          <a id="btn-checkout" class="btn grey lighten-2 black-text waves-effect">Checkout</a>
+        </div>
+      </div>
     </div>
-
-    <!-- Product Grid -->
-    <div class="row" id="product-grid"></div>
-    <!-- Sentinel used by IntersectionObserver in shop.js for infinite scrolling -->
-    <div id="load-more-sentinel"></div>
   </main>
 
- 
+  
   <footer class="page-footer black">
     <div class="container center-align">
       <p>© 2025 MystiKraft</p>
-      <p>Last Updated: May 5, 2025</p>
-      <p>Contact: <a href="mailto:support@mystikraft.com" class="orange-link">support@mystikraft.com</a></p>
     </div>
   </footer>
 
   <!-- Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-  <script type="module" src="js/shop.js"></script>
+  <script type="module" src="js/product.js"></script>
   <script src="js/cart-count.js"></script>
-
 </body>
 </html>

@@ -22,8 +22,8 @@ const productSchema = new mongoose.Schema({
   price: Number,
   category: String,
   image: String,
-  description: String
+  description: String,
+  createdAt: Date
 });
 
 module.exports = mongoose.model('Product', productSchema);
-

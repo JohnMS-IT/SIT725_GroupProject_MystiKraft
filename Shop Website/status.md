@@ -4,7 +4,7 @@ So far, the following modules and features have been implemented:
 
 1. **User Authentication**
    - Implemented local email registration, login, and logout using **Passport.js** and **passport-local-mongoose**.
-   - User schema includes email verification fields (`emailVerified`, `emailVerificationToken`) and password security rules.
+   - User schema includes email verification fields (`emailVerified`, `emailVerificationToken`) and password security evaluation.
 
 2. **Email Verification Flow**
    - Generates a random token after registration and sends a verification email.

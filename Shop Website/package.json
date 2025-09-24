@@ -13,9 +13,9 @@
     "web",
     "server",
     "template",
-    "sit774"
+    "sit725"
   ],
-  "author": "SIT774",
+  "author": "MystiKraft",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^2.2.0",

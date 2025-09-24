@@ -2,33 +2,42 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>About - MystiKraft</title>
+  <title>My Bag - MystiKraft</title>
 
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    /* Ensure cart images look uniform */
+    .cart-img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+  </style>
 </head>
 <body>
-  
+
   <header class="center-align section">
-    <h1>About MystiKraft</h1>
+    <h1>MystiKraft</h1>
   </header>
 
   <!-- Navbar -->
   <nav class="white">
     <div class="nav-wrapper container">
-      <!-- Brand -->
       <a href="index.html" class="brand-logo">
         <img src="images/Logo/Logo.jpg" alt="MystiKraft Logo" style="height: 40px; vertical-align: middle;">
         MystiKraft
       </a>
-      <!-- Nav links -->
       <ul id="nav-mobile" class="right hide-on-med-and-down">
         <li><a href="index.html">Home</a></li>
         <li><a href="shop.html">Shop</a></li>
-        <li class="active"><a href="about.html">About</a></li>
+        <li><a href="about.html">About</a></li>
         <li><a href="contact.html">Contact</a></li>
         <li><a href="search.html">Search</a></li>
+        <li class="active"><a href="cart.html">My Bag</a></li>
         <li>
           <a href="cart.html">
             My Cart <span id="cart-count" class="new badge black">0</span>
@@ -40,26 +49,31 @@
 
   <!-- Main Content -->
   <main class="container section">
-    <div class="card-panel grey lighten-4">
-      <p class="flow-text">
-        MystiKraft is a curated sneaker hub bringing you the most sought after kicks.
-      </p>
+    <h4 class="mb-4">My Bag</h4>
+
+    <!-- Cart items will be injected here by cart.js -->
+    <div id="cart-container" class="section"></div>
+
+    <!-- Cart total summary -->
+    <div id="cart-summary" class="right-align section"></div>
+
+    <!-- Action buttons -->
+    <div class="right-align section">
+      <a id="btn-clear" class="btn red lighten-1 waves-effect waves-light">Clear Bag</a>
+      <a id="btn-checkout" class="btn black waves-effect waves-light">Checkout</a>
     </div>
   </main>
 
-  <!-- Footer -->
+  
   <footer class="page-footer black">
     <div class="container center-align">
       <p>© 2025 MystiKraft</p>
-      <p>Last Updated: May 5, 2025</p>
-      <p>
-        Contact: <a href="mailto:support@mystikraft.com" class="orange-link">support@mystikraft.com</a>
-      </p>
     </div>
   </footer>
+
   
-  <!-- Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script type="module" src="js/cart.js"></script>
   <script src="js/cart-count.js"></script>
 </body>
 </html>

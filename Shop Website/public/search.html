@@ -3,53 +3,79 @@
 <head>
   <meta charset="UTF-8">
   <title>Search - MystiKraft</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+ 
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <header class="text-center p-4">
+
+  <header class="center-align section">
     <h1>MystiKraft</h1>
   </header>
 
-  <nav class="navbar navbar-expand-lg">
-    <div class="container">
-      <a class="navbar-brand" href="index.html"><img src="images/Logo/Logo.jpg" alt="MystiKraft Logo" style="height: 40px;"> MystiKraft</a>
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="shop.html">Shop</a></li>
-        <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
-        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-        <li class="nav-item"><a class="nav-link active" href="search.html">Search</a></li>
+
+  <nav class="white">
+    <div class="nav-wrapper container">
+      <a href="index.html" class="brand-logo">
+        <img src="images/Logo/Logo.jpg" alt="MystiKraft Logo" style="height: 40px; vertical-align: middle;">
+        MystiKraft
+      </a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="shop.html">Shop</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li class="active"><a href="search.html">Search</a></li>
+        <li>
+          <a href="cart.html">
+            My Cart <span id="cart-count" class="new badge black">0</span>
+          </a>
+        </li>
       </ul>
     </div>
   </nav>
 
-  <main class="container my-5">
-    <h2 class="text-center mb-4">Search Our Products</h2>
+  <!-- Main Content -->
+  <main class="container section">
+    <h4 class="center-align">Search Our Products</h4>
 
-    <div class="card p-4 shadow-sm mb-5">
-      <form id="searchForm">
-        <div class="mb-3">
-          <label for="searchInput" class="form-label">Search Products</label>
-          <input type="text" class="form-control" id="searchInput" placeholder="e.g., Nike, Ultraboost, Jordans">
-        </div>
-        <button type="submit" class="btn btn-primary">Search</button>
-      </form>
+    <!-- Search Card -->
+    <div class="card z-depth-2 section">
+      <div class="card-content">
+        <form id="searchForm">
+          <div class="input-field">
+            <input type="text" id="searchInput" placeholder="e.g., Nike, Ultraboost, Jordans">
+            <label for="searchInput">Search Products</label>
+          </div>
+          <div class="right-align">
+            <button type="submit" class="btn black waves-effect waves-light">
+              <i class="material-icons left">search</i> Search
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
 
-    <div class="product-section mt-5">
-      <h3 class="product-heading">Search Results</h3>
-      <div class="row g-4" id="resultsContainer">
-      </div>
+    <!-- Results Section -->
+    <div class="section">
+      <h5 class="product-heading">Search Results</h5>
+      <div class="row" id="resultsContainer"></div>
     </div>
   </main>
 
-  <footer class="text-center p-3 mt-5">
-    <p>&copy; 2025 MystiKraft</p>
-    <p>Last Updated: May 5, 2025</p>
-    <p>Contact: <a href="mailto:support@mystikraft.com" class="orange-link">support@mystikraft.com</a></p>
+  <!-- Footer -->
+  <footer class="page-footer black">
+    <div class="container center-align">
+      <p>© 2025 MystiKraft</p>
+      <p>Last Updated: May 5, 2025</p>
+      <p>Contact: <a href="mailto:support@mystikraft.com" class="orange-link">support@mystikraft.com</a></p>
+    </div>
   </footer>
 
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script>
   const form = document.getElementById('searchForm');
   const input = document.getElementById('searchInput');
@@ -58,11 +84,10 @@
   form.addEventListener('submit', async function(event) {
     event.preventDefault(); 
     const query = input.value.trim();
-
-    resultsContainer.innerHTML = ""; // clear previous results
+    resultsContainer.innerHTML = ""; // Clear previous results
 
     if (query === "") {
-      resultsContainer.innerHTML = "<p class='text-center'>Please enter a search keyword.</p>";
+      resultsContainer.innerHTML = "<p class='center-align'>Please enter a search keyword.</p>";
       return;
     }
 
@@ -71,19 +96,23 @@
       const results = await response.json();
 
       if (results.length === 0) {
-        resultsContainer.innerHTML = "<p class='text-center'>No products found.</p>";
+        resultsContainer.innerHTML = "<p class='center-align'>No products found.</p>";
         return;
       }
 
       results.forEach(product => {
         const col = document.createElement('div');
-        col.className = 'col-md-4 col-12';
+        col.className = 'col s12 m6 l4';
 
         col.innerHTML = `
-          <div class="card p-3 text-center">
-            <img src="images/shoes/${product.image}" alt="${product.name}" class="product-hover" style="max-height: 200px; object-fit: contain;">
-            <h5 class="card-title">${product.name}</h5>
-            <p class="card-text">${product.price.toFixed(2)}</p>
+          <div class="card small center-align">
+            <div class="card-image">
+              <img src="images/shoes/${product.image}" alt="${product.name}" style="max-height:200px; object-fit:contain;">
+            </div>
+            <div class="card-content">
+              <span class="card-title">${product.name}</span>
+              <p>$${product.price.toFixed(2)}</p>
+            </div>
           </div>
         `;
 
@@ -91,10 +120,10 @@
       });
     } catch (error) {
       console.error('Search error:', error);
-      resultsContainer.innerHTML = "<p class='text-center text-danger'>An error occurred while searching.</p>";
+      resultsContainer.innerHTML = "<p class='center-align red-text'>An error occurred while searching.</p>";
     }
   });
-</script>
-
+  </script>
+  <script src="js/cart-count.js"></script>
 </body>
 </html>

@@ -32,18 +32,6 @@
     <h1>MystiKraft</h1>
   </header>
 
-<<<<<<< HEAD
-  <nav class="navbar navbar-expand-lg">
-    <div class="container">
-      <a class="navbar-brand" href="index.html"><img src="images/Logo/Logo.jpg" alt="MystiKraft Logo" style="height: 40px;"> MystiKraft</a>
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-        <li class="nav-item"><a class="nav-link active" href="shop.html">Shop</a></li>
-        <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
-        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-        <li class="nav-item"><a class="nav-link" href="search.html">Search</a></li>
-        <li class="nav-item"><a class="nav-link" href="checkout.html">🛒 Checkout</a></li>
-=======
   <nav class="white">
     <div class="nav-wrapper container">
  
@@ -63,7 +51,6 @@
             My Cart <span id="cart-count" class="new badge black">0</span>
           </a>
         </li>
->>>>>>> 3cd66255b635bc04aedf089202ad0d958fc62b80
       </ul>
     </div>
   </nav>
@@ -119,131 +106,10 @@
     </div>
   </footer>
 
-<<<<<<< HEAD
-  <script>
-    function showProducts(category) {
-      // Hide all product sections
-      document.querySelectorAll('.product-card').forEach(section => {
-        section.classList.remove('active');
-      });
-  
-      // Show selected product section
-      const selectedSection = document.getElementById(category);
-      if (selectedSection) {
-        selectedSection.classList.add('active');
-      }
-  
-      // Update the heading based on selected category
-      const heading = document.querySelector('.product-heading');
-      if (heading) {
-        let headingText = '';
-        if (category === 'mens') headingText = 'Mens';
-        else if (category === 'womens') headingText = 'Womens';
-        else if (category === 'kids') headingText = 'Kids';
-        heading.textContent = headingText;
-      }
-    }
-
-    // U1 Task 8: Test filtering and category selection for accuracy
-    async function testFilteringAndCategorySelection() {
-      try {
-        console.log('🧪 Starting U1 Task 8 Testing...');
-        
-        // Test 1: Load all products
-        const allProductsResponse = await fetch('/api/products');
-        const allProducts = await allProductsResponse.json();
-        console.log('✅ Test 1 - All Products:', allProducts.length, 'products loaded');
-        
-        // Test 2: Test category filtering
-        const mensResponse = await fetch('/api/products/category/mens');
-        const mensProducts = await mensResponse.json();
-        console.log('✅ Test 2 - Mens Category:', mensProducts.length, 'products');
-        
-        const womensResponse = await fetch('/api/products/category/womens');
-        const womensProducts = await womensResponse.json();
-        console.log('✅ Test 3 - Womens Category:', womensProducts.length, 'products');
-        
-        const kidsResponse = await fetch('/api/products/category/kids');
-        const kidsProducts = await kidsResponse.json();
-        console.log('✅ Test 4 - Kids Category:', kidsProducts.length, 'products');
-        
-        // Test 3: Test search functionality
-        const searchResponse = await fetch('/api/products/search?q=nike');
-        const searchResults = await searchResponse.json();
-        console.log('✅ Test 5 - Search "nike":', searchResults.length, 'results');
-        
-        // Test 4: Test price filtering
-        const priceFilterResponse = await fetch('/api/products/filter?maxPrice=150');
-        const priceFilteredProducts = await priceFilterResponse.json();
-        console.log('✅ Test 6 - Price Filter (under $150):', priceFilteredProducts.length, 'products');
-        
-        // Test 5: Test featured products
-        const featuredResponse = await fetch('/api/products/featured');
-        const featuredProducts = await featuredResponse.json();
-        console.log('✅ Test 7 - Featured Products:', featuredProducts.length, 'products');
-        
-        // Display results
-        const testResults = `
-🎯 U1 Task 8 Test Results:
-✅ All Products: ${allProducts.length}
-✅ Mens Category: ${mensProducts.length}
-✅ Womens Category: ${womensProducts.length}
-✅ Kids Category: ${kidsProducts.length}
-✅ Search Results: ${searchResults.length}
-✅ Price Filtered: ${priceFilteredProducts.length}
-✅ Featured Products: ${featuredProducts.length}
-
-All tests completed successfully! Check console for detailed results.
-        `;
-        
-        alert(testResults);
-        
-      } catch (error) {
-        console.error('❌ Testing failed:', error);
-        alert('❌ Testing failed! Check console for errors.\n\nMake sure:\n1. Server is running (npm start)\n2. Database is seeded (npm run seed)\n3. MongoDB is running');
-      }
-    }
-
-    // Add test button when page loads
-    document.addEventListener('DOMContentLoaded', function() {
-      // Create test button
-      const testButton = document.createElement('button');
-      testButton.textContent = '🧪 Test U1 Task 8 - Filtering & Category Selection';
-      testButton.className = 'btn btn-info btn-lg mt-4 w-100';
-      testButton.style.fontSize = '16px';
-      testButton.style.padding = '15px';
-      testButton.onclick = testFilteringAndCategorySelection;
-      
-      // Add button to the main container
-      const mainContainer = document.querySelector('main .container');
-      if (mainContainer) {
-        mainContainer.appendChild(testButton);
-      }
-      
-      // Add cart functionality to existing product cards
-      const productCards = document.querySelectorAll('.card');
-      productCards.forEach(card => {
-        // Check if button already exists
-        if (!card.querySelector('.btn-primary')) {
-          const cartButton = document.createElement('button');
-          cartButton.className = 'btn btn-primary mt-2';
-          cartButton.textContent = '🛒 Add to Cart';
-          cartButton.onclick = function() {
-            const productName = card.querySelector('.card-title').textContent;
-            alert(`🛒 ${productName} added to cart!\n\nNote: Cart functionality will be implemented in U2 Task 4`);
-          };
-          card.appendChild(cartButton);
-        }
-      });
-    });
-  </script>
-  
-=======
   <!-- Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="js/shop.js"></script>
   <script src="js/cart-count.js"></script>
 
->>>>>>> 3cd66255b635bc04aedf089202ad0d958fc62b80
 </body>
 </html>

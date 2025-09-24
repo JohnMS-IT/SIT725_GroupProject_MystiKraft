@@ -1,11 +1,29 @@
 // controllers/products.js
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 const Product = require('../models/Product');
 
 // GET /api/products and category = newest|oldest ( default to newest) 
 router.get('/', async (req, res) => {
   try {
+    // Check if MongoDB is connected
+    if (mongoose.connection.readyState !== 1) {
+      // Return sample data when MongoDB is not available (Docker mode)
+      const sampleProducts = [
+        { name: 'Nike Air Max', price: 120, category: 'mens', image: '/images/shoes/NikeAir.jpg', description: 'Comfortable running shoes' },
+        { name: 'Ultraboost', price: 220, category: 'mens', image: '/images/shoes/ultraboost.jpg', description: 'Premium running shoes' },
+        { name: 'Jordans', price: 100, category: 'mens', image: '/images/shoes/Jordans.webp', description: 'Classic basketball shoes' }
+      ];
+      
+      return res.json({
+        items: sampleProducts,
+        total: sampleProducts.length,
+        page: 1,
+        pages: 1
+      });
+    }
+
     const {// Destructure query parameters with defaults
       category,
       q = '',// Default to empty search query 

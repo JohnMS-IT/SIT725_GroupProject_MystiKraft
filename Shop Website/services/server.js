@@ -14,7 +14,7 @@ require('dotenv').config();
 
 // Session Configuration - Using MongoDB for Session Storage
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'your-secret-key',
+  secret: process.env.SESSION_SECRET || 'secret-key',
   resave: false,
   saveUninitialized: false,
   store: MongoStore.create({ 

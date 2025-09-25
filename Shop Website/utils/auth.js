@@ -9,12 +9,7 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-/**
- * Send verification email to user
- * @param {Object} user - User object
- * @param {Object} req - Express request object
- * @returns {Promise} Promise representing the email send operation
- */
+// Generate and send verification email
 exports.sendVerificationEmail = (user, req) => {
   // Ensure the verification token exists
   if (!user.emailVerificationToken) {

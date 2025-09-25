@@ -5,11 +5,11 @@ const User = require('../models/User');
 // Configure Passport to use LocalStrategy for authentication
 passport.use(new LocalStrategy(
   {
-    usernameField: 'email' // Use 'email' instead of default 'username'
+    usernameField: 'email' 
   },
   async (email, password, done) => {
     try {
-      // Find user by email using async/await
+      // Find user by email
       const user = await User.findOne({ email: email }).exec();
 
       // If user not found
@@ -18,7 +18,6 @@ passport.use(new LocalStrategy(
       }
 
       // Check if password is correct
-      // Assume `user.authenticate` is a method defined in your User model
       if (!user.authenticate(password)) {
         return done(null, false, { message: 'Password incorrect' });
       }

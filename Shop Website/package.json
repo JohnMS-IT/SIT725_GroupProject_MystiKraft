@@ -1,33 +1,41 @@
 {
-  "name": "web-server",
+  "name": "SIT725_GroupProject_MystiKraft",
   "version": "1.0.0",
-  "description": "Starter express web server template",
-  "main": "index.js",
+  "description": "",
+  "main": "services/server.js",
   "scripts": {
-    "start": "node services/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "seed": "node services/seed.js"
+    "test": "mocha --reporter spec",
+    "start": "node services/server.js"
   },
-  "keywords": [
-    "node",
-    "web",
-    "server",
-    "template",
-    "sit725"
-  ],
-  "author": "MystiKraft",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JohnMS-IT/SIT725_GroupProject_MystiKraft.git"
+  },
+  "author": "Eric Liu",
   "license": "ISC",
-  "dependencies": {
-    "body-parser": "^2.2.0",
-    "dotenv": "^17.2.2",
-    "ejs": "^3.1.10",
-    "express": "^4.21.2",
-    "express-validator": "^7.2.1",
-    "helmet": "^8.1.0",
-    "mongodb": "^6.19.0",
-    "mongoose": "^8.18.1",
-    "morgan": "^1.10.1",
-    "sqlite3": "^5.1.7"
+  "bugs": {
+    "url": "https://github.com/JohnMS-IT/SIT725_GroupProject_MystiKraft/issues"
   },
-  "type": "commonjs"
+  "homepage": "https://github.com/JohnMS-IT/SIT725_GroupProject_MystiKraft#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "connect-mongo": "^5.1.0",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "express-session": "^1.18.2",
+    "express-validator": "^7.2.1",
+    "form-data": "^4.0.4",
+    "mongoose": "^8.18.1",
+    "nodemailer": "^7.0.6",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^8.0.0",
+    "socket.io": "^4.8.1",
+    "tough-cookie": "^6.0.0"
+  },
+  "devDependencies": {
+    "chai": "^5.3.1",
+    "mocha": "^11.7.1",
+    "request": "^2.88.2"
+  }
 }

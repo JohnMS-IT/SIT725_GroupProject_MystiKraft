@@ -1,37 +1,70 @@
-// server.js
 const express = require('express');
+const bodyParser = require('body-parser');
+const path = require('path');
 const mongoose = require('mongoose');
-const helmet = require('helmet');
-const morgan = require('morgan');
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
+const passport = require('passport');
+
+const app = express();
+
+// Load Environment Variables
 require('dotenv').config();
 
-const app = require('./app');
-
-// Security middleware
-app.use(helmet());
-
-// Logging middleware
-app.use(morgan('combined'));
-
-// MongoDB Connection - Optional for Docker
+// MongoDB connection
 const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/mystikraft';
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('MongoDB connected...'))
+  .catch(err => {
+    console.error('MongoDB connection error:', err.message);
+    process.exit(1);
+  });
 
-// Try to connect to MongoDB, but don't fail if it's not available
-mongoose.connect(mongoURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-}).then(() => {
-  console.log('MongoDB connected...');
-}).catch(err => {
-  console.log('MongoDB not available, continuing without database:', err.message);
-  console.log('This is normal when running in Docker without MongoDB');
+// Session configuration (must come before passport.session)
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'secret-key',
+  resave: false,
+  saveUninitialized: false,
+  store: MongoStore.create({ mongoUrl: mongoURI }),
+  cookie: {
+    maxAge: 24 * 60 * 60 * 1000,
+    httpOnly: true
+  }
+}));
+
+// Initialize passport
+require('../config/passport'); // configure strategies
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Middleware
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, '..', 'public')));
+
+// Routes
+app.use('/contact', require('../controllers/contact'));
+app.use('/api/search', require('../controllers/search'));
+app.use('/api/auth', require('../routes/auth'));
+app.use('/api/products', require('../controllers/products'));
+
+// Serve index
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
 
-// Start the server regardless of MongoDB connection status
+// 404
+app.use((req, res) => res.status(404).json({ message: 'Route not found' }));
+
+// Error handler
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: 'Something went wrong!' });
+});
+
 const port = process.env.PORT || 3000;
-
-app.listen(port, '0.0.0.0', () => {
-  console.log(`Web server running at: http://0.0.0.0:${port}`);
-  console.log(`Local access: http://localhost:${port}`);
-  console.log('Type Ctrl+C to shut down the web server');
+app.listen(port, () => {
+  console.log(`MystiKraft server running at http://localhost:${port}`);
 });
+
+module.exports = app;

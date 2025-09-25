@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>MystiKraft - Home</title>
-
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
-
-
+  <!-- Header -->
   <header class="center-align section">
     <h1>MystiKraft</h1>
     <p id="greeting">Your ultimate sneaker destination</p>
@@ -19,60 +19,97 @@
   <!-- Navbar -->
   <nav class="white">
     <div class="nav-wrapper container">
-      <!-- Brand -->
       <a href="index.html" class="brand-logo">
         <img src="images/Logo/Logo.jpg" alt="MystiKraft Logo" style="height: 40px; vertical-align: middle;">
         MystiKraft
       </a>
-      <!-- Links -->
       <ul id="nav-mobile" class="right hide-on-med-and-down">
         <li class="active"><a href="index.html">Home</a></li>
         <li><a href="shop.html">Shop</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="contact.html">Contact</a></li>
         <li><a href="search.html">Search</a></li>
-        <li>
-          <a href="cart.html">
-            My Cart <span id="cart-count" class="new badge black">0</span>
-          </a>
+        <li><a href="cart.html">My Cart <span id="cart-count" class="new badge black">0</span></a></li>
+        <li id="authLinks"><a href="#loginModal" class="modal-trigger">Login</a></li>
+        <li id="userMenu" class="hide">
+          <a class="dropdown-trigger" href="#!" data-target="dropdown1"><span id="userEmail">User</span><i
+              class="material-icons right">arrow_drop_down</i></a>
         </li>
       </ul>
     </div>
   </nav>
 
+  <ul id="dropdown1" class="dropdown-content">
+    <li><a href="#" id="logoutBtn">Logout</a></li>
+  </ul>
+
+  <!-- Login/Register Modal -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <h4>Login</h4>
+      <form id="loginForm">
+        <div class="input-field">
+          <input type="email" id="email" required>
+          <label for="email">Email</label>
+        </div>
+        <div class="input-field">
+          <input type="password" id="password" required>
+          <label for="password">Password</label>
+        </div>
+        <button type="submit" class="btn waves-effect waves-light">Login</button>
+        <button type="button" class="btn-flat" id="showRegister">Register</button>
+      </form>
+
+      <form id="registerForm" class="hide">
+        <div class="input-field">
+          <input type="email" id="registerEmail" required>
+          <label for="registerEmail">Email</label>
+        </div>
+        <div class="input-field">
+          <input type="password" id="registerPassword" required>
+          <label for="registerPassword">Password</label>
+        </div>
+        <div class="input-field">
+          <input type="password" id="confirmPassword" required>
+          <label for="confirmPassword">Confirm Password</label>
+        </div>
+        <button type="submit" class="btn waves-effect waves-light">Register</button>
+        <button type="button" class="btn-flat" id="showLogin">Login</button>
+      </form>
+    </div>
+  </div>
+
   <!-- Main -->
   <main class="container section">
-    <!-- Featured Banner -->
     <div class="center-align section">
       <h4>New Drop: NB Grey days</h4>
-      <a href="shop.html" class="orange-link">
+      <a href="shop.html">
         <img src="images/shoes/New_drop.webp" class="responsive-img z-depth-2" alt="Air Boost X banner shoe">
       </a>
     </div>
-  
-    <!-- Featured Categories -->
+
     <h5>Featured</h5>
     <div class="row center-align">
       <div class="col s6 m3">
-        <a href="shop.html" class="orange-link">
+        <a href="shop.html">
           <img src="images/shoes/running.webp" class="responsive-img product-hover z-depth-1" alt="Running Shoe">
           <p>Running</p>
         </a>
       </div>
       <div class="col s6 m3">
-        <a href="shop.html" class="orange-link">
+        <a href="shop.html">
           <img src="images/shoes/Sneakers.jpg" class="responsive-img product-hover z-depth-1" alt="Sneaker Shoe">
           <p>Sneakers</p>
         </a>
       </div>
       <div class="col s6 m3">
-        <a href="shop.html" class="orange-link">
+        <a href="shop.html">
           <img src="images/shoes/basketball.jpg" class="responsive-img product-hover z-depth-1" alt="Basketball Shoe">
           <p>Basketball</p>
         </a>
       </div>
       <div class="col s6 m3">
-        <a href="shop.html" class="orange-link">
+        <a href="shop.html">
           <img src="images/shoes/skate.webp" class="responsive-img product-hover z-depth-1" alt="Skate Shoe">
           <p>Skate</p>
         </a>
@@ -80,33 +117,31 @@
     </div>
   </main>
 
-  <!-- Footer -->
   <footer class="page-footer black">
     <div class="container center-align">
       <p>© 2025 MystiKraft</p>
       <p>Last Updated: May 5, 2025</p>
-      <p>Contact: <a href="mailto:support@mystikraft.com" class="orange-link">support@mystikraft.com</a></p>
+      <p>Contact: <a href="mailto:support@mystikraft.com" class="orange-text text-lighten-2">support@mystikraft.com</a>
+      </p>
     </div>
   </footer>
-  
-  <!-- Scripts -->
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-  <script>
-    // Dynamic greeting
-    const greetingElement = document.getElementById('greeting');
-    const hour = new Date().getHours();
-    let greetingText = 'Welcome to your ultimate fashion destination';
-
-    if (hour < 12) {
-      greetingText = 'Good morning!';
-    } else if (hour < 18) {
-      greetingText = 'Good afternoon!';
-    } else {
-      greetingText = 'Good evening!';
-    }
-
-    greetingElement.textContent = greetingText;
-  </script>
+  <script src="js/auth.js"></script>
   <script src="js/cart-count.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      M.Modal.init(document.querySelectorAll('.modal'));
+      M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'));
+      const greetingElement = document.getElementById('greeting');
+      const hour = new Date().getHours();
+      let greetingText = 'Welcome to your ultimate fashion destination';
+      if (hour < 12) greetingText = 'Good morning!';
+      else if (hour < 18) greetingText = 'Good afternoon!';
+      else greetingText = 'Good evening!';
+      greetingElement.textContent = greetingText;
+    });
+  </script>
 </body>
+
 </html>

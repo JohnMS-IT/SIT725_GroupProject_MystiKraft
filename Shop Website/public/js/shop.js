@@ -1,27 +1,24 @@
-// Client-side JavaScript for product filtering and sorting on the shop page 
 document.addEventListener('DOMContentLoaded', () => {
   const grid = document.getElementById('product-grid');
-
   const categoryFilter = document.getElementById('category-filter');
   const priceFilter = document.getElementById('price-filter');
   const sortFilter = document.getElementById('sort-filter');
 
-  // Fetch products with optional query string
+  // Fetch products
   const fetchProducts = async (query = '') => {
-
-    // Fetch products from the server
-    const res = await fetch(`/api/products${query}`);
-    const products = await res.json();// Log the fetched products for debugging 
-    console.log('Fetched products:', products);// Display products in the grid
-    renderProducts(products.items);
+    try {
+      const res = await fetch(`/api/products${query}`);
+      const products = await res.json();
+      renderProducts(products.items);
+    } catch (err) {
+      console.error('Failed to fetch products', err);
+    }
   };
 
-  // Render products into the grid
   const renderProducts = (products) => {
-    grid.innerHTML = '';// Clear existing products
-    products.forEach(product => {// Create product card
-      const card = document.createElement('div');// Set card class and inner HTML
-      // Append card to grid
+    grid.innerHTML = '';
+    products.forEach(product => {
+      const card = document.createElement('div');
       card.className = 'col s12 m6 l4';
       card.innerHTML = `
         <div class="card">
@@ -33,33 +30,47 @@ document.addEventListener('DOMContentLoaded', () => {
             <p>${product.description}</p>
             <p><strong>$${product.price}</strong></p>
           </div>
+          <div class="card-action">
+            <button class="btn green add-to-cart-btn" data-id="${product._id}">Add to Bag</button>
+          </div>
         </div>
       `;
-      grid.appendChild(card);// Append card to grid
+      grid.appendChild(card);
+    });
+
+    // Bind add to cart buttons
+    document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const productId = btn.dataset.id;
+        try {
+          const res = await fetch('/api/cart', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ productId, quantity: 1 })
+          });
+          if (!res.ok) throw new Error('Failed to add to cart');
+          const cart = await res.json();
+          window.CartUtils.updateCartCount();
+          window.CartUtils.notifyCartChange('Added to bag!');
+        } catch (err) {
+          console.error(err);
+          window.CartUtils.notifyCartChange('Failed to add to cart', false);
+        }
+      });
     });
   };
 
-  // Build query string based on selected filters
   const buildQuery = () => {
-    const category = categoryFilter.value;
-    const price = priceFilter.value;
-    const sort = sortFilter.value;
-
     const query = [];
-    // Only add filters if they are not 'all'
-    if (category !== 'all') query.push(`category=${category}`);
-    if (price !== 'all') query.push(`price=${price}`);
-    if (sort) query.push(`sort=${sort}`);
-    
+    if (categoryFilter.value !== 'all') query.push(`category=${categoryFilter.value}`);
+    if (priceFilter.value !== 'all') query.push(`price=${priceFilter.value}`);
+    if (sortFilter.value) query.push(`sort=${sortFilter.value}`);
     return query.length ? `?${query.join('&')}` : '';
   };
 
-  // Listen for filter changes
   document.getElementById('filter-form').addEventListener('change', () => {
-    const query = buildQuery();// Fetch products with new filters
-    fetchProducts(query);
-    console.log('Applied filters:', query);// Debug log
+    fetchProducts(buildQuery());
   });
 
-  fetchProducts(); // Load all products initially
+  fetchProducts();
 });

@@ -2,44 +2,29 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shop - MystiKraft</title>
-
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link rel="stylesheet" href="css/style.css">
-
   <style>
-    /* Custom styling for category chips */
-    .category-chip {
-      cursor: pointer;
-      margin: 0.25rem;
-    }
-    .category-chip.active {
-      background-color: #424242; /* Dark grey for active */
-      color: white;
-    }
-    /* Make product cards uniform */
-    .card img {
-      height: 200px;
-      object-fit: cover;
-      width: 100%;
-    }
+    .category-chip { cursor: pointer; margin: 0.25rem; }
+    .category-chip.active { background-color: #424242; color: white; }
+    .card img { height: 200px; object-fit: cover; width: 100%; }
   </style>
 </head>
 <body>
-
   <header class="center-align section">
     <h1>MystiKraft</h1>
   </header>
 
+  <!-- Navbar -->
   <nav class="white">
     <div class="nav-wrapper container">
- 
       <a href="index.html" class="brand-logo">
         <img src="images/Logo/Logo.jpg" alt="MystiKraft Logo" style="height: 40px; vertical-align: middle;">
         MystiKraft
       </a>
-
       <ul id="nav-mobile" class="right hide-on-med-and-down">
         <li><a href="index.html">Home</a></li>
         <li class="active"><a href="shop.html">Shop</a></li>
@@ -55,61 +40,52 @@
     </div>
   </nav>
 
-  <!--  Main Content -->
   <main class="container section">
     <h5 class="center-align">Shop by Category</h5>
-    
-    <!-- Filter Section -->
-<form id="filter-form">
-  <div class="row">
-    <div class="col s12 m4">
-      <label for="category-filter">Category</label>
-      <select id="category-filter" class="browser-default">
-        <option value="all">All</option>
-        <option value="shoes">Shoes</option>
-        <option value="tops">Tops</option>
-        <option value="bottoms">Bottoms</option>
-        <option value="accessories">Accessories</option>
-      </select>
-    </div>
-    <div class="col s12 m4">
-      <label for="price-filter">Price Range</label>
-      <select id="price-filter" class="browser-default">
-        <option value="all">All</option>
-        <option value="0-50">$0 - $50</option>
-        <option value="50-100">$50 - $100</option>
-        <option value="100+">$100+</option>
-      </select>
-    </div>
-    <div class="col s12 m4">
-      <label for="sort-filter">Sort By</label>
-      <select id="sort-filter" class="browser-default">
-        <option value="newest">Newest First</option>
-        <option value="oldest">Oldest First</option>
-      </select>
-    </div>
-  </div>
-</form>
 
-    <!-- Product Grid -->
+    <form id="filter-form">
+      <div class="row">
+        <div class="col s12 m4">
+          <label for="category-filter">Category</label>
+          <select id="category-filter" class="browser-default">
+            <option value="all">All</option>
+            <option value="shoes">Shoes</option>
+            <option value="tops">Tops</option>
+            <option value="bottoms">Bottoms</option>
+            <option value="accessories">Accessories</option>
+          </select>
+        </div>
+        <div class="col s12 m4">
+          <label for="price-filter">Price Range</label>
+          <select id="price-filter" class="browser-default">
+            <option value="all">All</option>
+            <option value="0-50">$0 - $50</option>
+            <option value="50-100">$50 - $100</option>
+            <option value="100+">$100+</option>
+          </select>
+        </div>
+        <div class="col s12 m4">
+          <label for="sort-filter">Sort By</label>
+          <select id="sort-filter" class="browser-default">
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+          </select>
+        </div>
+      </div>
+    </form>
+
     <div class="row" id="product-grid"></div>
-    <!-- Sentinel used by IntersectionObserver in shop.js for infinite scrolling -->
-    <div id="load-more-sentinel"></div>
   </main>
-  
-  <!-- Footer -->
+
   <footer class="page-footer black">
     <div class="container center-align">
       <p>© 2025 MystiKraft</p>
-      <p>Last Updated: May 5, 2025</p>
       <p>Contact: <a href="mailto:support@mystikraft.com" class="orange-link">support@mystikraft.com</a></p>
     </div>
   </footer>
 
-  <!-- Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-  <script src="js/shop.js"></script>
   <script src="js/cart-count.js"></script>
-
+  <script src="js/shop.js"></script>
 </body>
 </html>

@@ -4,9 +4,6 @@ const Message = require('../models/Message');
 
 router.post('/', async (req, res) => {
   const { name, email, phone, topic, message } = req.body;
-
-  console.log('Received form submission:', { name, email, phone, topic, message });
-
   try {
     const newMessage = new Message({ name, email, phone, topic, message });
     await newMessage.save();
@@ -17,4 +14,4 @@ router.post('/', async (req, res) => {
   }
 });
 
-module.exports = router;
+module.exports = router;  

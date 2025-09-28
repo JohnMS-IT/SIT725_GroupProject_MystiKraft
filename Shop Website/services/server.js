@@ -47,6 +47,7 @@ app.use('/contact', require('../controllers/contact'));
 app.use('/api/search', require('../controllers/search'));
 app.use('/api/auth', require('../routes/auth'));
 app.use('/api/products', require('../controllers/products'));
+app.use('/api/cart', require('../controllers/cartController'));
 
 // Serve index
 app.get('/', (req, res) => {

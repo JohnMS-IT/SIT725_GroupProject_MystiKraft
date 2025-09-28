@@ -1,19 +1,27 @@
-// Keeps "My Cart" badge updated across all pages and shows toasts
+// Cart Utils for badge and notifications (API-based)
 
-// Get cart from localStorage
-function getCart() {
-  return JSON.parse(localStorage.getItem('bag') || '[]');
+// Fetch cart from backend
+async function fetchCart() {
+  try {
+    const res = await fetch('/api/cart');
+    if (!res.ok) throw new Error('Failed to fetch cart');
+    const cart = await res.json();
+    return cart.items || [];
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
 }
 
-// Update the cart count badge in navbar
-function updateCartCount() {
-  const cart = getCart();
-  const count = cart.reduce((sum, i) => sum + (i.qty || 1), 0);
+// Update cart count badge in navbar
+async function updateCartCount() {
+  const cart = await fetchCart();
+  const count = cart.reduce((sum, i) => sum + (i.quantity || 1), 0);
   const el = document.getElementById('cart-count');
   if (el) el.textContent = count;
 }
 
-// Show a Materialize toast message when cart is updated
+// Show toast notification
 function notifyCartChange(message, success = true) {
   if (M && M.toast) {
     M.toast({
@@ -25,15 +33,12 @@ function notifyCartChange(message, success = true) {
   }
 }
 
-// Run immediately to set initial badge count
-updateCartCount();
-
-// Update count if localStorage changes in another tab
-window.addEventListener('storage', updateCartCount);
-
-// Expose helpers for other scripts (product.js, cart.js)
+// Expose globally
 window.CartUtils = {
-  getCart,
+  fetchCart,
   updateCartCount,
   notifyCartChange
 };
+
+// Initial update
+updateCartCount();

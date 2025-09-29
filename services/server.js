@@ -1,13 +1,21 @@
-// server.js
+// services/server.js
 const mongoose = require('mongoose');
 const app = require('./app');
 require('dotenv').config();
 const env = process.env;// Load environment variables
 const port = process.env.PORT;// Port number from environment variables
+const productRoutes = require('../routes/products');// Import product routes
+const authRoutes = require('../routes/auth');// Import auth routes
 
+
+// Routes
+app.use('/api', productRoutes);
+app.use('/api/auth', authRoutes);
+
+// Middleware to parse JSON requests
 mongoose.connect(env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+useNewUrlParser: true,
+useUnifiedTopology: true,
   
 }).then(() => {// Connected to MongoDB 
   console.log('MongoDB connected...');

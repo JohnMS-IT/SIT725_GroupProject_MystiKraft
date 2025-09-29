@@ -8,13 +8,16 @@ module.exports = (req, res, next) => {
   }
 
   try {
+    // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;  // Attach userId and role to req
     if (req.user.role !== 'seller') {
+      // Check if user is a seller
       return res.status(403).json({ message: 'Access denied: Sellers only' });
     }
-    next();
+    next();// Proceed to next middleware or route handler
   } catch (error) {
+    // Invalid token
     res.status(401).json({ message: 'Invalid token' });
   }
 };

@@ -16,6 +16,7 @@
     "is-plain-obj": "^4.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.18.2",
+    "multer": "^1.4.5-lts.1",
     "webdriverio": "^9.19.2"
   },
   "devDependencies": {

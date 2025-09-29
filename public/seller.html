@@ -21,7 +21,7 @@
       <ul id="nav-mobile" class="right hide-on-med-and-down">
         <li><a href="index.html">Home</a></li>
         <li><a href="shop.html">Shop</a></li>
-        <li><a href="elevate: none;tabindex: 0;">about.html">About</a></li>
+        <li><a href="about.html">About</a></li>
         <li><a href="contact.html">Contact</a></li>
         <li><a href="search.html">Search</a></li>
         <li><a href="cart.html">My Cart <span id="cart-count" class="new badge black">0</span></a></li>
@@ -33,7 +33,7 @@
   <main class="container section">
     <h4 class="center-align">Add New Product</h4>
     <div class="row">
-      <form id="add-product-form" class="col s12 m6 offset-m3">
+      <form id="add-product-form" class="col s12 m6 offset-m3" enctype="multipart/form-data">
         <div class="input-field">
           <input id="name" type="text" class="validate" required>
           <label for="name">Name</label>
@@ -55,9 +55,14 @@
             <option value="accessories">Accessories</option>
           </select>
         </div>
-        <div class="input-field">
-          <input id="image" type="text" class="validate" required>
-          <label for="image">Image Path (e.g., /images/shoes/NikeAir.jpg)</label>
+        <div class="file-field input-field">
+          <div class="btn black">
+            <span>Upload Image</span>
+            <input type="file" id="image" accept="image/*" required>
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" type="text" placeholder="Select an image">
+          </div>
         </div>
         <div class="input-field">
           <textarea id="description" class="materialize-textarea" required></textarea>

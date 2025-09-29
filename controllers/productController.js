@@ -1,35 +1,63 @@
 const Product = require('../models/Product');
+const path = require('path');
 
-// Controller to get products by category by filtering purpose
+// Controller to get products by category for filtering purposes
 exports.getProducts = async (req, res) => {
   try {
-    const category = req.query.category;// Get category from query string
-    const filter = category ? { category } : {};// Build filter object
-    const products = await Product.find(filter);// Fetch products from database
-    res.json(products);// Return products as JSON 
+    const category = req.query.category;
+    const filter = category ? { category } : {};
+    const products = await Product.find(filter);
+    res.json(products);
   } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch products' });// Handle errors
+    res.status(500).json({ error: 'Failed to fetch products' });
   }
 };
 
 // Controller to add a new product (protected route for 'seller' users)
 exports.addProduct = async (req, res) => {
-  try {// Validate input data
-    const { name, slug, price, category, image, description } = req.body;
+  try {
+    const { name, slug, price, category, description } = req.body;
+    const image = req.file;
+
+    // Check if user is authenticated and a seller
+    if (!req.user || req.user.role !== 'seller') {
+      return res.status(403).json({ message: 'Unauthorized' });
+    }
+
+    // Validate input data
     if (!name || !slug || !price || !category || !image || !description) {
       return res.status(400).json({ message: 'All fields are required' });
     }
+
+    // Validate category
+    const validCategories = ['shoes', 'tops', 'bottoms', 'accessories'];
+    if (!validCategories.includes(category)) {
+      return res.status(400).json({ message: 'Invalid category' });
+    }
+
     // Check for existing product with the same slug
     const existingProduct = await Product.findOne({ slug });
     if (existingProduct) {
       return res.status(400).json({ message: 'Product slug already exists' });
     }
+
+    // Store relative image path
+    const imagePath = `/images/${category}/${image.filename}`;
+
     // Create and save the new product
-    const product = new Product({ name, slug, price, category, image, description });
+    const product = new Product({
+      name,
+      slug,
+      price: parseFloat(price),
+      category,
+      image: imagePath,
+      description,
+      sellerId: req.user.userId
+    });
     await product.save();
+
     // Return the created product
     res.status(201).json({ product, message: 'Product added successfully' });
-    // Handle errors
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error' });

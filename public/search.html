@@ -29,7 +29,7 @@
         <li><a href="contact.html">Contact</a></li>
         <li class="active"><a href="search.html">Search</a></li>
         <li><a href="cart.html">My Cart <span id="cart-count" class="new badge black">0</span></a>
-          <li><a href="login.html">Account</a></li>
+        <li><a href="login.html">Account</a>
         </li>
       </ul>
     </div>
@@ -78,12 +78,12 @@
   const form = document.getElementById('searchForm');
   const input = document.getElementById('searchInput');
   const resultsContainer = document.getElementById('resultsContainer');
-
+    // Handle form submission
   form.addEventListener('submit', async function(event) {
     event.preventDefault(); 
     const query = input.value.trim();
     resultsContainer.innerHTML = ""; // Clear previous results
-
+    // Validate input
     if (query === "") {
       resultsContainer.innerHTML = "<p class='center-align'>Please enter a search keyword.</p>";
       return;

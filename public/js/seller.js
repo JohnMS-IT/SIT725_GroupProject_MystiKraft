@@ -1,41 +1,51 @@
-// Handle add product form submission
-document.getElementById('add-product-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
-    // Get auth token
-  const token = localStorage.getItem('token');
-  if (!token) {// Redirect to login if not authenticated
-    M.toast({ html: 'Please login first', classes: 'red' });
-    window.location.href = '/login.html';
-    return;
-  }
-    // Get product details from form
-  const product = {
-    name: document.getElementById('name').value,
-    slug: document.getElementById('slug').value,
-    price: parseFloat(document.getElementById('price').value),
-    category: document.getElementById('category').value,
-    image: document.getElementById('image').value,
-    description: document.getElementById('description').value
-  };
+document.addEventListener('DOMContentLoaded', () => {
+  const addProductForm = document.getElementById('add-product-form');
+  const cancelButton = document.getElementById('cancel-product');
 
-  try {// Send request to add product
-    const response = await fetch('/api/products', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify(product)
+  // Initialize Materialize select
+  const selects = document.querySelectorAll('select');
+  M.FormSelect.init(selects);
+
+  // Handle cancel button
+  if (cancelButton) {
+    cancelButton.addEventListener('click', () => {
+      window.location.href = '/index.html';
     });
-    // Handle response
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.message || 'Failed to add product');
-    }
+  }
 
-    M.toast({ html: 'Product added successfully!', classes: 'green' });
-    // Optionally reset form or redirect
-  } catch (error) {
-    M.toast({ html: error.message, classes: 'red' });
+  // Handle form submission
+  if (addProductForm) {
+    addProductForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const slug = document.getElementById('slug').value;
+      const price = parseFloat(document.getElementById('price').value);
+      const category = document.getElementById('category').value;
+      const image = document.getElementById('image').value;
+      const description = document.getElementById('description').value;
+
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch('/api/products', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ name, slug, price, category, image, description })
+        });
+        const data = await response.json();
+
+        if (response.ok) {
+          M.toast({ html: 'Product added successfully!', classes: 'green' });
+          addProductForm.reset();
+        } else {
+          M.toast({ html: data.message || 'Failed to add product', classes: 'red' });
+        }
+      } catch (error) {
+        console.error('Error adding product:', error);
+        M.toast({ html: 'Server error', classes: 'red' });
+      }
+    });
   }
 });

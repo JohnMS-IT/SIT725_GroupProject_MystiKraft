@@ -1,27 +1,32 @@
+document.addEventListener('DOMContentLoaded', () => {
+  const registerForm = document.getElementById('register-form');
+  if (!registerForm) return;
 
-// Handle registration form submission
-document.getElementById('register-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
+  registerForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
 
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
-
-  try {// Send registration data to server
-    const response = await fetch('/api/auth/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
-    });
-    
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.message || 'Registration failed');
+    try {
+      // Send registration request
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await response.json();
+      // Handle response
+      if (response.ok) {
+        // Automatically log in the user after successful registration
+        localStorage.setItem('token', data.token);
+        M.toast({ html: 'Registration successful!', classes: 'green' });
+        window.location.href = '/index.html'; // Redirect to homepage upon successful registration
+      } else {
+        M.toast({ html: data.message || 'Registration failed', classes: 'red' });
+      }
+    } catch (error) {
+      console.error('Registration error:', error);
+      M.toast({ html: 'Server error', classes: 'red' });
     }
-    // Save token and redirect to login
-    localStorage.setItem('token', data.token);
-    M.toast({ html: 'Registration successful! Please log in.', classes: 'green' });
-    setTimeout(() => window.location.href = '/login.html', 1000);
-  } catch (error) {
-    M.toast({ html: error.message, classes: 'red' });
-  }
+  });
 });

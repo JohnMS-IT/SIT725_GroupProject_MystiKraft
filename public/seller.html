@@ -5,30 +5,48 @@
   <title>Seller Dashboard - MystiKraft</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <header class="center-align section">
-    <h1>Seller Dashboard</h1>
+    <h1>MystiKraft</h1>
   </header>
 
+  <nav class="white">
+    <div class="nav-wrapper container">
+      <a href="index.html" class="brand-logo">
+        <img src="images/Logo/Logo.jpg" alt="MystiKraft Logo" style="height: 40px; vertical-align: middle;">
+        MystiKraft
+      </a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="shop.html">Shop</a></li>
+        <li><a href="elevate: none;tabindex: 0;">about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="search.html">Search</a></li>
+        <li><a href="cart.html">My Cart <span id="cart-count" class="new badge black">0</span></a></li>
+        <li id="auth-nav"><a href="/login.html" class="active">Account</a></li>
+      </ul>
+    </div>
+  </nav>
+
   <main class="container section">
-    <h4>Add New Product</h4>
-    <form id="add-product-form">
-      <div class="row">
-        <div class="input-field col s12">
-          <input id="name" type="text" required>
+    <h4 class="center-align">Add New Product</h4>
+    <div class="row">
+      <form id="add-product-form" class="col s12 m6 offset-m3">
+        <div class="input-field">
+          <input id="name" type="text" class="validate" required>
           <label for="name">Name</label>
         </div>
-        <div class="input-field col s12">
-          <input id="slug" type="text" required>
+        <div class="input-field">
+          <input id="slug" type="text" class="validate" required>
           <label for="slug">Slug (e.g., nike-air-max)</label>
         </div>
-        <div class="input-field col s12">
-          <input id="price" type="number" min="0" step="0.01" required>
+        <div class="input-field">
+          <input id="price" type="number" class="validate" required>
           <label for="price">Price</label>
         </div>
-        <div class="input-field col s12">
+        <div class="input-field">
           <select id="category" class="browser-default" required>
             <option value="" disabled selected>Choose category</option>
             <option value="shoes">Shoes</option>
@@ -36,22 +54,32 @@
             <option value="bottoms">Bottoms</option>
             <option value="accessories">Accessories</option>
           </select>
-          <label for="category">Category</label>
         </div>
-        <div class="input-field col s12">
-          <input id="image" type="text" required>
+        <div class="input-field">
+          <input id="image" type="text" class="validate" required>
           <label for="image">Image Path (e.g., /images/shoes/NikeAir.jpg)</label>
         </div>
-        <div class="input-field col s12">
+        <div class="input-field">
           <textarea id="description" class="materialize-textarea" required></textarea>
           <label for="description">Description</label>
         </div>
-      </div>
-      <button class="btn waves-effect waves-light" type="submit">Add Product</button>
-    </form>
+        <button class="btn black waves-effect waves-light" type="submit">Add Product</button>
+        <button id="cancel-product" class="btn grey waves-effect waves-light" type="button">Cancel</button>
+      </form>
+    </div>
   </main>
 
+  <footer class="page-footer black">
+    <div class="container center-align">
+      <p>© 2025 MystiKraft</p>
+      <p>Last Updated: May 5, 2025</p>
+      <p>Contact: <a href="mailto:support@mystikraft.com" class="orange-link">support@mystikraft.com</a></p>
+    </div>
+  </footer>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-  <script src="/js/seller.js"></script>
+  <script src="js/cart-count.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/seller.js"></script>
 </body>
 </html>

@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         M.toast({ html: 'Please select an image', classes: 'red' });
         return;
       }
-
+      // Prepare form data
       const formData = new FormData();
       formData.append('name', name);
       formData.append('slug', slug);
@@ -37,8 +37,9 @@ document.addEventListener('DOMContentLoaded', () => {
       formData.append('image', image);
       formData.append('description', description);
 
-      try {
+      try {// Get token from localStorage
         const token = localStorage.getItem('token');
+        console.log('Sending request to /api/products with token:', token);
         const response = await fetch('/api/products', {
           method: 'POST',
           headers: {
@@ -47,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
           body: formData
         });
         const data = await response.json();
+        console.log('Response:', data);
 
         if (response.ok) {
           M.toast({ html: 'Product added successfully!', classes: 'green' });

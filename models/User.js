@@ -30,9 +30,9 @@ userSchema.pre('save', async function(next) {
   this.password = await bcrypt.hash(this.password, 10);
   next();
 });
-
+// Method to compare password
 userSchema.methods.comparePassword = async function(candidatePassword) {
-  return bcrypt.compare(candidatePassword, this.password);
+  return bcrypt.compare(candidatePassword, this.password);// Return true if match, else false
 };
-
+// Exclude password from toJSON output
 module.exports = mongoose.model('User', userSchema);

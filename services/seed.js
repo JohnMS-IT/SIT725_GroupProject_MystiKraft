@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Product = require('../models/Product');
+const mongoURI = process.env.MONGO_URI;
 
+// Sample shop data
 const products = [
   // SHOES 
   { name: 'Nike Air Max', slug: 'nike-air-max', price: 120, category: 'shoes', image: '/images/shoes/NikeAir.jpg', description: 'Classic running shoes with air cushioning.', createdAt: new Date('2024-11-03') },
@@ -23,6 +25,7 @@ const products = [
 
 (async () => {
   try {
+    // Connect to MongoDB
     await mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
     await Product.deleteMany({});
     await Product.insertMany(products);

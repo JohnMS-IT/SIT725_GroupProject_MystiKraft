@@ -7,6 +7,7 @@ const Product = require('../models/Product');
 router.get('/', async (req, res) => {
   const query = req.query.q || '';
   try {
+    // Case-insensitive search for products by name
     const products = await Product.find({ name: { $regex: query, $options: 'i' } });
     res.json(products);
   } catch (err) {

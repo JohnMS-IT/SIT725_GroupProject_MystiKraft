@@ -3,11 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <title>My Bag - MystiKraft</title>
-
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link rel="stylesheet" href="css/style.css">
-
   <style>
     /* Ensure cart images look uniform */
     .cart-img {
@@ -19,7 +17,6 @@
   </style>
 </head>
 <body>
-
   <header class="center-align section">
     <h1>MystiKraft</h1>
   </header>
@@ -38,14 +35,57 @@
         <li><a href="contact.html">Contact</a></li>
         <li><a href="search.html">Search</a></li>
         <li class="active"><a href="cart.html">My Bag</a></li>
-        <li>
-          <a href="cart.html">
-            My Cart <span id="cart-count" class="new badge black">0</span>
-          </a>
+        <!-- 添加登录/用户菜单 -->
+        <li id="authLinks"><a href="#loginModal" class="modal-trigger">Login</a></li>
+        <li id="userMenu" class="hide">
+          <a class="dropdown-trigger" href="#!" data-target="dropdown1"><span id="userEmail">User</span><i
+              class="material-icons right">arrow_drop_down</i></a>
         </li>
       </ul>
     </div>
   </nav>
+
+  <!-- User Dropdown -->
+  <ul id="dropdown1" class="dropdown-content">
+    <li><a href="profile.html">Profile</a></li>
+    <li><a href="#" id="logoutBtn">Logout</a></li>
+  </ul>
+
+  <!-- Login/Register Modal -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <h4>Login</h4>
+      <form id="loginForm">
+        <div class="input-field">
+          <input type="email" id="email" required>
+          <label for="email">Email</label>
+        </div>
+        <div class="input-field">
+          <input type="password" id="password" required>
+          <label for="password">Password</label>
+        </div>
+        <button type="submit" class="btn waves-effect waves-light">Login</button>
+        <button type="button" class="btn-flat" id="showRegister">Register</button>
+      </form>
+
+      <form id="registerForm" class="hide">
+        <div class="input-field">
+          <input type="email" id="registerEmail" required>
+          <label for="registerEmail">Email</label>
+        </div>
+        <div class="input-field">
+          <input type="password" id="registerPassword" required>
+          <label for="registerPassword">Password</label>
+        </div>
+        <div class="input-field">
+          <input type="password" id="confirmPassword" required>
+          <label for="confirmPassword">Confirm Password</label>
+        </div>
+        <button type="submit" class="btn waves-effect waves-light">Register</button>
+        <button type="button" class="btn-flat" id="showLogin">Login</button>
+      </form>
+    </div>
+  </div>
 
   <!-- Main Content -->
   <main class="container section">
@@ -64,15 +104,15 @@
     </div>
   </main>
 
-  
   <footer class="page-footer black">
     <div class="container center-align">
       <p>© 2025 MystiKraft</p>
+      <p>Contact: <a href="mailto:support@mystikraft.com" class="orange-link">support@mystikraft.com</a></p>
     </div>
   </footer>
 
-  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="js/auth.js"></script>
   <script type="module" src="js/cart.js"></script>
   <script src="js/cart-count.js"></script>
 </body>

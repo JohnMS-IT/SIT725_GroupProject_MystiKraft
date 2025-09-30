@@ -49,6 +49,7 @@ app.use('/api/auth', require('../routes/auth'));
 app.use('/api/products', require('../controllers/products'));
 app.use('/api/cart', require('../controllers/cartController'));
 app.use('/api/user', require('../routes/user')); 
+app.use('/api/orders', require('../routes/orders')); 
 
 // Serve index
 app.get('/', (req, res) => {

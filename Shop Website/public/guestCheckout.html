@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Checkout - MystiKraft</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Guest Checkout - MystiKraft</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link rel="stylesheet" href="css/style.css">
   <style>
-    .user-welcome {
-      background-color: #e8f5e9;
-      border-left: 4px solid #4caf50;
+    .guest-welcome {
+      background-color: #fff8e1;
+      border-left: 4px solid #ffb300;
       padding: 15px;
       margin-bottom: 20px;
     }
@@ -18,21 +18,9 @@
       border-bottom: 1px solid #e0e0e0;
       padding: 10px 0;
     }
-    .order-item:last-child {
-      border-bottom: none;
-    }
-    .order-summary-card {
-      position: sticky;
-      top: 20px;
-    }
-    .section-header {
-      margin-bottom: 20px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid #e0e0e0;
-    }
-    .auto-filled {
-      background-color: #f5f5f5;
-    }
+    .order-item:last-child { border-bottom: none; }
+    .order-summary-card { position: sticky; top: 20px; }
+    .section-header { margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #e0e0e0; }
   </style>
 </head>
 <body>
@@ -53,83 +41,34 @@
         <li><a href="about.html">About</a></li>
         <li><a href="contact.html">Contact</a></li>
         <li><a href="search.html">Search</a></li>
-        <li class="active">
+        <li>
           <a href="cart.html">
             My Cart <span id="cart-count" class="new badge black">0</span>
           </a>
-        </li>
-        <li id="authLinks"><a href="#loginModal" class="modal-trigger">Login</a></li>
-        <li id="userMenu" class="hide">
-          <a class="dropdown-trigger" href="#!" data-target="dropdown1"><span id="userEmail">User</span><i
-              class="material-icons right">arrow_drop_down</i></a>
         </li>
       </ul>
     </div>
   </nav>
 
-  <!-- User Dropdown -->
-  <ul id="dropdown1" class="dropdown-content">
-    <li><a href="profile.html">Profile</a></li>
-    <li><a href="#" id="logoutBtn">Logout</a></li>
-  </ul>
-
-  <!-- Login/Register Modal -->
-  <div id="loginModal" class="modal">
-    <div class="modal-content">
-      <h4>Login</h4>
-      <form id="loginForm">
-        <div class="input-field">
-          <input type="email" id="email" required>
-          <label for="email">Email</label>
-        </div>
-        <div class="input-field">
-          <input type="password" id="password" required>
-          <label for="password">Password</label>
-        </div>
-        <button type="submit" class="btn waves-effect waves-light">Login</button>
-        <button type="button" class="btn-flat" id="showRegister">Register</button>
-      </form>
-
-      <form id="registerForm" class="hide">
-        <div class="input-field">
-          <input type="email" id="registerEmail" required>
-          <label for="registerEmail">Email</label>
-        </div>
-        <div class="input-field">
-          <input type="password" id="registerPassword" required>
-          <label for="registerPassword">Password</label>
-        </div>
-        <div class="input-field">
-          <input type="password" id="confirmPassword" required>
-          <label for="confirmPassword">Confirm Password</label>
-        </div>
-        <button type="submit" class="btn waves-effect waves-light">Register</button>
-        <button type="button" class="btn-flat" id="showLogin">Login</button>
-      </form>
-    </div>
-  </div>
-
   <main class="container section">
-    <h4 class="center-align">Checkout</h4>
-    
-    <div class="user-welcome">
-      <div class="row valign-wrapper">
-        <div class="col s1">
-          <i class="material-icons">check_circle</i>
-        </div>
+    <h4 class="center-align">Guest Checkout</h4>
+
+    <div class="guest-welcome">
+      <div class="row valign-wrapper" style="margin-bottom:0;">
+        <div class="col s1"><i class="material-icons">person_outline</i></div>
         <div class="col s11">
-          <span>Welcome back! Your saved information has been automatically filled. You can review and edit if needed.</span>
+          <span>You are checking out as a guest. Please fill in your details below to complete the order.</span>
         </div>
       </div>
     </div>
-    
+
     <div class="row">
       <!-- Customer Information -->
       <div class="col s12 m8">
         <div class="card">
           <div class="card-content">
             <span class="card-title">Customer Information</span>
-            <form id="checkoutForm">
+            <form id="checkoutForm" novalidate>
               <div class="row">
                 <div class="input-field col s12 m6">
                   <input id="firstName" type="text" class="validate" required>
@@ -140,6 +79,7 @@
                   <label for="lastName">Last Name *</label>
                 </div>
               </div>
+
               <div class="row">
                 <div class="input-field col s12 m6">
                   <input id="checkoutEmail" type="email" class="validate" required>
@@ -150,15 +90,16 @@
                   <label for="phone">Phone</label>
                 </div>
               </div>
-              
+
               <div class="section-header">
                 <h6>Shipping Address</h6>
               </div>
-              
+
               <div class="input-field">
                 <input id="street" type="text" class="validate" required>
                 <label for="street">Street Address *</label>
               </div>
+
               <div class="row">
                 <div class="input-field col s12 m4">
                   <input id="city" type="text" class="validate" required>
@@ -173,6 +114,7 @@
                   <label for="zipCode">ZIP Code *</label>
                 </div>
               </div>
+
               <div class="row">
                 <div class="input-field col s12">
                   <input id="country" type="text" class="validate" value="Australia" required>
@@ -180,11 +122,10 @@
                 </div>
               </div>
 
-              <!-- 添加支付方法部分 -->
               <div class="section-header">
                 <h6>Payment Method</h6>
               </div>
-              
+
               <div class="row">
                 <div class="input-field col s12">
                   <select id="paymentMethod" name="paymentMethod" required>
@@ -195,8 +136,7 @@
                   <label>Preferred Payment Method *</label>
                 </div>
               </div>
-              
-              <!-- Credit Card Information (shown only when credit card is selected) -->
+
               <div id="creditCardSection" class="hide">
                 <div class="row">
                   <div class="input-field col s12">
@@ -215,28 +155,24 @@
                   </div>
                 </div>
               </div>
+
             </form>
           </div>
         </div>
       </div>
-      
+
       <!-- Order Summary -->
       <div class="col s12 m4">
         <div class="card order-summary-card">
           <div class="card-content">
             <span class="card-title">Order Summary</span>
             <div id="order-items">
-              <!-- Dynamic cart items will be loaded here -->
               <div class="center-align">
                 <div class="preloader-wrapper small active">
                   <div class="spinner-layer spinner-green-only">
-                    <div class="circle-clipper left">
-                      <div class="circle"></div>
-                    </div><div class="gap-patch">
-                      <div class="circle"></div>
-                    </div><div class="circle-clipper right">
-                      <div class="circle"></div>
-                    </div>
+                    <div class="circle-clipper left"><div class="circle"></div></div>
+                    <div class="gap-patch"><div class="circle"></div></div>
+                    <div class="circle-clipper right"><div class="circle"></div></div>
                   </div>
                 </div>
                 <p>Loading cart items...</p>
@@ -255,6 +191,7 @@
           </div>
         </div>
       </div>
+
     </div>
   </main>
 
@@ -265,9 +202,11 @@
     </div>
   </footer>
 
+  <!-- Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <!-- keep auth.js / cart-count.js if your site uses them globally -->
   <script src="js/auth.js"></script>
   <script src="js/cart-count.js"></script>
-  <script src="js/checkout.js"></script>
+  <script src="js/guestcheckout.js"></script>
 </body>
 </html>

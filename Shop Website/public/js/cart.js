@@ -1,3 +1,4 @@
+// cart.js - My Bag page: fetch cart from backend, update qty, clear cart
 document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('cart-container');
   const summary = document.getElementById('cart-summary');
@@ -6,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let cartData = [];
 
+  // Render cart items
   const renderCart = () => {
     container.innerHTML = '';
     summary.innerHTML = '';
@@ -42,6 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
     bindQtyInputs();
   };
 
+  // Bind quantity input events
   const bindQtyInputs = () => {
     document.querySelectorAll('.qty-input').forEach(input => {
       input.onchange = async (e) => {
@@ -74,6 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
+  // Load cart data from backend
   const loadCart = async () => {
     try {
       const res = await fetch('/api/cart');
@@ -85,6 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
+  // Clear cart
   btnClear.addEventListener('click', async () => {
     try {
       await fetch('/api/cart', { method: 'DELETE' });
@@ -98,12 +103,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  btnCheckout.addEventListener('click', () => {
+  // Checkout - Updated logic to handle both logged-in and guest users
+  btnCheckout.addEventListener('click', async () => {
     if (!cartData.length) {
       CartUtils.notifyCartChange('Your bag is empty', false);
       return;
     }
-    window.location.href = 'checkout.html';
+
+    try {
+      // Check if user is authenticated
+      const authResponse = await fetch('/api/auth/user');
+      
+      if (authResponse.ok) {
+        // User is logged in - redirect to checkout.html
+        window.location.href = 'checkout.html';
+      } else {
+        // User is not logged in - redirect to guest-checkout.html
+        window.location.href = 'guestCheckout.html';
+      }
+    } catch (err) {
+      console.error('Auth check failed:', err);
+      // If auth check fails, default to guest checkout
+      window.location.href = 'guestCheckout.html';
+    }
   });
 
   loadCart();

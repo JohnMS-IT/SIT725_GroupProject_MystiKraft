@@ -1,24 +1,29 @@
-require('dotenv').config();
+const express = require('express');
 const mongoose = require('mongoose');
-const app = require('./app');
+const dotenv = require('dotenv');
+const path = require('path');
 
-console.log('JWT_SECRET:', process.env.JWT_SECRET);
-console.log('MONGO_URI:', process.env.MONGO_URI);
-console.log('PORT:', process.env.PORT);
+dotenv.config();
 
-const mongoURI = process.env.MONGO_URI;
+const app = express();
 
-mongoose.connect(mongoURI, {
-})
+app.use(express.json());
+app.use(express.static(path.join(__dirname, '../public')));
+app.use('/api/auth', require('../routes/auth'));
+app.use('/api/products', require('../routes/products'));
+
+const PORT = process.env.PORT || 3000;
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/mystikraft';
+
+mongoose.connect(MONGO_URI)
   .then(() => {
     console.log('MongoDB connected...');
-    const port = process.env.PORT || 3000;
-    app.listen(port, () => {
-      console.log(`Web server running at: http://localhost:${port}`);
+    app.listen(PORT, () => {
+      console.log(`Web server running at: http://localhost:${PORT}`);
       console.log('Type Ctrl+C to shut down the web server');
     });
   })
   .catch(err => {
-    console.error('MongoDB connection error:', err.message);
+    console.error('MongoDB connection error:', err);
     process.exit(1);
   });

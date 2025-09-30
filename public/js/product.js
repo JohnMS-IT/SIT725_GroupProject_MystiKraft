@@ -67,13 +67,13 @@ async function init() {
     document.getElementById('btn-checkout').addEventListener('click', () => {
       const cart = getCart();
       if (!cart.length) {
-        if (window.CartUtils) {
+        if (window.CartUtils) {// Notify if cart is empty
           window.CartUtils.notifyCartChange(" Your bag is empty", false);
         }
         return;
-      }
+      }// Calculate total items in cart
       const totalItems = cart.reduce((s,i)=>s+i.qty,0);
-      if (window.CartUtils) {
+      if (window.CartUtils) {// Notify with total items in bag
         window.CartUtils.notifyCartChange(`Checkout placeholder. You have ${totalItems} items in your bag.`);
       }
     });

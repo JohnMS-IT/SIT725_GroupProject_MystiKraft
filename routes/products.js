@@ -5,14 +5,13 @@ const authMiddleware = require('../middleware/authMiddleware');
 const multer = require('multer');
 const path = require('path');
 
-// Debug logs
-//console.log('Loading /routes/products.js');
-//console.log('Product controller loaded:', require.resolve('../controllers/productController'));
-//console.log('Auth middleware loaded:', require.resolve('../middleware/authMiddleware'));
+console.log('Loading /routes/products.js');
+console.log('Product controller loaded:', require.resolve('../controllers/productController'));
+console.log('Auth middleware loaded:', require.resolve('../middleware/authMiddleware'));
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    console.log('Multer destination:', req.body.category);
+    console.log('Multer destination:', req.body);
     const category = req.body.category;
     const validCategories = ['shoes', 'tops', 'bottoms', 'accessories'];
     if (!validCategories.includes(category)) {
@@ -39,11 +38,20 @@ const upload = multer({
       cb(new Error('Only images are allowed'), false);
     }
   }
-}).single('image');
+});
+
+router.get('/', (req, res, next) => {
+  console.log('GET /api/products route reached');
+  next();
+}, productController.getProducts);
+
+router.get('/my-products', authMiddleware, productController.getMyProducts);
 
 router.post('/', (req, res, next) => {
   console.log('POST /api/products route reached');
-  upload(req, res, (err) => {
+  console.log('POST headers:', req.headers);
+  console.log('POST body:', req.body);
+  upload.single('image')(req, res, (err) => {
     if (err) {
       console.log('Multer error:', err.message);
       return res.status(400).json({ message: err.message });
@@ -51,9 +59,18 @@ router.post('/', (req, res, next) => {
     next();
   });
 }, authMiddleware, productController.addProduct);
-router.get('/', (req, res, next) => {
-  console.log('GET /api/products route reached');
-  next();
-}, productController.getProducts);
+
+router.put('/:id', (req, res, next) => {
+  console.log('PUT /api/products/:id route reached', req.params.id);
+  upload.single('image')(req, res, (err) => {
+    if (err) {
+      console.log('Multer error:', err.message);
+      return res.status(400).json({ message: err.message });
+    }
+    next();
+  });
+}, authMiddleware, productController.updateProduct);
+
+router.delete('/:id', authMiddleware, productController.deleteProduct);
 
 module.exports = router;

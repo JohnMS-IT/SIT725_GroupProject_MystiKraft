@@ -7,11 +7,12 @@ document.addEventListener('DOMContentLoaded', () => {
     constrainWidth: false, // Allow dropdown to be wider than trigger
     closeOnClick: true // Close dropdown when an item is clicked
   });
-
+  // Elements
   const authNav = document.getElementById('auth-nav');
   const loginLink = document.getElementById('login-link');
   const userDropdownTrigger = document.getElementById('user-dropdown-trigger');
   const addProductsLink = document.getElementById('add-products-link');
+  const modifyProductsLink = document.getElementById('modify-products-link');
   const logoutBtn = document.getElementById('logout-btn');
 
   if (!authNav) {
@@ -45,11 +46,13 @@ document.addEventListener('DOMContentLoaded', () => {
           userDropdownTrigger.classList.remove('hide');
           userDropdownTrigger.textContent = data.email; // Show email in dropdown trigger
         }
-        // Show "Add Products" only for sellers
-        if (data.role === 'seller' && addProductsLink) {
-          addProductsLink.classList.remove('hide');
-        } else if (addProductsLink) {
-          addProductsLink.classList.add('hide');
+        // Show "Add Products" and "Modify Products" only for sellers
+        if (data.role === 'seller') {
+          if (addProductsLink) addProductsLink.classList.remove('hide');
+          if (modifyProductsLink) modifyProductsLink.classList.remove('hide');
+        } else {
+          if (addProductsLink) addProductsLink.classList.add('hide');
+          if (modifyProductsLink) modifyProductsLink.classList.add('hide');
         }
       } else {
         console.log('Invalid token, clearing localStorage');

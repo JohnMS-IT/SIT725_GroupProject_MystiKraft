@@ -1,5 +1,6 @@
 const orderService = require('../services/orderService');
 const cartService = require('../services/cartService');
+const { sendOrderConfirmationEmail } = require('../utils/orderEmail');
 
 class OrderController {
   // Create order
@@ -17,8 +18,27 @@ class OrderController {
       // Create order
       const order = await orderService.createOrder(sessionId, customerInfo, cart.items);
       
-      // Clear cart after successful order
+      // Populate productId to ensure full info for email
+      await order.populate('items.productId').execPopulate?.(); // mongoose 6+ may not need execPopulate
+      
+      // Clear cart
       await cartService.clearCart(sessionId);
+
+      // Send confirmation email safely
+      try {
+        const itemsForEmail = order.items.map(i => ({
+          name: i.name || i.productId?.name || 'Unnamed Product',
+          price: i.price || 0,
+          quantity: i.quantity || 1
+        }));
+        const safeOrder = {
+          ...order.toObject(),
+          items: itemsForEmail
+        };
+        await sendOrderConfirmationEmail(order.customerInfo.email, safeOrder);
+      } catch (emailErr) {
+        console.error('Failed to send confirmation email:', emailErr);
+      }
       
       res.json(order);
     } catch (error) {
@@ -44,7 +64,3 @@ class OrderController {
 }
 
 module.exports = new OrderController();
-
-
-
-

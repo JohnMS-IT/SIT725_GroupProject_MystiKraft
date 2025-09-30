@@ -36,9 +36,57 @@
             My Cart <span id="cart-count" class="new badge black">0</span>
           </a>
         </li>
+        <!-- 添加登录/用户菜单 -->
+        <li id="authLinks"><a href="#loginModal" class="modal-trigger">Login</a></li>
+        <li id="userMenu" class="hide">
+          <a class="dropdown-trigger" href="#!" data-target="dropdown1"><span id="userEmail">User</span><i
+              class="material-icons right">arrow_drop_down</i></a>
+        </li>
       </ul>
     </div>
   </nav>
+
+  <!-- User Dropdown -->
+  <ul id="dropdown1" class="dropdown-content">
+    <li><a href="profile.html">Profile</a></li>
+    <li><a href="#" id="logoutBtn">Logout</a></li>
+  </ul>
+
+  <!-- Login/Register Modal -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <h4>Login</h4>
+      <form id="loginForm">
+        <div class="input-field">
+          <input type="email" id="email" required>
+          <label for="email">Email</label>
+        </div>
+        <div class="input-field">
+          <input type="password" id="password" required>
+          <label for="password">Password</label>
+        </div>
+        <button type="submit" class="btn waves-effect waves-light">Login</button>
+        <button type="button" class="btn-flat" id="showRegister">Register</button>
+      </form>
+
+      <form id="registerForm" class="hide">
+        <div class="input-field">
+          <input type="email" id="registerEmail" required>
+          <label for="registerEmail">Email</label>
+        </div>
+        <div class="input-field">
+          <input type="password" id="registerPassword" required>
+          <label for="registerPassword">Password</label>
+        </div>
+        <div class="input-field">
+          <input type="password" id="confirmPassword" required>
+          <label for="confirmPassword">Confirm Password</label>
+        </div>
+        <button type="submit" class="btn waves-effect waves-light">Register</button>
+        <button type="button" class="btn-flat" id="showLogin">Login</button>
+      </form>
+    </div>
+  </div>
 
   <main class="container section">
     <h5 class="center-align">Shop by Category</h5>
@@ -85,6 +133,7 @@
   </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="js/auth.js"></script>
   <script src="js/cart-count.js"></script>
   <script src="js/shop.js"></script>
 </body>

@@ -4,166 +4,208 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contact Us - MystiKraft</title>
-
-  
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <header class="center-align section">
+    <h1>Contact MystiKraft</h1>
+  </header>
 
+  <!-- Navbar -->
+  <nav class="white">
+    <div class="nav-wrapper container">
+      <a href="index.html" class="brand-logo">
+        <img src="images/Logo/Logo.jpg" alt="MystiKraft Logo" style="height: 40px; vertical-align: middle;">
+        MystiKraft
+      </a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="shop.html">Shop</a></li>
+        <li><a href="about.html">About</a></li>
+        <li class="active"><a href="contact.html">Contact</a></li>
+        <li><a href="search.html">Search</a></li>
+        <li>
+          <a href="cart.html">
+            My Cart <span id="cart-count" class="new badge black">0</span>
+          </a>
+        </li>
+        <!-- 添加登录/用户菜单 -->
+        <li id="authLinks"><a href="#loginModal" class="modal-trigger">Login</a></li>
+        <li id="userMenu" class="hide">
+          <a class="dropdown-trigger" href="#!" data-target="dropdown1"><span id="userEmail">User</span><i
+              class="material-icons right">arrow_drop_down</i></a>
+        </li>
+      </ul>
+    </div>
+  </nav>
 
-<header class="center-align section">
-  <h1>Contact MystiKraft</h1>
-</header>
+  <!-- User Dropdown -->
+  <ul id="dropdown1" class="dropdown-content">
+    <li><a href="profile.html">Profile</a></li>
+    <li><a href="#" id="logoutBtn">Logout</a></li>
+  </ul>
 
-<!-- Navbar -->
-<nav class="white">
-  <div class="nav-wrapper container">
-    <a href="index.html" class="brand-logo">
-      <img src="images/Logo/Logo.jpg" alt="MystiKraft Logo" style="height: 40px; vertical-align: middle;">
-      MystiKraft
-    </a>
-    <ul id="nav-mobile" class="right hide-on-med-and-down">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="shop.html">Shop</a></li>
-      <li><a href="about.html">About</a></li>
-      <li class="active"><a href="contact.html">Contact</a></li>
-      <li><a href="search.html">Search</a></li>
-      <li>
-        <a href="cart.html">
-          My Cart <span id="cart-count" class="new badge black">0</span>
-        </a>
-      </li>
-    </ul>
-  </div>
-</nav>
-
-<!-- Intro -->
-<div class="container section">
-  <h4 class="center-align">Get in Touch</h4>
-  <p class="center-align">Questions or feedback? Fill in the form below and we'll get back to you soon.</p>
-</div>
-
-<!-- Contact form -->
-<div class="container">
-  <div class="card z-depth-2">
-    <div class="card-content">
-      <form action="/contact" method="POST" id="contactForm">
-        <div class="row">
-          <!-- Full Name -->
-          <div class="input-field col s12 m6">
-            <input id="name" name="name" type="text" required>
-            <label for="name">Full Name</label>
-            <span class="helper-text" data-error="Please enter your name."></span>
-          </div>
-          <!-- Email -->
-          <div class="input-field col s12 m6">
-            <input id="email" name="email" type="email" required>
-            <label for="email">Email Address</label>
-            <span class="helper-text" data-error="Please enter a valid email."></span>
-          </div>
-        </div>
-
-        <div class="row">
-          <!-- Phone -->
-          <div class="input-field col s12 m6">
-            <input id="phone" name="phone" type="tel" maxlength="10" required>
-            <label for="phone">Phone Number</label>
-            <span class="helper-text" data-error="Enter a 10-digit number."></span>
-          </div>
-          <!-- Topic -->
-          <div class="input-field col s12 m6">
-            <select id="topic" name="topic" required>
-              <option value="" disabled selected>Choose...</option>
-              <option>Order Inquiry</option>
-              <option>Returns</option>
-              <option>General Question</option>
-            </select>
-            <label for="topic">Topic</label>
-          </div>
-        </div>
-
-        <!-- Message -->
+  <!-- Login/Register Modal -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <h4>Login</h4>
+      <form id="loginForm">
         <div class="input-field">
-          <textarea id="message" name="message" class="materialize-textarea" required></textarea>
-          <label for="message">Your Message</label>
-          <span class="helper-text" data-error="Please enter your message."></span>
+          <input type="email" id="email" required>
+          <label for="email">Email</label>
         </div>
+        <div class="input-field">
+          <input type="password" id="password" required>
+          <label for="password">Password</label>
+        </div>
+        <button type="submit" class="btn waves-effect waves-light">Login</button>
+        <button type="button" class="btn-flat" id="showRegister">Register</button>
+      </form>
 
-        <!-- Buttons -->
-        <div class="right-align">
-          <button type="submit" class="btn black waves-effect waves-light">Send Message</button>
-          <button type="reset" class="btn grey lighten-1 black-text waves-effect">Reset</button>
+      <form id="registerForm" class="hide">
+        <div class="input-field">
+          <input type="email" id="registerEmail" required>
+          <label for="registerEmail">Email</label>
         </div>
+        <div class="input-field">
+          <input type="password" id="registerPassword" required>
+          <label for="registerPassword">Password</label>
+        </div>
+        <div class="input-field">
+          <input type="password" id="confirmPassword" required>
+          <label for="confirmPassword">Confirm Password</label>
+        </div>
+        <button type="submit" class="btn waves-effect waves-light">Register</button>
+        <button type="button" class="btn-flat" id="showLogin">Login</button>
       </form>
     </div>
   </div>
-</div>
 
-
-<footer class="page-footer black">
-  <div class="container center-align">
-    <p>© 2025 MystiKraft</p>
-    <p>Last Updated: May 6, 2025</p>
-    <p>Contact: <a href="mailto:support@mystikraft.com" class="orange-link">support@mystikraft.com</a></p>
+  <!-- Intro -->
+  <div class="container section">
+    <h4 class="center-align">Get in Touch</h4>
+    <p class="center-align">Questions or feedback? Fill in the form below and we'll get back to you soon.</p>
   </div>
-</footer>
 
+  <!-- Contact form -->
+  <div class="container">
+    <div class="card z-depth-2">
+      <div class="card-content">
+        <form action="/contact" method="POST" id="contactForm">
+          <div class="row">
+            <!-- Full Name -->
+            <div class="input-field col s12 m6">
+              <input id="name" name="name" type="text" required>
+              <label for="name">Full Name</label>
+              <span class="helper-text" data-error="Please enter your name."></span>
+            </div>
+            <!-- Email -->
+            <div class="input-field col s12 m6">
+              <input id="email" name="email" type="email" required>
+              <label for="email">Email Address</label>
+              <span class="helper-text" data-error="Please enter a valid email."></span>
+            </div>
+          </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-<script>
-  // Initialize Materialize select dropdowns
-  document.addEventListener('DOMContentLoaded', function() {
-    const elems = document.querySelectorAll('select');
-    M.FormSelect.init(elems);
-  });
+          <div class="row">
+            <!-- Phone -->
+            <div class="input-field col s12 m6">
+              <input id="phone" name="phone" type="tel" maxlength="10" required>
+              <label for="phone">Phone Number</label>
+              <span class="helper-text" data-error="Enter a 10-digit number."></span>
+            </div>
+            <!-- Topic -->
+            <div class="input-field col s12 m6">
+              <select id="topic" name="topic" required>
+                <option value="" disabled selected>Choose...</option>
+                <option>Order Inquiry</option>
+                <option>Returns</option>
+                <option>General Question</option>
+              </select>
+              <label for="topic">Topic</label>
+            </div>
+          </div>
 
-  // Form validation + submission
-  document.getElementById("contactForm").addEventListener("submit", function(event) {
-    event.preventDefault();
-    let isValid = true;
+          <!-- Message -->
+          <div class="input-field">
+            <textarea id="message" name="message" class="materialize-textarea" required></textarea>
+            <label for="message">Your Message</label>
+            <span class="helper-text" data-error="Please enter your message."></span>
+          </div>
 
-    const name = document.getElementById("name");
-    const email = document.getElementById("email");
-    const phone = document.getElementById("phone");
-    const topic = document.getElementById("topic");
-    const message = document.getElementById("message");
+          <!-- Buttons -->
+          <div class="right-align">
+            <button type="submit" class="btn black waves-effect waves-light">Send Message</button>
+            <button type="reset" class="btn grey lighten-1 black-text waves-effect">Reset</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
-    // Validation logic
-    if (name.value.trim() === "") { isValid = false; }
-    if (!email.value.includes("@") || !email.value.includes(".")) { isValid = false; }
-    if (phone.value.length !== 10 || isNaN(phone.value)) { isValid = false; }
-    if (topic.value === "") { isValid = false; }
-    if (message.value.trim() === "") { isValid = false; }
+  <footer class="page-footer black">
+    <div class="container center-align">
+      <p>© 2025 MystiKraft</p>
+      <p>Last Updated: May 6, 2025</p>
+      <p>Contact: <a href="mailto:support@mystikraft.com" class="orange-link">support@mystikraft.com</a></p>
+    </div>
+  </footer>
 
-    // Submit if valid
-    if (isValid) {
-      fetch('/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: name.value.trim(),
-          email: email.value.trim(),
-          phone: phone.value.trim(),
-          topic: topic.value,
-          message: message.value.trim()
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    // Initialize Materialize select dropdowns
+    document.addEventListener('DOMContentLoaded', function() {
+      const elems = document.querySelectorAll('select');
+      M.FormSelect.init(elems);
+    });
+
+    // Form validation + submission
+    document.getElementById("contactForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      let isValid = true;
+
+      const name = document.getElementById("name");
+      const email = document.getElementById("email");
+      const phone = document.getElementById("phone");
+      const topic = document.getElementById("topic");
+      const message = document.getElementById("message");
+
+      // Validation logic
+      if (name.value.trim() === "") { isValid = false; }
+      if (!email.value.includes("@") || !email.value.includes(".")) { isValid = false; }
+      if (phone.value.length !== 10 || isNaN(phone.value)) { isValid = false; }
+      if (topic.value === "") { isValid = false; }
+      if (message.value.trim() === "") { isValid = false; }
+
+      // Submit if valid
+      if (isValid) {
+        fetch('/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: name.value.trim(),
+            email: email.value.trim(),
+            phone: phone.value.trim(),
+            topic: topic.value,
+            message: message.value.trim()
+          })
         })
-      })
-      .then(res => res.text())
-      .then(data => {
-        M.toast({html: data, classes: 'green'});
-        document.getElementById("contactForm").reset();
-      })
-      .catch(error => {
-        M.toast({html: "Submission failed: " + error.message, classes: 'red'});
-      });
-    } else {
-      M.toast({html: "Please fill all fields correctly", classes: 'red'});
-    }
-  });
-</script>
-<script src="js/cart-count.js"></script>
-
+        .then(res => res.text())
+        .then(data => {
+          M.toast({html: data, classes: 'green'});
+          document.getElementById("contactForm").reset();
+        })
+        .catch(error => {
+          M.toast({html: "Submission failed: " + error.message, classes: 'red'});
+        });
+      } else {
+        M.toast({html: "Please fill all fields correctly", classes: 'red'});
+      }
+    });
+  </script>
+  <script src="js/cart-count.js"></script>
 </body>
 </html>

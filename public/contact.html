@@ -31,7 +31,14 @@
       <li class="active"><a href="contact.html">Contact</a></li>
       <li><a href="search.html">Search</a></li>
       <li><a href="cart.html">My Cart<span id="cart-count" class="new badge black">0</span></a>
-      <li id="auth-nav"><a href="login.html">Account</a></li>
+      <li id="auth-nav">
+          <a href="login.html" id="login-link">Account</a>
+          <a href="#" data-target="user-dropdown" class="dropdown-trigger hide" id="user-dropdown-trigger">User</a>
+          <ul id="user-dropdown" class="dropdown-content">
+            <li id="add-products-link" class="hide"><a href="seller.html">Add Products</a></li>
+            <li><a href="#" id="logout-btn">Logout</a></li>
+          </ul>
+        </li>
     </ul>
   </div>
 </nav>

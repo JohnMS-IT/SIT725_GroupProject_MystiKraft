@@ -1,51 +1,83 @@
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
+  // Initialize Materialize dropdowns with hover
+  const dropdowns = document.querySelectorAll('.dropdown-trigger');
+  M.Dropdown.init(dropdowns, {
+    hover: true, // Open dropdown on hover
+    coverTrigger: false, // Dropdown appears below trigger
+    constrainWidth: false, // Allow dropdown to be wider than trigger
+    closeOnClick: true // Close dropdown when an item is clicked
+  });
+
   const authNav = document.getElementById('auth-nav');
-  const token = localStorage.getItem('token');
+  const loginLink = document.getElementById('login-link');
+  const userDropdownTrigger = document.getElementById('user-dropdown-trigger');
+  const addProductsLink = document.getElementById('add-products-link');
+  const logoutBtn = document.getElementById('logout-btn');
 
-  if (!authNav) return;
+  if (!authNav) {
+    console.error('Auth navigation element not found');
+    return;
+  }
 
-  if (token) {
+  // Check authentication status
+  const checkAuth = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.log('No token found, showing Account link');
+      if (loginLink) loginLink.classList.remove('hide');
+      if (userDropdownTrigger) userDropdownTrigger.classList.add('hide');
+      return;
+    }
+
     try {
+      console.log('Fetching user data with token:', token.substring(0, 10) + '...');
       const response = await fetch('/api/auth/me', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
+      console.log('Auth response status:', response.status);
       const data = await response.json();
+      console.log('Auth response data:', data);
+
       if (response.ok) {
-        // Display user email with dropdown for logout
-        authNav.innerHTML = `
-          <li>
-            <a href="#" class="dropdown-trigger" data-target="auth-dropdown">${data.email}</a>
-            <ul id="auth-dropdown" class="dropdown-content">
-              <li><a href="/seller.html">Add Product</a></li>
-              <li><a href="#" id="logout">Logout</a></li>
-            </ul>
-          </li>
-        `;
-        // Initialize Materialize dropdown with hover
-        const dropdowns = document.querySelectorAll('.dropdown-trigger');
-        M.Dropdown.init(dropdowns, {
-          hover: true,
-          coverTrigger: false,
-          constrainWidth: false
-        });
-        // Handle logout
-        document.getElementById('logout').addEventListener('click', (e) => {
-          e.preventDefault();
-          localStorage.removeItem('token');
-          M.toast({ html: 'Logged out successfully!', classes: 'green' });
-          window.location.href = '/login.html';
-        });
+        // User is logged in
+        if (loginLink) loginLink.classList.add('hide');
+        if (userDropdownTrigger) {
+          userDropdownTrigger.classList.remove('hide');
+          userDropdownTrigger.textContent = data.email; // Show email in dropdown trigger
+        }
+        // Show "Add Products" only for sellers
+        if (data.role === 'seller' && addProductsLink) {
+          addProductsLink.classList.remove('hide');
+        } else if (addProductsLink) {
+          addProductsLink.classList.add('hide');
+        }
       } else {
-        // Invalid token, clear it and show login
+        console.log('Invalid token, clearing localStorage');
         localStorage.removeItem('token');
-        authNav.innerHTML = '<a href="/login.html">Account</a>';
+        if (loginLink) loginLink.classList.remove('hide');
+        if (userDropdownTrigger) userDropdownTrigger.classList.add('hide');
       }
     } catch (error) {
-      console.error('Error fetching user profile:', error);
+      console.error('Error checking auth:', error);
       localStorage.removeItem('token');
-      authNav.innerHTML = '<a href="/login.html">Account</a>';
+      if (loginLink) loginLink.classList.remove('hide');
+      if (userDropdownTrigger) userDropdownTrigger.classList.add('hide');
     }
-  } else {
-    authNav.innerHTML = '<a href="/login.html">Account</a>';
+  };
+
+  // Handle logout
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      console.log('Logging out');
+      localStorage.removeItem('token');
+      M.toast({ html: 'Logged out successfully', classes: 'green', displayLength: 4000 });
+      setTimeout(() => {
+        window.location.href = '/index.html';
+      }, 2000);
+    });
   }
+
+  // Run auth check on page load
+  checkAuth();
 });

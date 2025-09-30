@@ -41,6 +41,14 @@
           <input id="password" type="password" class="validate" required minlength="6">
           <label for="password">Password (min 6 characters)</label>
         </div>
+        <div class="input-field col s12">
+          <select id="role" required>
+            <option value="" disabled selected>Choose your role</option>
+            <option value="customer">Customer</option>
+            <option value="seller">Seller</option>
+          </select>
+          <label for="role">Role</label>
+        </div>
       </div>
       <button class="btn waves-effect waves-light" type="submit">Register</button>
       <p>Already have an account? <a href="/login.html">Login</a></p>

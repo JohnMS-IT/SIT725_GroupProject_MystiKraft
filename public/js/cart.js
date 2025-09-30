@@ -79,7 +79,7 @@ function updateQty(slug, qty) {
 // Clear bag button
 btnClear.addEventListener('click', () => {
   if (window.CartUtils) {
-    window.CartUtils.notifyCartChange("👜 Bag cleared", false);
+    window.CartUtils.notifyCartChange("Bag cleared", false);
   }
   setCart([]);
   renderCart();

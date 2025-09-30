@@ -6,9 +6,9 @@ const multer = require('multer');
 const path = require('path');
 
 // Debug logs
-console.log('Loading /routes/products.js');
-console.log('Product controller loaded:', require.resolve('../controllers/productController'));
-console.log('Auth middleware loaded:', require.resolve('../middleware/authMiddleware'));
+//console.log('Loading /routes/products.js');
+//console.log('Product controller loaded:', require.resolve('../controllers/productController'));
+//console.log('Auth middleware loaded:', require.resolve('../middleware/authMiddleware'));
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {

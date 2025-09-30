@@ -1,8 +1,8 @@
 const Product = require('../models/Product');
 const path = require('path');
 
-console.log('Loading /controllers/productController.js');
-console.log('Product model loaded:', require.resolve('../models/Product'));
+//console.log('Loading /controllers/productController.js');
+//console.log('Product model loaded:', require.resolve('../models/Product'));
 
 // Controller to get products by category for filtering purposes
 exports.getProducts = async (req, res) => {

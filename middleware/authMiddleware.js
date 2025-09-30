@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-console.log('Loading /middleware/authMiddleware.js');
+//console.log('Loading /middleware/authMiddleware.js');
 
 module.exports = async (req, res, next) => {
   console.log('authMiddleware: Processing request');

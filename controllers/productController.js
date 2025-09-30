@@ -1,12 +1,35 @@
 const Product = require('../models/Product');
 const path = require('path');
 
+console.log('Loading /controllers/productController.js');
+console.log('Product model loaded:', require.resolve('../models/Product'));
+
 // Controller to get products by category for filtering purposes
 exports.getProducts = async (req, res) => {
   try {
-    const category = req.query.category;
-    const filter = category ? { category } : {};
-    const products = await Product.find(filter);
+    console.log('GET /api/products hit');
+    const { category, price, sort, page = 1 } = req.query;
+    const limit = 6; // Products per page
+    const filter = {};
+
+    if (category && category !== 'all') {
+      filter.category = category;
+    }
+    if (price && price !== 'all') {
+      if (price === '0-50') filter.price = { $gte: 0, $lte: 50 };
+      else if (price === '50-100') filter.price = { $gte: 50, $lte: 100 };
+      else if (price === '100+') filter.price = { $gte: 100 };
+    }
+
+    const sortOptions = {};
+    if (sort === 'newest') sortOptions.createdAt = -1;
+    else if (sort === 'oldest') sortOptions.createdAt = 1;
+
+    const products = await Product.find(filter)
+      .sort(sortOptions)
+      .skip((page - 1) * limit)
+      .limit(limit);
+    console.log('Products found:', products);
     res.json(products);
   } catch (err) {
     console.error('Error fetching products:', err);

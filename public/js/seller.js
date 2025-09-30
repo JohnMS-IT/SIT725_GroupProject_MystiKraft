@@ -24,11 +24,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const image = document.getElementById('image').files[0];
       const description = document.getElementById('description').value;
 
-      if (!image) {
-        M.toast({ html: 'Please select an image', classes: 'red' });
+      if (!name || !slug || !price || !category || !image || !description) {
+        M.toast({ html: 'All fields are required', classes: 'red' });
         return;
       }
-      // Prepare form data
+
       const formData = new FormData();
       formData.append('name', name);
       formData.append('slug', slug);
@@ -37,9 +37,13 @@ document.addEventListener('DOMContentLoaded', () => {
       formData.append('image', image);
       formData.append('description', description);
 
-      try {// Get token from localStorage
+      try {
         const token = localStorage.getItem('token');
         console.log('Sending request to /api/products with token:', token);
+        if (!token) {
+          M.toast({ html: 'No authentication token found', classes: 'red' });
+          return;
+        }
         const response = await fetch('/api/products', {
           method: 'POST',
           headers: {
@@ -53,12 +57,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (response.ok) {
           M.toast({ html: 'Product added successfully!', classes: 'green' });
           addProductForm.reset();
+          M.FormSelect.init(selects); // Reinitialize select after reset
         } else {
           M.toast({ html: data.message || 'Failed to add product', classes: 'red' });
         }
       } catch (error) {
         console.error('Error adding product:', error);
-        M.toast({ html: 'Server error', classes: 'red' });
+        M.toast({ html: `Server error: ${error.message}`, classes: 'red' });
       }
     });
   }

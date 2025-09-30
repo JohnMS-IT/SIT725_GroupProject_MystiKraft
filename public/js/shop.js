@@ -1,65 +1,95 @@
-// Client-side JavaScript for product filtering and sorting on the shop page 
 document.addEventListener('DOMContentLoaded', () => {
-  const grid = document.getElementById('product-grid');
-
+  const productGrid = document.getElementById('product-grid');
   const categoryFilter = document.getElementById('category-filter');
   const priceFilter = document.getElementById('price-filter');
   const sortFilter = document.getElementById('sort-filter');
+  const filterForm = document.getElementById('filter-form');
+  const sentinel = document.getElementById('load-more-sentinel');
 
-  // Fetch products with optional query string
-  const fetchProducts = async (query = '') => {
+  if (!productGrid) {
+    console.error('Product grid not found in shop.html');
+    M.toast({ html: 'Page error: Product grid missing', classes: 'red' });
+    return;
+  }
 
-    // Fetch products from the server
-    const res = await fetch(`/api/products${query}`);
-    const products = await res.json();// Log the fetched products for debugging 
-    console.log('Fetched products:', products);// Display products in the grid
-    renderProducts(products.items);
-  };
+  let page = 1;
+  let isLoading = false;
 
-  // Render products into the grid
-  const renderProducts = (products) => {
-    grid.innerHTML = '';// Clear existing products
-    products.forEach(product => {// Create product card
-      const card = document.createElement('div');// Set card class and inner HTML
-      // Append card to grid
-      card.className = 'col s12 m6 l4';
-      card.innerHTML = `
-        <div class="card">
-          <div class="card-image">
-            <img src="${product.image}" alt="${product.name}">
-          </div>
-          <div class="card-content">
-            <span class="card-title">${product.name}</span>
-            <p>${product.description}</p>
-            <p><strong>$${product.price}</strong></p>
-          </div>
-        </div>
-      `;
-      grid.appendChild(card);// Append card to grid
-    });
-  };
+  const fetchProducts = async (reset = false) => {
+    if (isLoading) return;
+    isLoading = true;
+    if (reset) {
+      page = 1;
+      productGrid.innerHTML = '';
+    }
 
-  // Build query string based on selected filters
-  const buildQuery = () => {
     const category = categoryFilter.value;
     const price = priceFilter.value;
     const sort = sortFilter.value;
+    let query = `page=${page}`;
+    if (category !== 'all') query += `&category=${category}`;
+    if (price !== 'all') query += `&price=${price}`;
+    if (sort) query += `&sort=${sort}`;
 
-    const query = [];
-    // Only add filters if they are not 'all'
-    if (category !== 'all') query.push(`category=${category}`);
-    if (price !== 'all') query.push(`price=${price}`);
-    if (sort) query.push(`sort=${sort}`);
-    
-    return query.length ? `?${query.join('&')}` : '';
+    try {
+      console.log('Fetching products with query:', query);
+      const response = await fetch(`/api/products?${query}`);
+      console.log('Fetch /api/products status:', response.status);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const products = await response.json();
+      console.log('Products fetched:', products);
+
+      if (products.length === 0 && page === 1) {
+        productGrid.innerHTML = '<p>No products available.</p>';
+        M.toast({ html: 'No products found', classes: 'yellow' });
+      } else {
+        productGrid.innerHTML += products.map(product => `
+          <div class="col s12 m4">
+            <div class="card">
+              <div class="card-image">
+                <img src="${product.image}" alt="${product.name}" onerror="this.src='/images/placeholder.jpg'">
+              </div>
+              <div class="card-content">
+                <span class="card-title">${product.name}</span>
+                <p>${product.description}</p>
+                <p>Price: $${product.price}</p>
+              </div>
+              <div class="card-action">
+                <button class="btn">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+      page++;
+      isLoading = false;
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      M.toast({ html: `Server error: ${error.message}`, classes: 'red' });
+      isLoading = false;
+    }
   };
 
-  // Listen for filter changes
-  document.getElementById('filter-form').addEventListener('change', () => {
-    const query = buildQuery();// Fetch products with new filters
-    fetchProducts(query);
-    console.log('Applied filters:', query);// Debug log
+  // Initial fetch
+  fetchProducts(true);
+
+  // Handle filter changes
+  filterForm.addEventListener('change', () => {
+    fetchProducts(true);
   });
 
-  fetchProducts(); // Load all products initially
+  // Infinite scrolling
+  const observer = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      fetchProducts();
+    }
+  }, { threshold: 0.1 });
+
+  if (sentinel) {
+    observer.observe(sentinel);
+  } else {
+    console.error('Sentinel not found for infinite scrolling');
+  }
 });

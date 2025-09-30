@@ -7,13 +7,12 @@ console.log('MONGO_URI:', process.env.MONGO_URI);
 console.log('PORT:', process.env.PORT);
 
 const mongoURI = process.env.MONGO_URI;
+
 mongoose.connect(mongoURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
 })
   .then(() => {
     console.log('MongoDB connected...');
-    const port = process.env.PORT;
+    const port = process.env.PORT || 3000;
     app.listen(port, () => {
       console.log(`Web server running at: http://localhost:${port}`);
       console.log('Type Ctrl+C to shut down the web server');

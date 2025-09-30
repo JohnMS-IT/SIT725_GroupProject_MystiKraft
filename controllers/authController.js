@@ -1,61 +1,58 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
-// Register a new user
 exports.register = async (req, res) => {
   try {
-    const { email, password } = req.body;
-    if (!email || !password) {
-      return res.status(400).json({ message: 'Email and password are required' });
+    const { email, password, role } = req.body;
+    if (!email || !password || !role) {
+      return res.status(400).json({ message: 'All fields are required' });
     }
-    // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ message: 'Email already in use' });
+      return res.status(400).json({ message: 'User already exists' });
     }
-    // Create new user
-    const user = new User({ email, password });
+    const user = new User({ email, password, role });
     await user.save();
-    // Generate JWT token
-    const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    // Respond with token
-    res.status(201).json({ token, message: 'Registration successful' });
+    res.status(201).json({ message: 'User registered successfully' });
   } catch (error) {
-    console.error(error);
+    console.error('Error registering user:', error);
     res.status(500).json({ message: 'Server error' });
   }
 };
-// Login an existing user
+
 exports.login = async (req, res) => {
-  try {// Login an existing user
+  try {
     const { email, password } = req.body;
-    if (!email || !password) {// Login an existing user
+    console.log('Login attempt:', { email });
+    if (!email || !password) {
       return res.status(400).json({ message: 'Email and password are required' });
     }
-    // Find user by email
     const user = await User.findOne({ email });
     if (!user || !(await user.comparePassword(password))) {
-      return res.status(401).json({ message: 'Invalid email or password' });
+      return res.status(401).json({ message: 'Invalid credentials' });
     }
-    // Generate JWT token
-    const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    // Respond with token
-    res.json({ token, message: 'Login successful' });
+    const token = jwt.sign(
+      { userId: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+    res.json({ token });
   } catch (error) {
-    console.error(error);
+    console.error('Error logging in:', error);
     res.status(500).json({ message: 'Server error' });
   }
 };
 
 exports.getMe = async (req, res) => {
   try {
-    const user = await User.findById(req.user.userId).select('email role');
+    const user = await User.findById(req.user.userId).select('-password');
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-    res.json({ email: user.email, role: user.role });
+    res.json(user);
   } catch (error) {
-    console.error(error);
+    console.error('Error fetching user:', error);
     res.status(500).json({ message: 'Server error' });
   }
 };

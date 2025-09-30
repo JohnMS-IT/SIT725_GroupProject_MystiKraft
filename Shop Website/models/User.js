@@ -14,6 +14,66 @@ const UserSchema = new Schema({
     lowercase: true,
     match: [/\S+@\S+\.\S+/, 'is invalid']
   },
+  // User's first name
+  firstName: {
+    type: String,
+    trim: true
+  },
+  // User's last name
+  lastName: {
+    type: String,
+    trim: true
+  },
+  // User's phone number
+  phone: {
+    type: String,
+    trim: true
+  },
+  // User's shipping address
+  shippingAddress: {
+    street: {
+      type: String,
+      trim: true
+    },
+    city: {
+      type: String,
+      trim: true
+    },
+    state: {
+      type: String,
+      trim: true
+    },
+    zipCode: {
+      type: String,
+      trim: true
+    },
+    country: {
+      type: String,
+      default: 'Australia',
+      trim: true
+    }
+  },
+  // User's preferred payment method
+  paymentMethod: {
+    type: String,
+    enum: ['credit_card', 'cash_on_delivery'],
+    default: 'credit_card'
+  },
+  // User's saved credit card information
+  creditCard: {
+    cardNumber: {
+      type: String,
+      trim: true
+    },
+    expiryDate: {
+      type: String,
+      trim: true
+    },
+    cardHolderName: {
+      type: String,
+      trim: true
+    }
+  },
   // Flag indicating whether the user's email has been verified
   emailVerified: {
     type: Boolean,
@@ -35,6 +95,11 @@ const UserSchema = new Schema({
   // Timestamp of last login
   lastLogin: {
     type: Date
+  },
+  // Timestamp of last profile update
+  updatedAt: {
+    type: Date,
+    default: Date.now
   }
 });
 
@@ -49,5 +114,11 @@ UserSchema.methods.generateVerificationToken = function() {
   this.emailVerificationExpires = Date.now() + 24 * 60 * 60 * 1000;
   return this.emailVerificationToken;
 };
+
+// Update the updatedAt field before saving
+UserSchema.pre('save', function(next) {
+  this.updatedAt = Date.now();
+  next();
+});
 
 module.exports = mongoose.model('User', UserSchema);

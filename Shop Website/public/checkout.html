@@ -2,82 +2,118 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Guest Checkout - MystiKraft</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    .demo-alert {
+      border-left: 4px solid #2196F3;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+    .order-item {
+      border-bottom: 1px solid #e0e0e0;
+      padding: 10px 0;
+    }
+    .order-item:last-child {
+      border-bottom: none;
+    }
+    .order-summary-card {
+      position: sticky;
+      top: 20px;
+    }
+    .section-header {
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+  </style>
 </head>
 <body>
-  <header class="text-center p-4">
+  <header class="center-align section">
     <h1>MystiKraft</h1>
   </header>
 
-  <nav class="navbar navbar-expand-lg">
-    <div class="container">
-      <a class="navbar-brand" href="index.html"><img src="images/Logo/Logo.jpg" alt="MystiKraft Logo" style="height: 40px;"> MystiKraft</a>
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="shop.html">Shop</a></li>
-        <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
-        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-        <li class="nav-item"><a class="nav-link" href="search.html">Search</a></li>
-        <li class="nav-item"><a class="nav-link active" href="checkout.html">🛒 Checkout</a></li>
+  <!-- Navbar -->
+  <nav class="white">
+    <div class="nav-wrapper container">
+      <a href="index.html" class="brand-logo">
+        <img src="images/Logo/Logo.jpg" alt="MystiKraft Logo" style="height: 40px; vertical-align: middle;">
+        MystiKraft
+      </a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="shop.html">Shop</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="search.html">Search</a></li>
+        <li class="active">
+          <a href="cart.html">
+            My Cart <span id="cart-count" class="new badge black">0</span>
+          </a>
+        </li>
       </ul>
     </div>
   </nav>
 
-  <main class="container my-4">
-    <h2 class="text-center mb-4">🛒 U2 Task 4: Guest Checkout (No Account Required)</h2>
+  <main class="container section">
+    <h2 class="center-align">🛒 Guest Checkout</h2>
     
-    <div class="alert alert-info">
+    <div class="demo-alert blue lighten-5">
       <h5>📋 Demo Checkout Process</h5>
       <p>This is a demonstration of the guest checkout functionality. Fill out the form below to simulate placing an order.</p>
     </div>
     
     <div class="row">
-      <div class="col-md-8">
+      <!-- Customer Information -->
+      <div class="col s12 m8">
         <div class="card">
-          <div class="card-header">
-            <h5>👤 Customer Information</h5>
-          </div>
-          <div class="card-body">
+          <div class="card-content">
+            <span class="card-title">👤 Customer Information</span>
             <form id="checkoutForm">
               <div class="row">
-                <div class="col-md-6 mb-3">
-                  <label for="firstName" class="form-label">First Name *</label>
-                  <input type="text" class="form-control" id="firstName" required>
+                <div class="input-field col s12 m6">
+                  <input id="firstName" type="text" class="validate" required>
+                  <label for="firstName">First Name *</label>
                 </div>
-                <div class="col-md-6 mb-3">
-                  <label for="lastName" class="form-label">Last Name *</label>
-                  <input type="text" class="form-control" id="lastName" required>
+                <div class="input-field col s12 m6">
+                  <input id="lastName" type="text" class="validate" required>
+                  <label for="lastName">Last Name *</label>
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-6 mb-3">
-                  <label for="email" class="form-label">Email *</label>
-                  <input type="email" class="form-control" id="email" required>
+                <div class="input-field col s12 m6">
+                  <input id="email" type="email" class="validate" required>
+                  <label for="email">Email *</label>
                 </div>
-                <div class="col-md-6 mb-3">
-                  <label for="phone" class="form-label">Phone</label>
-                  <input type="tel" class="form-control" id="phone">
+                <div class="input-field col s12 m6">
+                  <input id="phone" type="tel">
+                  <label for="phone">Phone</label>
                 </div>
               </div>
-              <h6 class="mt-4">🏠 Shipping Address</h6>
-              <div class="mb-3">
-                <label for="street" class="form-label">Street Address *</label>
-                <input type="text" class="form-control" id="street" required>
+              
+              <div class="section-header">
+                <h6>🏠 Shipping Address</h6>
+              </div>
+              
+              <div class="input-field">
+                <input id="street" type="text" class="validate" required>
+                <label for="street">Street Address *</label>
               </div>
               <div class="row">
-                <div class="col-md-4 mb-3">
-                  <label for="city" class="form-label">City *</label>
-                  <input type="text" class="form-control" id="city" required>
+                <div class="input-field col s12 m4">
+                  <input id="city" type="text" class="validate" required>
+                  <label for="city">City *</label>
                 </div>
-                <div class="col-md-4 mb-3">
-                  <label for="state" class="form-label">State *</label>
-                  <input type="text" class="form-control" id="state" required>
+                <div class="input-field col s12 m4">
+                  <input id="state" type="text" class="validate" required>
+                  <label for="state">State *</label>
                 </div>
-                <div class="col-md-4 mb-3">
-                  <label for="zipCode" class="form-label">ZIP Code *</label>
-                  <input type="text" class="form-control" id="zipCode" required>
+                <div class="input-field col s12 m4">
+                  <input id="zipCode" type="text" class="validate" required>
+                  <label for="zipCode">ZIP Code *</label>
                 </div>
               </div>
             </form>
@@ -85,136 +121,184 @@
         </div>
       </div>
       
-      <div class="col-md-4">
-        <div class="card">
-          <div class="card-header">
-            <h5>📦 Order Summary</h5>
-          </div>
-          <div class="card-body">
-            <div id="cartItems">
-              <div class="d-flex justify-content-between mb-2">
-                <span>Nike Air Max x1</span>
-                <span>$120.00</span>
+      <!-- Order Summary -->
+      <div class="col s12 m4">
+        <div class="card order-summary-card">
+          <div class="card-content">
+            <span class="card-title">📦 Order Summary</span>
+            <div id="order-items">
+              <!-- Dynamic cart items will be loaded here -->
+              <div class="order-item">
+                <div class="row valign-wrapper" style="margin-bottom: 0;">
+                  <div class="col s8">
+                    <span>Nike Air Max x1</span>
+                  </div>
+                  <div class="col s4 right-align">
+                    <span>$120.00</span>
+                  </div>
+                </div>
               </div>
-              <div class="d-flex justify-content-between mb-2">
-                <span>Ultraboost x1</span>
-                <span>$220.00</span>
+              <div class="order-item">
+                <div class="row valign-wrapper" style="margin-bottom: 0;">
+                  <div class="col s8">
+                    <span>Ultraboost x1</span>
+                  </div>
+                  <div class="col s4 right-align">
+                    <span>$220.00</span>
+                  </div>
+                </div>
               </div>
             </div>
-            <hr>
-            <div class="d-flex justify-content-between">
-              <strong>Total:</strong>
-              <strong>$340.00</strong>
+            <div class="divider"></div>
+            <div class="order-total" style="margin-top: 15px;">
+              <h6>Total: <strong id="order-total-amount">$340.00</strong></h6>
             </div>
-            <button class="btn btn-success w-100 mt-3" onclick="processCheckout()">
-              ✅ Complete Guest Checkout
-            </button>
-            <button class="btn btn-secondary w-100 mt-2" onclick="testCartAPI()">
-              🧪 Test Cart API
-            </button>
+            <div class="card-action" style="display: flex; flex-direction: column;">
+              <button id="btn-place-order" class="btn green waves-effect waves-light">
+                ✅ Complete Guest Checkout
+              </button>
+              <button id="btn-test-api" class="btn grey waves-effect waves-light" style="margin-top: 10px;">
+                🧪 Test Cart API
+              </button>
+              <a href="cart.html" class="btn-flat waves-effect center-align" style="margin-top: 10px;">Back to Cart</a>
+            </div>
           </div>
         </div>
       </div>
     </div>
-
   </main>
 
-  <footer class="text-center p-3 mt-5">
-    <p>&copy; 2025 MystiKraft</p>
-    <p>Last Updated: May 5, 2025</p>
-    <p>Contact: <a href="mailto:support@mystikraft.com" class="orange-link">support@mystikraft.com</a></p>
+  <footer class="page-footer black">
+    <div class="container center-align">
+      <p>© 2025 MystiKraft</p>
+      <p>Last Updated: May 5, 2025</p>
+      <p>Contact: <a href="mailto:support@mystikraft.com" class="orange-link">support@mystikraft.com</a></p>
+    </div>
   </footer>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="js/cart-count.js"></script>
   <script>
-    // Test Cart API functionality
-    async function testCartAPI() {
-      try {
-        console.log('🧪 Testing U2 Task 4 Cart API...');
-        
-        // Test 1: Get cart
-        const cartResponse = await fetch('/api/cart');
-        const cart = await cartResponse.json();
-        console.log('✅ Cart API Test 1 - Get Cart:', cart);
-        
-        // Test 2: Add to cart (using first product ID from seeded data)
-        const addToCartResponse = await fetch('/api/cart', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ productId: '507f1f77bcf86cd799439011' })
-        });
-        const addResult = await addToCartResponse.json();
-        console.log('✅ Cart API Test 2 - Add to Cart:', addResult);
-        
-        alert('🧪 U2 Task 4 Cart API Tests Completed!\n\nCheck console for detailed results.\n\nFeatures tested:\n✅ Get Cart\n✅ Add to Cart\n✅ Cart Management');
-        
-      } catch (error) {
-        console.error('❌ Cart API Test failed:', error);
-        alert('❌ Cart API Test failed! Check console for errors.');
-      }
-    }
-
-    // Process checkout
-    async function processCheckout() {
-      try {
-        const form = document.getElementById('checkoutForm');
-        if (!form.checkValidity()) {
-          form.reportValidity();
-          return;
-        }
-
-        const customerInfo = {
-          firstName: document.getElementById('firstName').value,
-          lastName: document.getElementById('lastName').value,
-          email: document.getElementById('email').value,
-          phone: document.getElementById('phone').value,
-          address: {
-            street: document.getElementById('street').value,
-            city: document.getElementById('city').value,
-            state: document.getElementById('state').value,
-            zipCode: document.getElementById('zipCode').value,
-            country: 'Australia'
-          }
-        };
-
-        // Simulate order creation (since we don't have real cart items)
-        const mockOrder = {
-          orderNumber: 'ORD-' + Date.now() + '-DEMO',
-          customerInfo: customerInfo,
-          items: [
-            { name: 'Nike Air Max', price: 120, quantity: 1 },
-            { name: 'Ultraboost', price: 220, quantity: 1 }
-          ],
-          total: 340,
-          status: 'pending',
-          createdAt: new Date()
-        };
-
-        // Simulate API call delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        alert(`🎉 U2 Task 4: Guest Checkout Completed!\n\nOrder Number: ${mockOrder.orderNumber}\nCustomer: ${customerInfo.firstName} ${customerInfo.lastName}\nEmail: ${customerInfo.email}\nTotal: $${mockOrder.total}\nStatus: ${mockOrder.status}\n\n✅ No account required!\n✅ Guest checkout successful!`);
-        
-        // Reset form
-        form.reset();
-        
-      } catch (error) {
-        console.error('Checkout error:', error);
-        alert('❌ Error processing checkout. Please try again.');
-      }
-    }
-
-    // Add demo data to form
     document.addEventListener('DOMContentLoaded', function() {
-      document.getElementById('firstName').value = 'John';
-      document.getElementById('lastName').value = 'Doe';
-      document.getElementById('email').value = 'john.doe@example.com';
-      document.getElementById('phone').value = '0412345678';
-      document.getElementById('street').value = '123 Main Street';
-      document.getElementById('city').value = 'Melbourne';
-      document.getElementById('state').value = 'VIC';
-      document.getElementById('zipCode').value = '3000';
+      // Initialize Materialize components
+      M.updateTextFields();
+      
+      // Get elements
+      const placeOrderBtn = document.getElementById('btn-place-order');
+      const testApiBtn = document.getElementById('btn-test-api');
+      const checkoutForm = document.getElementById('checkoutForm');
+      
+      // Test Cart API functionality
+      testApiBtn.addEventListener('click', async function() {
+        try {
+          console.log('🧪 Testing Cart API...');
+          
+          // Test 1: Get cart
+          const cartResponse = await fetch('/api/cart');
+          const cart = await cartResponse.json();
+          console.log('✅ Cart API Test 1 - Get Cart:', cart);
+          
+          // Test 2: Add to cart (using first product ID from seeded data)
+          const addToCartResponse = await fetch('/api/cart', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ productId: '507f1f77bcf86cd799439011' })
+          });
+          const addResult = await addToCartResponse.json();
+          console.log('✅ Cart API Test 2 - Add to Cart:', addResult);
+          
+          M.toast({html: '🧪 Cart API Tests Completed! Check console for details.', classes: 'green'});
+          
+        } catch (error) {
+          console.error('❌ Cart API Test failed:', error);
+          M.toast({html: '❌ Cart API Test failed! Check console for errors.', classes: 'red'});
+        }
+      });
+
+      // Process checkout
+      placeOrderBtn.addEventListener('click', async function() {
+        try {
+          // Validate form
+          if (!checkoutForm.checkValidity()) {
+            M.toast({html: 'Please fill all required fields correctly', classes: 'red'});
+            return;
+          }
+
+          const customerInfo = {
+            firstName: document.getElementById('firstName').value,
+            lastName: document.getElementById('lastName').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            address: {
+              street: document.getElementById('street').value,
+              city: document.getElementById('city').value,
+              state: document.getElementById('state').value,
+              zipCode: document.getElementById('zipCode').value,
+              country: 'Australia'
+            }
+          };
+
+          // Simulate order creation (since we don't have real cart items yet)
+          const mockOrder = {
+            orderNumber: 'ORD-' + Date.now() + '-DEMO',
+            customerInfo: customerInfo,
+            items: [
+              { name: 'Nike Air Max', price: 120, quantity: 1 },
+              { name: 'Ultraboost', price: 220, quantity: 1 }
+            ],
+            total: 340,
+            status: 'pending',
+            createdAt: new Date()
+          };
+
+          // Show loading state
+          placeOrderBtn.disabled = true;
+          placeOrderBtn.innerHTML = '<div class="preloader-wrapper small active"><div class="spinner-layer spinner-green-only"><div class="circle-clipper left"><div class="circle"></div></div><div class="gap-patch"><div class="circle"></div></div><div class="circle-clipper right"><div class="circle"></div></div></div></div> Processing...';
+
+          // Simulate API call delay
+          await new Promise(resolve => setTimeout(resolve, 1500));
+          
+          M.toast({
+            html: `🎉 Guest Checkout Completed!<br>Order Number: ${mockOrder.orderNumber}`,
+            classes: 'green',
+            displayLength: 4000
+          });
+          
+          // Reset form and button
+          checkoutForm.reset();
+          placeOrderBtn.disabled = false;
+          placeOrderBtn.innerHTML = '✅ Complete Guest Checkout';
+          
+          // Fill demo data again
+          fillDemoData();
+          
+        } catch (error) {
+          console.error('Checkout error:', error);
+          M.toast({html: '❌ Error processing checkout. Please try again.', classes: 'red'});
+          placeOrderBtn.disabled = false;
+          placeOrderBtn.innerHTML = '✅ Complete Guest Checkout';
+        }
+      });
+
+      // Add demo data to form
+      function fillDemoData() {
+        document.getElementById('firstName').value = 'John';
+        document.getElementById('lastName').value = 'Doe';
+        document.getElementById('email').value = 'john.doe@example.com';
+        document.getElementById('phone').value = '0412345678';
+        document.getElementById('street').value = '123 Main Street';
+        document.getElementById('city').value = 'Melbourne';
+        document.getElementById('state').value = 'VIC';
+        document.getElementById('zipCode').value = '3000';
+        
+        // Trigger Materialize label animation
+        M.updateTextFields();
+      }
+
+      // Initialize with demo data
+      fillDemoData();
     });
   </script>
 </body>

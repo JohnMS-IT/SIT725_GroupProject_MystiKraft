@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile - MystiKraft</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .profile-section {
+      margin-bottom: 2rem;
+    }
+    .section-header {
+      border-bottom: 2px solid #eee;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+    .card-panel.info-panel {
+      background-color: #e3f2fd;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="center-align section">
+    <h1>MystiKraft</h1>
+    <p>User Profile Management</p>
+  </header>
+
+  <!-- Navbar -->
+  <nav class="white">
+    <div class="nav-wrapper container">
+      <a href="index.html" class="brand-logo">
+        <img src="images/Logo/Logo.jpg" alt="MystiKraft Logo" style="height: 40px; vertical-align: middle;">
+        MystiKraft
+      </a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="shop.html">Shop</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="search.html">Search</a></li>
+        <li class="active"><a href="cart.html">My Cart <span id="cart-count" class="new badge black">0</span></a></li>
+        <li id="authLinks"><a href="#loginModal" class="modal-trigger">Login</a></li>
+        <li id="userMenu" class="hide">
+          <a class="dropdown-trigger" href="#!" data-target="dropdown1"><span id="userEmail">User</span><i
+              class="material-icons right">arrow_drop_down</i></a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- User Dropdown -->
+  <ul id="dropdown1" class="dropdown-content">
+    <li><a href="profile.html">Profile</a></li>
+    <li><a href="#" id="logoutBtn">Logout</a></li>
+  </ul>
+
+  <!-- Login/Register Modal -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <h4>Login</h4>
+      <form id="loginForm">
+        <div class="input-field">
+          <input type="email" id="email" required>
+          <label for="email">Email</label>
+        </div>
+        <div class="input-field">
+          <input type="password" id="password" required>
+          <label for="password">Password</label>
+        </div>
+        <button type="submit" class="btn waves-effect waves-light">Login</button>
+        <button type="button" class="btn-flat" id="showRegister">Register</button>
+      </form>
+
+      <form id="registerForm" class="hide">
+        <div class="input-field">
+          <input type="email" id="registerEmail" required>
+          <label for="registerEmail">Email</label>
+        </div>
+        <div class="input-field">
+          <input type="password" id="registerPassword" required>
+          <label for="registerPassword">Password</label>
+        </div>
+        <div class="input-field">
+          <input type="password" id="confirmPassword" required>
+          <label for="confirmPassword">Confirm Password</label>
+        </div>
+        <button type="submit" class="btn waves-effect waves-light">Register</button>
+        <button type="button" class="btn-flat" id="showLogin">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <main class="container section">
+    <h4 class="center-align">User Profile</h4>
+
+    <!-- Info Panel -->
+    <div class="card-panel info-panel">
+      <div class="row valign-wrapper">
+        <div class="col s1">
+          <i class="material-icons">info</i>
+        </div>
+        <div class="col s11">
+          <span>Manage your personal information, shipping address, and payment methods. This information will be used during checkout.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Personal Information -->
+    <div class="card profile-section">
+  <div class="card-content">
+    <span class="card-title section-header">
+      <i class="material-icons left">person</i>Personal Information
+    </span>
+    <form id="personalInfoForm">
+      <div class="row">
+        <div class="input-field col s12 m6">
+          <input id="firstName" name="firstName" type="text" class="validate" required>
+          <label for="firstName">First Name</label>
+        </div>
+        <div class="input-field col s12 m6">
+          <input id="lastName" name="lastName" type="text" class="validate" required>
+          <label for="lastName">Last Name</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12 m6">
+          <input id="profileEmail" name="email" type="email" class="validate" required>
+          <label for="profileEmail">Email Address</label>
+        </div>
+        <div class="input-field col s12 m6">
+          <input id="phone" name="phone" type="tel">
+          <label for="phone">Phone Number</label>
+        </div>
+      </div>
+      <div class="center-align">
+        <button type="submit" class="btn black waves-effect waves-light">
+          <i class="material-icons left">save</i>Save Personal Info
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+    <!-- Shipping Address -->
+    <div class="card profile-section">
+      <div class="card-content">
+        <span class="card-title section-header">
+          <i class="material-icons left">home</i>Shipping Address
+        </span>
+        <form id="shippingAddressForm">
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="addressStreet" name="street" type="text" class="validate" required>
+              <label for="addressStreet">Street Address</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12 m4">
+              <input id="addressCity" name="city" type="text" class="validate" required>
+              <label for="addressCity">City</label>
+            </div>
+            <div class="input-field col s12 m4">
+              <input id="addressState" name="state" type="text" class="validate" required>
+              <label for="addressState">State</label>
+            </div>
+            <div class="input-field col s12 m4">
+              <input id="addressZipCode" name="zipCode" type="text" class="validate" required>
+              <label for="addressZipCode">ZIP Code</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="addressCountry" name="country" type="text" class="validate" value="Australia" required>
+              <label for="addressCountry">Country</label>
+            </div>
+          </div>
+          <div class="center-align">
+            <button type="submit" class="btn black waves-effect waves-light">
+              <i class="material-icons left">save</i>Save Shipping Address
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Payment Method -->
+<div class="card profile-section">
+  <div class="card-content">
+    <span class="card-title section-header">
+      <i class="material-icons left">payment</i>Payment Method
+    </span>
+    <form id="paymentMethodForm">
+      <div class="row">
+        <div class="input-field col s12">
+          <select id="paymentMethod" name="paymentMethod" required>
+            <option value="" disabled selected>Choose your payment method</option>
+            <option value="credit_card">Credit Card</option>
+            <option value="cash_on_delivery">Cash on Delivery</option>
+          </select>
+          <label>Preferred Payment Method</label>
+        </div>
+      </div>
+      
+      <!-- Credit Card Information (shown only when credit card is selected) -->
+      <div id="creditCardSection" class="hide">
+        <div class="row">
+          <div class="input-field col s12">
+            <input id="cardHolderName" name="cardHolderName" type="text" class="validate">
+            <label for="cardHolderName">Cardholder Name</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12 m8">
+            <input id="cardNumber" name="cardNumber" type="text" class="validate" maxlength="16">
+            <label for="cardNumber">Card Number</label>
+          </div>
+          <div class="input-field col s12 m4">
+            <input id="expiryDate" name="expiryDate" type="text" class="validate" placeholder="MM/YY">
+            <label for="expiryDate">Expiry Date</label>
+          </div>
+        </div>
+      </div>
+      
+      <div class="center-align">
+        <button type="submit" class="btn black waves-effect waves-light">
+          <i class="material-icons left">save</i>Save Payment Method
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+  </main>
+
+  <footer class="page-footer black">
+    <div class="container center-align">
+      <p>© 2025 MystiKraft</p>
+      <p>Contact: <a href="mailto:support@mystikraft.com" class="orange-text text-lighten-2">support@mystikraft.com</a></p>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cart-count.js"></script>
+  <script src="js/profile.js"></script>
+</body>
+</html>

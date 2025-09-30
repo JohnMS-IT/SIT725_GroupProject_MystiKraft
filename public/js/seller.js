@@ -58,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
           M.toast({ html: 'Product added successfully!', classes: 'green' });
           addProductForm.reset();
           M.FormSelect.init(selects); // Reinitialize select after reset
+          window.location.href = '/shop.html'; // Redirect to shop page upon successful registration
         } else {
           M.toast({ html: data.message || 'Failed to add product', classes: 'red' });
         }

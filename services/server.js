@@ -1,20 +1,24 @@
+// services/server.js
+// Entry point for the web server
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const path = require('path');
-
+// Load environment variables from .env file
 dotenv.config();
-
+// Initialize Express app
 const app = express();
-
+// Middleware
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '../public')));
-app.use('/api/auth', require('../routes/auth'));
-app.use('/api/products', require('../routes/products'));
+// Parse URL-encoded bodies
+app.use(express.static(path.join(__dirname, '../public')));// Serve static files
+app.use('/api/auth', require('../routes/auth'));// Auth routes
+app.use('/api/products', require('../routes/products'));// Product routes
 
-const PORT = process.env.PORT || 3000;
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/mystikraft';
-
+// Contact route
+const PORT = process.env.PORT;;
+const MONGO_URI = process.env.MONGO_URI;// MongoDB connection string
+// Connect to MongoDB and start the server
 mongoose.connect(MONGO_URI)
   .then(() => {
     console.log('MongoDB connected...');

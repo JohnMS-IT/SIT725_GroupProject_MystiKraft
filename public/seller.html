@@ -51,9 +51,9 @@
           <label for="slug">Slug (e.g., nike-air-max)</label>
         </div>
         <div class="input-field">
-          <input id="price" type="number" class="validate" required>
-          <label for="price">Price</label>
-        </div>
+        <input id="price" type="number" class="validate" min="1" step="0.01" required>
+        <label for="price">Price</label>
+      </div>
         <div class="input-field">
           <select id="category" class="browser-default" required>
             <option value="" disabled selected>Choose category</option>

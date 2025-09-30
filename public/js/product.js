@@ -1,5 +1,4 @@
 // Handles individual product page: fetch product details, add to cart, checkout placeholder
-
 // Helper to fetch JSON safely
 async function fetchJSON(url) {
   const res = await fetch(url);

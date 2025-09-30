@@ -1,3 +1,4 @@
+// services/seed.js
 require('dotenv').config();
 const mongoose = require('mongoose');
 const Product = require('../models/Product');
@@ -20,7 +21,7 @@ const products = [
 ];
 
 (async () => {
-  try {
+  try {// Connect to MongoDB
     await mongoose.connect(process.env.MONGO_URI);
     await Product.deleteMany({});
     await Product.insertMany(products);

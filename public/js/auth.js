@@ -1,3 +1,5 @@
+// auth.js - Handles user authentication state and UI updates
+// Initialize Materialize components
 document.addEventListener('DOMContentLoaded', () => {
   // Initialize Materialize dropdowns with hover
   const dropdowns = document.querySelectorAll('.dropdown-trigger');
@@ -30,13 +32,13 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    try {
+    try {// Log token presence
       console.log('Fetching user data with token:', token.substring(0, 10) + '...');
       const response = await fetch('/api/auth/me', {
         headers: { 'Authorization': `Bearer ${token}` }
-      });
+      });// Log status
       console.log('Auth response status:', response.status);
-      const data = await response.json();
+      const data = await response.json();// Log response data
       console.log('Auth response data:', data);
 
       if (response.ok) {
@@ -48,23 +50,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         // Show "Add Products" and "Modify Products" only for sellers
         if (data.role === 'seller') {
-          if (addProductsLink) addProductsLink.classList.remove('hide');
+          if (addProductsLink) addProductsLink.classList.remove('hide');// Show for sellers
           if (modifyProductsLink) modifyProductsLink.classList.remove('hide');
-        } else {
+        } else {// Hide for non-sellers
           if (addProductsLink) addProductsLink.classList.add('hide');
           if (modifyProductsLink) modifyProductsLink.classList.add('hide');
         }
-      } else {
+      } else {// Invalid token or error
         console.log('Invalid token, clearing localStorage');
-        localStorage.removeItem('token');
+        localStorage.removeItem('token');// Clear invalid token
         if (loginLink) loginLink.classList.remove('hide');
-        if (userDropdownTrigger) userDropdownTrigger.classList.add('hide');
+        if (userDropdownTrigger) userDropdownTrigger.classList.add('hide');// Hide user dropdown on error
       }
     } catch (error) {
       console.error('Error checking auth:', error);
-      localStorage.removeItem('token');
+      localStorage.removeItem('token');// Clear invalid token
       if (loginLink) loginLink.classList.remove('hide');
-      if (userDropdownTrigger) userDropdownTrigger.classList.add('hide');
+      if (userDropdownTrigger) userDropdownTrigger.classList.add('hide');// Hide user dropdown on error
     }
   };
 
@@ -72,12 +74,12 @@ document.addEventListener('DOMContentLoaded', () => {
   if (logoutBtn) {
     logoutBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      console.log('Logging out');
-      localStorage.removeItem('token');
-      M.toast({ html: 'Logged out successfully', classes: 'green', displayLength: 4000 });
+      console.log('Logging out');// Clear token and update UI
+      localStorage.removeItem('token');// Show toast and redirect
+      M.toast({ html: 'Logged out successfully', classes: 'green', displayLength: 1000 });
       setTimeout(() => {
-        window.location.href = '/index.html';
-      }, 2000);
+        window.location.href = '/index.html';// Redirects back to home page
+      }, 1000);
     });
   }
 

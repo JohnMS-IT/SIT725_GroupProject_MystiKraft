@@ -1,13 +1,11 @@
+
+// services/app.js
 const express = require('express');
 const path = require('path');
 const productRoutes = require('../routes/products');
 const authRoutes = require('../routes/auth');
 const contactController = require('../controllers/contact');
 const searchController = require('../controllers/search');
-
-//console.log('Loading /services/app.js');
-//console.log('Product routes loaded:', require.resolve('../routes/products'));
-//console.log('Auth routes loaded:', require.resolve('../routes/auth'));
 
 const app = express();
 

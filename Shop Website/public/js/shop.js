@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <span class="card-title">${product.name}</span>
             <p>${product.description}</p>
             <p><strong>$${product.price}</strong></p>
+            <p class="green-text">In stock: ${product.stock ?? 0}</p>
           </div>
           <div class="card-action">
             <button class="btn green add-to-cart-btn" data-id="${product._id}">Add to Bag</button>

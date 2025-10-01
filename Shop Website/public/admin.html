@@ -40,12 +40,10 @@
   </nav>
 
   <main class="container section">
-    <!--  Add Product Form  -->
+    <!-- Add Product Form -->
     <div class="card">
       <div class="card-content">
         <span class="card-title">Add New Product</span>
-
-        <!-- This form posts to /api/products via fetch in admin.js -->
         <form id="addForm">
           <div class="row">
             <div class="input-field col s12 m6">
@@ -111,7 +109,7 @@
       </div>
     </div>
 
-    <!--  Product List Table  -->
+    <!-- Product List Table -->
     <div class="section">
       <div class="row valign-wrapper">
         <div class="col s12 m6">
@@ -134,8 +132,9 @@
             <th>Brand</th>
             <th style="min-width:100px;">Price</th>
             <th>Category</th>
-            <th>Stock</th>
-            <th style="min-width:150px;">Actions</th>
+            <th>Slug</th>
+            <th style="min-width:80px;">Stock</th>
+            <th style="min-width:120px;">Actions</th>
           </tr>
         </thead>
         <tbody id="productTableBody">
@@ -232,13 +231,10 @@
     </div>
   </footer>
 
-  <!-- Socket.IO client (served automatically by socket.io on the server) -->
+  <!-- Socket.IO client -->
   <script src="/socket.io/socket.io.js"></script>
-  <!-- Materialize JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <!-- Cart count logic -->
   <script src="js/cart-count.js"></script>
-  <!-- Admin logic -->
   <script src="js/admin.js"></script>
 </body>
 </html>

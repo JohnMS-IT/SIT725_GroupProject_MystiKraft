@@ -1,4 +1,3 @@
-// cart.js - My Bag page: fetch cart from backend, update qty, clear cart
 document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('cart-container');
   const summary = document.getElementById('cart-summary');
@@ -7,7 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let cartData = [];
 
-  // Render cart items
   const renderCart = () => {
     container.innerHTML = '';
     summary.innerHTML = '';
@@ -32,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="col s4">${item.productId.name}</div>
         <div class="col s2"><strong>$${item.price.toFixed(2)}</strong></div>
         <div class="col s2">
-          <input type="number" class="qty-input browser-default" data-id="${item.productId._id}" value="${item.quantity}" min="1" style="width:60px; text-align:center;">
+          <input type="number" class="qty-input browser-default" data-id="${item.productId._id}" value="${item.quantity}" min="1" max="${item.productId.stock}" style="width:60px; text-align:center;">
         </div>
         <div class="col s2"><strong class="line-total">$${lineTotal.toFixed(2)}</strong></div>
       `;
@@ -40,16 +38,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     summary.innerHTML = `<h5>Total: $${total.toFixed(2)}</h5>`;
-
     bindQtyInputs();
   };
 
-  // Bind quantity input events
   const bindQtyInputs = () => {
     document.querySelectorAll('.qty-input').forEach(input => {
       input.onchange = async (e) => {
         const id = e.target.dataset.id;
-        const newQty = Math.max(1, parseInt(e.target.value) || 1);
+        let newQty = Math.max(1, parseInt(e.target.value) || 1);
+        const item = cartData.find(i => i.productId._id === id);
+        if (!item) return;
+
+        newQty = Math.min(newQty, item.productId.stock); // 限制 <= stock
+        e.target.value = newQty;
 
         try {
           await fetch('/api/cart', {
@@ -58,8 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
             body: JSON.stringify({ productId: id, quantity: newQty })
           });
 
-          const item = cartData.find(i => i.productId._id === id);
-          if (item) item.quantity = newQty;
+          item.quantity = newQty;
 
           const lineTotalEl = e.target.closest('.row').querySelector('.line-total');
           lineTotalEl.textContent = `$${(item.price * newQty).toFixed(2)}`;
@@ -77,7 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  // Load cart data from backend
   const loadCart = async () => {
     try {
       const res = await fetch('/api/cart');
@@ -89,7 +88,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // Clear cart
   btnClear.addEventListener('click', async () => {
     try {
       await fetch('/api/cart', { method: 'DELETE' });
@@ -103,7 +101,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Checkout - Updated logic to handle both logged-in and guest users
   btnCheckout.addEventListener('click', async () => {
     if (!cartData.length) {
       CartUtils.notifyCartChange('Your bag is empty', false);
@@ -111,19 +108,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
-      // Check if user is authenticated
       const authResponse = await fetch('/api/auth/user');
-      
       if (authResponse.ok) {
-        // User is logged in - redirect to checkout.html
         window.location.href = 'checkout.html';
       } else {
-        // User is not logged in - redirect to guest-checkout.html
         window.location.href = 'guestCheckout.html';
       }
     } catch (err) {
       console.error('Auth check failed:', err);
-      // If auth check fails, default to guest checkout
       window.location.href = 'guestCheckout.html';
     }
   });

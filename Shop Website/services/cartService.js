@@ -16,23 +16,21 @@ class CartService {
     if (!product) throw new Error('Product not found');
 
     const cart = await this.getOrCreateCart(sessionId);
-    
     const existingItem = cart.items.find(item => item.productId.toString() === productId);
-    
+
     if (existingItem) {
-      existingItem.quantity += quantity;
+      existingItem.quantity = Math.min(existingItem.quantity + quantity, product.stock);
     } else {
       cart.items.push({
         productId,
-        quantity,
+        quantity: Math.min(quantity, product.stock),
         price: product.price
       });
     }
-    
+
     cart.total = this.calculateTotal(cart.items);
     cart.updatedAt = new Date();
     await cart.save();
-    
     return cart;
   }
 
@@ -41,23 +39,21 @@ class CartService {
     if (!product) throw new Error('Product not found');
 
     const cart = await this.getOrCreateCart(sessionId);
-    
     const existingItem = cart.items.find(item => item.productId.toString() === productId);
-    
+
     if (existingItem) {
-      existingItem.quantity = quantity;
+      existingItem.quantity = Math.min(quantity, product.stock);
     } else {
       cart.items.push({
         productId,
-        quantity,
+        quantity: Math.min(quantity, product.stock),
         price: product.price
       });
     }
-    
+
     cart.total = this.calculateTotal(cart.items);
     cart.updatedAt = new Date();
     await cart.save();
-    
     return cart;
   }
 

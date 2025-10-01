@@ -148,6 +148,60 @@ router.put('/:id', requireAdmin, async (req, res) => {
   }
 });
 
+// PUT /api/products/:id/stock (Admin: update stock only)
+router.put('/:id/stock', requireAdmin, async (req, res) => {
+  try {
+    console.log('=== ADMIN STOCK UPDATE ===');
+    console.log('Product ID:', req.params.id);
+    console.log('New stock value:', req.body.stock);
+    
+    const { stock } = req.body;
+    const product = await Product.findById(req.params.id);
+    if (!product) return res.status(404).json({ error: 'Product not found' });
+
+    const newStock = Number(stock);
+    product.stock = newStock;
+    await product.save();
+
+    console.log(`Admin updated stock: ${product.name} = ${newStock}`);
+
+    // Check stock level and send appropriate notifications with delay
+    if (newStock > 7) {
+      setTimeout(() => {
+        req.app.locals.io.emit('stock-alert', {
+          type: 'restocked',
+          productName: product.name,
+          stock: newStock,
+          productId: product._id,
+          message: `We just restocked ${product.name}, now have sufficient inventory!`
+        });
+      }, 500);
+    } else if (newStock < 3) {
+      setTimeout(() => {
+        req.app.locals.io.emit('stock-alert', {
+          type: 'low-stock',
+          productName: product.name,
+          stock: newStock,
+          productId: product._id,
+          message: `${product.name} is running low, only ${newStock} items left!`
+        });
+      }, 500);
+    }
+
+    // Broadcast stock update to all sockets
+    req.app.locals.io.emit('stock-updated', { 
+      id: product._id, 
+      stock: newStock, 
+      name: product.name 
+    });
+
+    res.json({ ok: true, stock: newStock });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to update stock' });
+  }
+});
+
 // DELETE /api/products/:id  (Admin: delete)
 router.delete('/:id', requireAdmin, async (req, res) => {
   try {

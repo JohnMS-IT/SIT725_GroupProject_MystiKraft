@@ -16,6 +16,7 @@ const title = document.getElementById('p-title');
 const price = document.getElementById('p-price');
 const image = document.getElementById('p-image');
 const desc  = document.getElementById('p-desc');
+const stock = document.getElementById('p-stock'); 
 
 // Helpers to work with localStorage cart
 function getCart() {

@@ -53,6 +53,8 @@ app.use('/api/search', require('../controllers/search'));
 app.use('/api/auth', require('../routes/auth'));
 app.use('/api/products', require('../controllers/products')); // 
 app.use('/api/cart', require('../controllers/cartController'));
+app.use('/api/wishlist', require('../routes/wishlist'));
+app.use('/api/coupons', require('../routes/coupons'));
 app.use('/api/user', require('../routes/user'));
 app.use('/api/orders', require('../routes/orders'));
 app.use('/api/admin/users', require('../routes/admin-users'));

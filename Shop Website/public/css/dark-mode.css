@@ -1,0 +1,175 @@
+/* Dark Mode Styles for MystiKraft */
+body.dark-mode {
+  background-color: #1a1a1a;
+  color: #e0e0e0;
+}
+
+/* Navbar */
+body.dark-mode nav {
+  background-color: #212121 !important;
+}
+
+body.dark-mode nav a {
+  color: #e0e0e0 !important;
+}
+
+body.dark-mode nav .brand-logo {
+  color: #e0e0e0 !important;
+}
+
+/* Cards */
+body.dark-mode .card {
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+}
+
+body.dark-mode .card .card-title {
+  color: #e0e0e0 !important;
+}
+
+body.dark-mode .card-panel {
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+}
+
+/* Inputs and Forms */
+body.dark-mode input:not([type]),
+body.dark-mode input[type=text]:not(.browser-default),
+body.dark-mode input[type=password]:not(.browser-default),
+body.dark-mode input[type=email]:not(.browser-default),
+body.dark-mode input[type=url]:not(.browser-default),
+body.dark-mode input[type=time]:not(.browser-default),
+body.dark-mode input[type=date]:not(.browser-default),
+body.dark-mode input[type=datetime]:not(.browser-default),
+body.dark-mode input[type=datetime-local]:not(.browser-default),
+body.dark-mode input[type=tel]:not(.browser-default),
+body.dark-mode input[type=number]:not(.browser-default),
+body.dark-mode input[type=search]:not(.browser-default),
+body.dark-mode textarea.materialize-textarea {
+  background-color: #333;
+  border-bottom: 1px solid #666;
+  color: #e0e0e0;
+}
+
+body.dark-mode input:not([type]):focus,
+body.dark-mode input[type=text]:not(.browser-default):focus,
+body.dark-mode input[type=password]:not(.browser-default):focus,
+body.dark-mode input[type=email]:not(.browser-default):focus,
+body.dark-mode textarea.materialize-textarea:focus {
+  border-bottom: 1px solid #ff6b00;
+  box-shadow: 0 1px 0 0 #ff6b00;
+}
+
+body.dark-mode label {
+  color: #bbb !important;
+}
+
+body.dark-mode .input-field label.active {
+  color: #ff6b00 !important;
+}
+
+/* Select dropdowns */
+body.dark-mode select.browser-default {
+  background-color: #333;
+  color: #e0e0e0;
+  border: 1px solid #666;
+}
+
+/* Tables */
+body.dark-mode table {
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+}
+
+body.dark-mode table.striped > tbody > tr:nth-child(odd) {
+  background-color: #333;
+}
+
+body.dark-mode thead {
+  border-bottom: 1px solid #666;
+}
+
+/* Footer */
+body.dark-mode .page-footer {
+  background-color: #000 !important;
+}
+
+/* Modals */
+body.dark-mode .modal {
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+}
+
+body.dark-mode .modal h4,
+body.dark-mode .modal h5,
+body.dark-mode .modal h6 {
+  color: #e0e0e0;
+}
+
+/* Collection */
+body.dark-mode .collection {
+  border: 1px solid #666;
+}
+
+body.dark-mode .collection .collection-item {
+  background-color: #2a2a2a;
+  border-bottom: 1px solid #666;
+  color: #e0e0e0;
+}
+
+/* Dropdown */
+body.dark-mode .dropdown-content li > a,
+body.dark-mode .dropdown-content li > span {
+  color: #e0e0e0;
+  background-color: #2a2a2a;
+}
+
+body.dark-mode .dropdown-content li:hover {
+  background-color: #333;
+}
+
+/* Headers */
+body.dark-mode header,
+body.dark-mode main {
+  color: #e0e0e0;
+}
+
+body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, 
+body.dark-mode h4, body.dark-mode h5, body.dark-mode h6 {
+  color: #e0e0e0;
+}
+
+/* Links */
+body.dark-mode a:not(.btn):not(.btn-flat):not(.btn-floating) {
+  color: #ff9800;
+}
+
+/* Dividers */
+body.dark-mode .divider {
+  background-color: #666;
+}
+
+/* Section header */
+body.dark-mode .section-header {
+  border-bottom-color: #666;
+}
+
+/* Info panel */
+body.dark-mode .card-panel.info-panel {
+  background-color: #1e3a5f;
+}
+
+/* Badges */
+body.dark-mode .badge {
+  color: #fff;
+}
+
+/* Sidenav for mobile */
+body.dark-mode .sidenav {
+  background-color: #2a2a2a;
+}
+
+body.dark-mode .sidenav li > a {
+  color: #e0e0e0;
+}
+

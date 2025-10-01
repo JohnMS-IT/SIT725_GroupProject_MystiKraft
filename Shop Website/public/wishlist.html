@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Wishlist - MystiKraft</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dark-mode.css">
+  <script src="js/dark-mode.js"></script>
+  <style>
+    .wishlist-item {
+      border-bottom: 1px solid #e0e0e0;
+      padding: 20px 0;
+    }
+    .wishlist-item:last-child {
+      border-bottom: none;
+    }
+    .wishlist-img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <header class="center-align section">
+    <h1>MystiKraft</h1>
+  </header>
+
+  <!-- Navbar -->
+  <nav class="white z-depth-1">
+    <div class="nav-wrapper container">
+      <a href="index.html" class="brand-logo">
+        <img src="images/Logo/Logo.jpg" alt="MystiKraft Logo" style="height: 40px; vertical-align: middle;">
+        MystiKraft
+      </a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="index.html" class="black-text">Home</a></li>
+        <li><a href="shop.html" class="black-text">Shop</a></li>
+        <li><a href="about.html" class="black-text">About</a></li>
+        <li><a href="contact.html" class="black-text">Contact</a></li>
+        <li><a href="search.html" class="black-text">Search</a></li>
+        <li class="active">
+          <a href="wishlist.html" class="black-text tooltipped" data-position="bottom" data-tooltip="Wishlist">
+            <i class="material-icons">favorite</i>
+            <span id="wishlist-count" class="badge red white-text">0</span>
+          </a>
+        </li>
+        <li>
+          <a href="cart.html" class="black-text tooltipped" data-position="bottom" data-tooltip="My Cart">
+            <i class="material-icons">shopping_cart</i>
+            <span id="cart-count" class="badge green white-text">0</span>
+          </a>
+        </li>
+        <li>
+          <a href="javascript:void(0);" id="dark-mode-toggle" class="black-text tooltipped" data-position="bottom" data-tooltip="Toggle Theme">
+            <i class="material-icons">dark_mode</i>
+          </a>
+        </li>
+        <li id="authLinks"><a href="#loginModal" class="modal-trigger black-text">Login</a></li>
+        <li id="userMenu" class="hide">
+          <a class="dropdown-trigger black-text" href="#!" data-target="dropdown1">
+            <span id="userEmail">User</span>
+            <i class="material-icons right">arrow_drop_down</i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- User Dropdown -->
+  <ul id="dropdown1" class="dropdown-content">
+    <li><a href="profile.html">Profile</a></li>
+    <li><a href="#" id="logoutBtn">Logout</a></li>
+  </ul>
+
+  <!-- Login/Register Modal -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <h4>Login</h4>
+      <form id="loginForm">
+        <div class="input-field">
+          <input type="email" id="email" required>
+          <label for="email">Email</label>
+        </div>
+        <div class="input-field">
+          <input type="password" id="password" required>
+          <label for="password">Password</label>
+        </div>
+        <button type="submit" class="btn waves-effect waves-light">Login</button>
+        <button type="button" class="btn-flat" id="showRegister">Register</button>
+      </form>
+
+      <form id="registerForm" class="hide">
+        <div class="input-field">
+          <input type="email" id="registerEmail" required>
+          <label for="registerEmail">Email</label>
+        </div>
+        <div class="input-field">
+          <input type="password" id="registerPassword" required>
+          <label for="registerPassword">Password</label>
+        </div>
+        <div class="input-field">
+          <input type="password" id="confirmPassword" required>
+          <label for="confirmPassword">Confirm Password</label>
+        </div>
+        <button type="submit" class="btn waves-effect waves-light">Register</button>
+        <button type="button" class="btn-flat" id="showLogin">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <main class="container section">
+    <h4 class="center-align">My Wishlist</h4>
+    
+    <div id="wishlist-container" class="section">
+      <!-- Wishlist items will be injected here -->
+    </div>
+
+    <div class="center-align section" id="wishlist-actions">
+      <a href="shop.html" class="btn black waves-effect waves-light">
+        <i class="material-icons left">shopping_cart</i>Continue Shopping
+      </a>
+      <button id="btn-clear-wishlist" class="btn red waves-effect waves-light">
+        <i class="material-icons left">delete</i>Clear Wishlist
+      </button>
+    </div>
+  </main>
+
+  <footer class="page-footer black">
+    <div class="container center-align">
+      <p>© 2025 MystiKraft</p>
+      <p>Contact: <a href="mailto:support@mystikraft.com" class="orange-text text-lighten-2">support@mystikraft.com</a></p>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cart-count.js"></script>
+  <script src="js/wishlist-count.js"></script>
+  <script src="js/wishlist.js"></script>
+  
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Initialize tooltips
+    const tooltips = document.querySelectorAll('.tooltipped');
+    M.Tooltip.init(tooltips);
+    
+    // Initialize modals and dropdowns
+    M.Modal.init(document.querySelectorAll('.modal'));
+    M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'), {
+      alignment: 'right',
+      constrainWidth: false
+    });
+  });
+  </script>
+</body>
+</html>
+

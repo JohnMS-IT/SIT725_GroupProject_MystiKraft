@@ -27,6 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="card">
           <div class="card-image">
             <img src="${product.image}" alt="${product.name}">
+            <button class="btn-floating halfway-fab waves-effect waves-light red wishlist-btn" data-id="${product._id}">
+              <i class="material-icons">favorite_border</i>
+            </button>
           </div>
           <div class="card-content">
             <span class="card-title">${product.name}</span>
@@ -58,6 +61,46 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
           console.error(err);
           window.CartUtils.notifyCartChange('Failed to add to cart', false);
+        }
+      });
+    });
+
+    // Bind wishlist buttons
+    document.querySelectorAll('.wishlist-btn').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const productId = btn.dataset.id;
+        const icon = btn.querySelector('i');
+        
+        try {
+          const res = await fetch('/api/wishlist', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ productId }),
+            credentials: 'include'
+          });
+          
+          const data = await res.json();
+          
+          if (!res.ok) {
+            throw new Error(data.error || 'Failed to add to wishlist');
+          }
+          
+          // Change icon to filled heart
+          icon.textContent = 'favorite';
+          btn.classList.add('pulse');
+          
+          // Update wishlist count
+          if (window.WishlistUtils) {
+            window.WishlistUtils.updateWishlistCount();
+          }
+          
+          M.toast({ html: 'Added to wishlist!', classes: 'red darken-1' });
+        } catch (err) {
+          console.error('Wishlist error:', err);
+          M.toast({ html: err.message, classes: 'orange darken-1' });
         }
       });
     });

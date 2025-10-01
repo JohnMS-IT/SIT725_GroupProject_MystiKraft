@@ -46,6 +46,11 @@ async function init() {
     image.alt = p.name;
     desc.textContent = p.description || '';
 
+    // Track recently viewed
+    if (window.RecentlyViewed) {
+      window.RecentlyViewed.addProduct(p);
+    }
+
     // Add to Bag button
     document.getElementById('btn-add').addEventListener('click', () => {
       const cart = getCart();

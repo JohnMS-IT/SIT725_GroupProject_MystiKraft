@@ -202,3 +202,52 @@ input:invalid, textarea:invalid, select:invalid {
 .btn.grey:hover {
   background-color: #e0e0e0 !important;
 }
+
+/* Navbar Badge Styling */
+nav ul li a {
+  display: flex;
+  align-items: center;
+  padding: 0 15px !important;
+  height: 64px;
+}
+
+nav ul li a i.material-icons {
+  font-size: 24px;
+  line-height: 24px;
+  vertical-align: middle;
+  margin-right: 0;
+}
+
+/* Badge positioning relative to icon */
+nav ul li a {
+  position: relative;
+}
+
+nav .badge {
+  position: absolute !important;
+  top: 8px !important;
+  right: 5px !important;
+  font-size: 0.7rem !important;
+  font-weight: bold !important;
+  padding: 2px 5px !important;
+  border-radius: 10px !important;
+  min-width: 18px !important;
+  height: 18px !important;
+  line-height: 14px !important;
+  text-align: center !important;
+  margin: 0 !important;
+}
+
+/* Specific badge colors */
+nav .badge.red {
+  background-color: #f44336 !important;
+}
+
+nav .badge.green {
+  background-color: #4caf50 !important;
+}
+
+/* Ensure icons and text don't conflict */
+nav ul li a > span:not(.badge) {
+  margin-left: 5px;
+}

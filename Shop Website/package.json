@@ -5,7 +5,10 @@
   "main": "services/server.js",
   "scripts": {
     "test": "mocha --reporter spec",
-    "start": "node services/server.js"
+    "test:coverage": "mocha --reporter spec && node test/coverage-report.js",
+    "start": "node services/server.js",
+    "seed": "node services/seed.js",
+    "seed:coupons": "node services/seedCoupons.js"
   },
   "repository": {
     "type": "git",

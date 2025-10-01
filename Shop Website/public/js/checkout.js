@@ -12,15 +12,29 @@ document.addEventListener('DOMContentLoaded', function() {
     const orderTotalAmount = document.getElementById('order-total-amount');
     const paymentMethodSelect = document.getElementById('paymentMethod');
     const creditCardSection = document.getElementById('creditCardSection');
+    const couponCodeInput = document.getElementById('coupon-code');
+    const btnApplyCoupon = document.getElementById('btn-apply-coupon');
+    const couponMessage = document.getElementById('coupon-message');
+    const subtotalElement = document.getElementById('subtotal-amount');
+    const discountElement = document.getElementById('discount-amount');
+    const orderSubtotalDiv = document.getElementById('order-subtotal');
+    const orderDiscountDiv = document.getElementById('order-discount');
     
     let cartData = [];
     let userProfile = null;
+    let appliedCoupon = null;
+    let subtotal = 0;
+    let discount = 0;
 
     // Initialize checkout process
     initializeCheckout();
 
     // Event Listeners
     placeOrderBtn.addEventListener('click', handleOrderSubmission);
+    
+    if (btnApplyCoupon) {
+        btnApplyCoupon.addEventListener('click', handleApplyCoupon);
+    }
     
     // Handle payment method change to show/hide credit card fields
     if (paymentMethodSelect) {
@@ -192,7 +206,65 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         orderItemsContainer.innerHTML = itemsHTML;
-        orderTotalAmount.textContent = `$${orderTotal.toFixed(2)}`;
+        
+        // Store subtotal
+        subtotal = orderTotal;
+        
+        // Update display with discount if applied
+        if (appliedCoupon && discount > 0) {
+            orderSubtotalDiv.style.display = 'block';
+            orderDiscountDiv.style.display = 'block';
+            subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
+            discountElement.textContent = `$${discount.toFixed(2)}`;
+            orderTotalAmount.textContent = `$${(subtotal - discount).toFixed(2)}`;
+        } else {
+            orderSubtotalDiv.style.display = 'none';
+            orderDiscountDiv.style.display = 'none';
+            orderTotalAmount.textContent = `$${orderTotal.toFixed(2)}`;
+        }
+    }
+
+    // Handle apply coupon
+    async function handleApplyCoupon() {
+        const code = couponCodeInput.value.trim();
+        
+        if (!code) {
+            M.toast({html: 'Please enter a coupon code', classes: 'orange'});
+            return;
+        }
+        
+        try {
+            const response = await fetch('/api/coupons/validate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code, orderAmount: subtotal })
+            });
+            
+            const data = await response.json();
+            
+            if (response.ok && data.success) {
+                appliedCoupon = data.coupon;
+                discount = data.coupon.discount;
+                
+                couponMessage.style.display = 'block';
+                couponMessage.className = 'green-text';
+                couponMessage.innerHTML = `<i class="material-icons tiny">check_circle</i> ${appliedCoupon.description} - Save $${discount.toFixed(2)}`;
+                
+                btnApplyCoupon.disabled = true;
+                btnApplyCoupon.textContent = 'Applied';
+                
+                renderOrderSummary(); // Re-render with discount
+                
+                M.toast({html: `Coupon applied! You saved $${discount.toFixed(2)}`, classes: 'green'});
+            } else {
+                throw new Error(data.error || 'Invalid coupon code');
+            }
+        } catch (error) {
+            couponMessage.style.display = 'block';
+            couponMessage.className = 'red-text';
+            couponMessage.innerHTML = `<i class="material-icons tiny">error</i> ${error.message}`;
+            M.toast({html: error.message, classes: 'red'});
+        }
     }
 
     // Handle order submission

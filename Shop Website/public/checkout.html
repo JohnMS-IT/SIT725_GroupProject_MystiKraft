@@ -7,6 +7,8 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dark-mode.css">
+  <script src="js/dark-mode.js"></script>
   <style>
     .user-welcome {
       background-color: #e8f5e9;
@@ -243,7 +245,28 @@
               </div>
             </div>
             <div class="divider"></div>
+            
+            <!-- Coupon Code Section -->
+            <div style="margin-top: 15px;">
+              <div class="input-field" style="margin-bottom: 10px;">
+                <input type="text" id="coupon-code" placeholder="Enter coupon code">
+                <label for="coupon-code">Discount Code</label>
+              </div>
+              <button id="btn-apply-coupon" class="btn-small black waves-effect waves-light" style="width: 100%;">
+                Apply Coupon
+              </button>
+              <div id="coupon-message" style="margin-top: 10px; display: none;"></div>
+            </div>
+            
+            <div class="divider" style="margin-top: 15px;"></div>
+            
             <div class="order-total" style="margin-top: 15px;">
+              <div id="order-subtotal" style="display: none;">
+                <p>Subtotal: <span id="subtotal-amount">$0.00</span></p>
+              </div>
+              <div id="order-discount" style="display: none; color: #4caf50;">
+                <p>Discount: -<span id="discount-amount">$0.00</span></p>
+              </div>
               <h6>Total: <strong id="order-total-amount">$0.00</strong></h6>
             </div>
             <div class="card-action" style="display: flex; flex-direction: column;">

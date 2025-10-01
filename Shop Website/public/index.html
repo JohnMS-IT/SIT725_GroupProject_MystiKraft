@@ -7,6 +7,8 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dark-mode.css">
+  <script src="js/dark-mode.js"></script>
 </head>
 
 <body>
@@ -38,8 +40,20 @@
       <li><a href="contact.html" class="black-text">Contact</a></li>
       <li><a href="search.html" class="black-text">Search</a></li>
       <li>
-        <a href="cart.html" class="black-text">
-          My Cart <span id="cart-count" class="new badge" data-badge-caption="">0</span>
+        <a href="wishlist.html" class="black-text tooltipped" data-position="bottom" data-tooltip="Wishlist">
+          <i class="material-icons">favorite</i>
+          <span id="wishlist-count" class="badge red white-text">0</span>
+        </a>
+      </li>
+      <li>
+        <a href="cart.html" class="black-text tooltipped" data-position="bottom" data-tooltip="My Cart">
+          <i class="material-icons">shopping_cart</i>
+          <span id="cart-count" class="badge green white-text">0</span>
+        </a>
+      </li>
+      <li>
+        <a href="javascript:void(0);" id="dark-mode-toggle" class="black-text tooltipped" data-position="bottom" data-tooltip="Toggle Theme">
+          <i class="material-icons">dark_mode</i>
         </a>
       </li>
 
@@ -159,6 +173,14 @@
         </a>
       </div>
     </div>
+
+    <!-- Recently Viewed Products -->
+    <div class="section" style="margin-top: 40px;">
+      <h5>Recently Viewed</h5>
+      <div class="row" id="recently-viewed-container">
+        <!-- Recently viewed products will be injected here -->
+      </div>
+    </div>
   </main>
 
   <footer class="page-footer black">
@@ -173,6 +195,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/cart-count.js"></script>
+  <script src="js/wishlist-count.js"></script>
+  <script src="js/recently-viewed.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       M.Modal.init(document.querySelectorAll('.modal'));
@@ -184,9 +208,12 @@
       else if (hour < 18) greetingText = 'Good afternoon!';
       else greetingText = 'Good evening!';
       greetingElement.textContent = greetingText;
+      
+      // Render recently viewed products
+      if (window.RecentlyViewed) {
+        window.RecentlyViewed.renderRecentlyViewed('recently-viewed-container');
+      }
     });
-
-    
   </script>
 
   <script>
@@ -206,6 +233,10 @@
     // Modals (login/register)
     const modals = document.querySelectorAll('.modal');
     M.Modal.init(modals);
+    
+    // Tooltips
+    const tooltips = document.querySelectorAll('.tooltipped');
+    M.Tooltip.init(tooltips);
   });
 </script>
 

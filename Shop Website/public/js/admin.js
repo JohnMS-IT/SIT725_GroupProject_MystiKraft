@@ -1,17 +1,9 @@
 // admin.js
-// Admin Panel logic:
-// - Load products (GET /api/products)
-// - Add product (POST /api/products)
-// - Delete product (DELETE /api/products/:id)
-// - Live updates via Socket.IO: product-added, product-removed
-
 const tBody = document.getElementById('productTableBody');
 const form = document.getElementById('addForm');
-
-// Connect to server via Socket.IO for live updates
 const socket = io();
 
-// Toast helper (uses your CartUtils if present, else Materialize directly)
+// Toast helper
 function toast(msg, ok = true) {
   if (window.CartUtils && window.CartUtils.notifyCartChange) {
     return window.CartUtils.notifyCartChange(msg, ok);
@@ -19,10 +11,10 @@ function toast(msg, ok = true) {
   M.toast({ html: msg, classes: ok ? 'green darken-1' : 'red darken-1' });
 }
 
-// Render one <tr> for the product table
+// Render table row
 function renderRow(p) {
   const tr = document.createElement('tr');
-  tr.dataset.id = p._id; // so we can find/remove it later
+  tr.dataset.id = p._id;
   tr.innerHTML = `
     <td style="width:72px">
       <img src="${p.image}" alt="${p.name}"
@@ -33,109 +25,107 @@ function renderRow(p) {
     <td>${p.category}</td>
     <td>${p.slug || ''}</td>
     <td>
+      <input type="number" value="${p.stock || 0}" min="0" style="width:60px;text-align:center;" class="stock-input">
+      <button class="btn-small black stock-btn" style="margin-left:5px;">Update</button>
+    </td>
+    <td>
       <a class="btn-flat red-text text-darken-1" data-act="del" data-id="${p._id}">
         <i class="material-icons left">delete</i>Delete
       </a>
     </td>
   `;
+  // Bind stock update
+  const stockBtn = tr.querySelector('.stock-btn');
+  const stockInput = tr.querySelector('.stock-input');
+  stockBtn.addEventListener('click', async () => {
+    const newStock = Number(stockInput.value);
+    if (isNaN(newStock) || newStock < 0) {
+      toast('Invalid stock', false);
+      return;
+    }
+    try {
+      const res = await fetch(`/api/products/${p._id}/stock`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ stock: newStock })
+      });
+      if (!res.ok) throw new Error('Failed');
+      const data = await res.json();
+      toast(`Stock updated: ${p.name} = ${data.stock}`);
+    } catch (err) {
+      console.error(err);
+      toast('Failed to update stock', false);
+    }
+  });
   return tr;
 }
 
-// Load current products (first page, large limit)
+// Load products
 async function loadProducts() {
-  tBody.innerHTML = '<tr><td colspan="6">Loading…</td></tr>';
-
-  // reuse existing API with pagination
-  const res = await fetch('/api/products?limit=200&page=1&sort=newest');
+  tBody.innerHTML = '<tr><td colspan="7">Loading…</td></tr>';
+  const res = await fetch('/api/products');
   if (!res.ok) {
-    tBody.innerHTML = '<tr><td colspan="6" class="red-text">Failed to load products</td></tr>';
+    tBody.innerHTML = '<tr><td colspan="7" class="red-text">Failed to load products</td></tr>';
     return;
   }
   const data = await res.json();
   tBody.innerHTML = '';
-
-  // data.items could be an array of Product docs
   data.items.forEach(p => tBody.appendChild(renderRow(p)));
 }
 
-// Handle Add Product form submit
+// Add product form
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
-
-  // Grab values from form fields
   const name = document.getElementById('name').value.trim();
   const price = document.getElementById('price').value.trim();
   const category = document.getElementById('category').value.trim();
   const image = document.getElementById('image').value.trim();
   const description = document.getElementById('description').value.trim();
-
-  // validation
   if (!name || !price || !category || !image) {
     toast('Please fill required fields', false);
     return;
   }
-
-  // POST to backend
   const res = await fetch('/api/products', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ name, price, category, image, description })
   });
-
   if (!res.ok) {
     toast('Failed to add product', false);
     return;
   }
-
   const p = await res.json();
-
-  // Prepend row to table immediately (server also broadcasts via socket)
   tBody.prepend(renderRow(p));
-
-  // Reset form
   form.reset();
-  // Materialize needs this to keep labels in the right place after reset
   M.updateTextFields();
-
   toast(`Added: ${p.name}`);
 });
 
-// Handle Delete clicks (event delegation on <tbody>)
+// Delete product
 tBody.addEventListener('click', async (e) => {
   const btn = e.target.closest('[data-act="del"]');
   if (!btn) return;
-
   const id = btn.dataset.id;
-
   const res = await fetch(`/api/products/${id}`, { method: 'DELETE' });
   if (!res.ok) {
     toast('Delete failed', false);
     return;
   }
-
   const row = tBody.querySelector(`tr[data-id="${id}"]`);
   if (row) row.remove();
   toast('Product deleted');
 });
 
-// Live updates from server
-// If anyone adds a product, insert it if we don't already have it
+// Socket updates
 socket.on('product-added', (p) => {
-  if (!p || !p._id) return;
-  if (!tBody.querySelector(`tr[data-id="${p._id}"]`)) {
-    tBody.prepend(renderRow(p));
-  }
+  if (!tBody.querySelector(`tr[data-id="${p._id}"]`)) tBody.prepend(renderRow(p));
 });
-
-// If anyone deletes a product, remove it if present
 socket.on('product-removed', ({ id }) => {
   const row = tBody.querySelector(`tr[data-id="${id}"]`);
   if (row) row.remove();
 });
 
-// Init on DOM ready
 document.addEventListener('DOMContentLoaded', () => {
-  // Materialize input label alignment
   M.updateTextFields();
   loadProducts();
 });

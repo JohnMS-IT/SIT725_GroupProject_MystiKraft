@@ -25,6 +25,18 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
     process.exit(1);
   });
 
+const port = process.env.PORT || 3000;
+const server = http.createServer(app);
+const io = new Server(server);
+
+app.locals.io = io;
+
+// Basic connection logging
+io.on('connection', socket => {
+  console.log('Socket connected:', socket.id);
+  socket.on('disconnect', () => console.log('Socket disconnected:', socket.id));
+});
+
 // Session configuration (must come before passport.session)
 app.use(session({
   secret: process.env.SESSION_SECRET || 'secret-key',
@@ -51,7 +63,7 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use('/contact', require('../controllers/contact'));
 app.use('/api/search', require('../controllers/search'));
 app.use('/api/auth', require('../routes/auth'));
-app.use('/api/products', require('../controllers/products')); // 
+app.use('/api/products', require('../controllers/products')); 
 app.use('/api/cart', require('../controllers/cartController'));
 app.use('/api/user', require('../routes/user'));
 app.use('/api/orders', require('../routes/orders'));
@@ -70,24 +82,9 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: 'Something went wrong!' });
 });
 
-//  NEW: create HTTP server and attach Socket.IO
-const port = process.env.PORT || 3000;
-const server = http.createServer(app);
-
-const io = new Server(server);
-
-// Make io available inside routes via req.app.locals.io
-app.locals.io = io;
-
-// Basic connection logging
-io.on('connection', socket => {
-  console.log('Socket connected:', socket.id);
-  socket.on('disconnect', () => console.log('Socket disconnected:', socket.id));
-});
-
 // use server.listen (replace app.listen)
 server.listen(port, () => {
   console.log(`MystiKraft server running at http://localhost:${port}`);
 });
 
-module.exports = app; 
+module.exports = app;

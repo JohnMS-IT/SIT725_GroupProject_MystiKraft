@@ -64,7 +64,7 @@ router.get('/', async (req, res) => {
 // POST /api/products  (Admin: create product)
 router.post('/', async (req, res) => {
   try {
-    const { name, price, category, image, description = '' } = req.body;
+    const { name, price, category, image, description = '', stock = 0 } = req.body; // Add stock destructuring
     if (!name || !price || !category || !image) {
       return res.status(400).json({ error: 'name, price, category, and image are required' });
     }
@@ -75,7 +75,7 @@ router.post('/', async (req, res) => {
       category,
       image,
       description,
-      stock: Number(stock), 
+      stock: Number(stock), // Now stock is defined
       slug: slugify(name)
     });
 
@@ -91,13 +91,37 @@ router.post('/', async (req, res) => {
   }
 });
 
+// PUT /api/products/:id/stock (Admin: update stock) - MUST BE BEFORE DELETE ROUTE
+router.put('/:id/stock', async (req, res) => {
+  try {
+    const { stock } = req.body;
+    const product = await Product.findById(req.params.id);
+    if (!product) return res.status(404).json({ error: 'Product not found' });
+
+    product.stock = Number(stock);
+    await product.save();
+
+    // Broadcast stock update to all sockets
+    req.app.locals.io.emit('stock-updated', { 
+      id: product._id, 
+      stock: product.stock, 
+      name: product.name 
+    });
+
+    res.json({ ok: true, stock: product.stock });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to update stock' });
+  }
+});
+
 // DELETE /api/products/:id  (Admin: delete)
 router.delete('/:id', async (req, res) => {
   try {
     const removed = await Product.findByIdAndDelete(req.params.id);
     if (!removed) return res.status(404).json({ error: 'Product not found' });
 
-    // 🔌 Broadcast removal
+    // Broadcast removal to all sockets
     req.app.locals.io.emit('product-removed', { id: removed._id.toString(), slug: removed.slug });
 
     res.json({ ok: true });

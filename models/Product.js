@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 // Define the Product schema
 const productSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -10,5 +11,15 @@ const productSchema = new mongoose.Schema({
   sellerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   createdAt: { type: Date, default: Date.now }
 });
+
+// Convert ObjectIds to strings when returning JSON
+productSchema.set('toJSON', {
+  transform: (doc, ret) => {
+    ret._id = ret._id.toString();
+    if (ret.sellerId) ret.sellerId = ret.sellerId.toString();
+    return ret;
+  }
+});
+
 // Export the Product model
 module.exports = mongoose.model('Product', productSchema);

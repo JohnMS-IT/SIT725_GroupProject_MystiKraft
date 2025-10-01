@@ -55,13 +55,41 @@
           </div>
 
           <div class="row">
-            <div class="input-field col s12 m6">
-              <input id="category" type="text" placeholder="e.g. shoes/Running or mens" required>
+            <div class="input-field col s12 m4">
+              <select id="category" required class="browser-default">
+                <option value="" disabled selected>Choose category</option>
+                <option value="men">Men</option>
+                <option value="women">Women</option>
+                <option value="kids">Kids</option>
+                <option value="accessories">Accessories</option>
+              </select>
               <label for="category">Category *</label>
             </div>
+            <div class="input-field col s12 m4">
+              <input id="brand" type="text" placeholder="e.g. Nike, Adidas">
+              <label for="brand">Brand</label>
+            </div>
+            <div class="input-field col s12 m4">
+              <input id="stock" type="number" min="0" placeholder="0">
+              <label for="stock">Stock</label>
+            </div>
+          </div>
+
+          <div class="row">
             <div class="input-field col s12 m6">
               <input id="image" type="text" placeholder="/images/shoes/NikeAir.jpg" required>
               <label for="image">Image URL *</label>
+            </div>
+            <div class="input-field col s12 m6">
+              <input id="sizes" type="text" placeholder="S,M,L,XL or 7,8,9,10">
+              <label for="sizes">Sizes (comma-separated)</label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="input-field col s12 m6">
+              <input id="colours" type="text" placeholder="Black,White,Red">
+              <label for="colours">Colours (comma-separated)</label>
             </div>
           </div>
 
@@ -99,6 +127,7 @@
           <tr>
             <th>Image</th>
             <th>Name</th>
+            <th>Brand</th>
             <th style="min-width:100px;">Price</th>
             <th>Category</th>
             <th>Slug</th>
@@ -114,7 +143,7 @@
   </main>
 
   <!-- Edit Product Modal -->
-  <div id="editModal" class="modal">
+  <div id="editModal" class="modal modal-fixed-footer">
     <div class="modal-content">
       <h4>Edit Product</h4>
       <form id="editForm">
@@ -131,20 +160,41 @@
         </div>
 
         <div class="row">
-          <div class="input-field col s12 m6">
-            <input id="editCategory" type="text" required>
+          <div class="input-field col s12 m4">
+            <select id="editCategory" required class="browser-default">
+              <option value="">Choose category</option>
+              <option value="men">Men</option>
+              <option value="women">Women</option>
+              <option value="kids">Kids</option>
+              <option value="accessories">Accessories</option>
+            </select>
             <label for="editCategory">Category *</label>
           </div>
-          <div class="input-field col s12 m6">
+          <div class="input-field col s12 m4">
+            <input id="editBrand" type="text">
+            <label for="editBrand">Brand</label>
+          </div>
+          <div class="input-field col s12 m4">
             <input id="editStock" type="number" min="0" value="0">
             <label for="editStock">Stock</label>
           </div>
         </div>
 
         <div class="row">
-          <div class="input-field col s12">
+          <div class="input-field col s12 m6">
             <input id="editImage" type="text" required>
             <label for="editImage">Image URL *</label>
+          </div>
+          <div class="input-field col s12 m6">
+            <input id="editSizes" type="text" placeholder="S,M,L,XL or 7,8,9,10">
+            <label for="editSizes">Sizes (comma-separated)</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="input-field col s12 m6">
+            <input id="editColours" type="text" placeholder="Black,White,Red">
+            <label for="editColours">Colours (comma-separated)</label>
           </div>
         </div>
 

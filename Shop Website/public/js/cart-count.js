@@ -102,7 +102,6 @@ window.CartUtils = {
   testStockAlert 
 };
 
-// 同时将测试函数暴露到全局作用域
 window.testStockAlert = testStockAlert;
 
 // Initialize when script loads

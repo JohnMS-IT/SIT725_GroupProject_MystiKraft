@@ -91,31 +91,6 @@ router.post('/', async (req, res) => {
   }
 });
 
-// // PUT /api/products/:id/stock (Admin: update stock) - MUST BE BEFORE DELETE ROUTE
-// router.put('/:id/stock', async (req, res) => {
-//   try {
-//     const { stock } = req.body;
-//     const product = await Product.findById(req.params.id);
-//     if (!product) return res.status(404).json({ error: 'Product not found' });
-
-//     product.stock = Number(stock);
-//     await product.save();
-
-//     // Broadcast stock update to all sockets
-//     req.app.locals.io.emit('stock-updated', { 
-//       id: product._id, 
-//       stock: product.stock, 
-//       name: product.name 
-//     });
-
-//     res.json({ ok: true, stock: product.stock });
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ error: 'Failed to update stock' });
-//   }
-// });
-
-// PUT /api/products/:id/stock (Admin: update stock)
 router.put('/:id/stock', async (req, res) => {
   try {
     console.log('=== ADMIN STOCK UPDATE ===');

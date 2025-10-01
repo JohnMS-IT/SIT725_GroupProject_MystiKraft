@@ -37,6 +37,7 @@ docker ps
 - **Main Application**: http://localhost:5001
 - **Shop Page**: http://localhost:5001/shop.html
 - **Student API Endpoint**: http://localhost:5001/api/student
+- **Admin Panel**: http://localhost:3000/admin.html 
 
 ### Expected /api/student Output
 ```json

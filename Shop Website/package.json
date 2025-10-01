@@ -34,8 +34,8 @@
     "tough-cookie": "^6.0.0"
   },
   "devDependencies": {
-    "chai": "^5.3.1",
-    "mocha": "^11.7.1",
+    "chai": "^5.3.3",
+    "mocha": "^11.7.3",
     "request": "^2.88.2"
   }
 }

@@ -4,77 +4,106 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const Product = require('../models/Product');
 
-// GET /api/products and category = newest|oldest ( default to newest) 
+// Utility: make slugs from names
+function slugify(name) {
+  return String(name || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '')
+    .substring(0, 80);
+}
+
+// GET /api/products (with category, q, price, sort, pagination)
 router.get('/', async (req, res) => {
   try {
-    // Check if MongoDB is connected
+    // If DB not connected, return sample data (Docker fallback)
     if (mongoose.connection.readyState !== 1) {
-      // Return sample data when MongoDB is not available (Docker mode)
       const sampleProducts = [
         { name: 'Nike Air Max', price: 120, category: 'mens', image: '/images/shoes/NikeAir.jpg', description: 'Comfortable running shoes' },
         { name: 'Ultraboost', price: 220, category: 'mens', image: '/images/shoes/ultraboost.jpg', description: 'Premium running shoes' },
         { name: 'Jordans', price: 100, category: 'mens', image: '/images/shoes/Jordans.webp', description: 'Classic basketball shoes' }
       ];
-      
-      return res.json({
-        items: sampleProducts,
-        total: sampleProducts.length,
-        page: 1,
-        pages: 1
-      });
+      return res.json({ items: sampleProducts, total: sampleProducts.length, page: 1, pages: 1 });
     }
 
-    const {// Destructure query parameters with defaults
+    const {
       category,
-      q = '',// Default to empty search query 
-      price = 'all',// Default to all prices
-      sort = 'newest',// Default to newest 
-      page = 1,// Default to page 1
-      limit = 12// Default to 12 items per page 
+      q = '',
+      price = 'all',
+      sort = 'newest',
+      page = 1,
+      limit = 12
     } = req.query;
-    // Build filter object
-    const filter = {};// Category filtering
-    if (category) filter.category = category;// Search query filtering
+
+    const filter = {};
+    if (category) filter.category = category;
     if (q) filter.name = { $regex: q, $options: 'i' };
 
-    // Price filtering
-    if (price === '0-50') {
-      filter.price = { $gte: 0, $lte: 50 };// Price between 0 and 50
-    } else if (price === '50-100') {
-      filter.price = { $gte: 50, $lte: 100 };// Price between 50 and 100
-    } else if (price === '100+') {
-      filter.price = { $gte: 100 };// Price 100 and above 
-    }
+    if (price === '0-50') filter.price = { $gte: 0, $lte: 50 };
+    else if (price === '50-100') filter.price = { $gte: 50, $lte: 100 };
+    else if (price === '100+') filter.price = { $gte: 100 };
 
-    // Sorting by date  
-    const sortOption = sort === 'oldest'
-      ? { createdAt: 1 }
-      : { createdAt: -1 }; // default to newest
+    const sortOption = sort === 'oldest' ? { createdAt: 1 } : { createdAt: -1 };
 
-    // Pagination
     const pageNum = Math.max(1, Number(page));
-    // Limit between 1 and 100
     const perPage = Math.max(1, Math.min(100, Number(limit)));
-    // Calculate how many documents to skip
     const skip = (pageNum - 1) * perPage;
 
-    // Execute queries in parallel
     const [items, total] = await Promise.all([
       Product.find(filter).sort(sortOption).skip(skip).limit(perPage),
       Product.countDocuments(filter)
     ]);
 
-    // Return paginated results
-    res.json({
-      items,
-      total,
-      page: pageNum,
-      pages: Math.ceil(total / perPage)
-    });
-    // Log the fetched products for debugging
+    res.json({ items, total, page: pageNum, pages: Math.ceil(total / perPage) });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Database query error' });
   }
 });
+
+// POST /api/products  (Admin: create product)
+router.post('/', async (req, res) => {
+  try {
+    const { name, price, category, image, description = '' } = req.body;
+    if (!name || !price || !category || !image) {
+      return res.status(400).json({ error: 'name, price, category, and image are required' });
+    }
+
+    const doc = new Product({
+      name,
+      price: Number(price),
+      category,
+      image,
+      description,
+      slug: slugify(name)
+    });
+
+    const saved = await doc.save();
+
+    // Broadcast new product to all sockets
+    req.app.locals.io.emit('product-added', saved);
+
+    res.status(201).json(saved);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Unable to create product' });
+  }
+});
+
+// DELETE /api/products/:id  (Admin: delete)
+router.delete('/:id', async (req, res) => {
+  try {
+    const removed = await Product.findByIdAndDelete(req.params.id);
+    if (!removed) return res.status(404).json({ error: 'Product not found' });
+
+    // 🔌 Broadcast removal
+    req.app.locals.io.emit('product-removed', { id: removed._id.toString(), slug: removed.slug });
+
+    res.json({ ok: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Unable to delete product' });
+  }
+});
+
 module.exports = router;

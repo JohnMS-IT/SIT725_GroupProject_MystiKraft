@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin - MystiKraft</title>
+
+  <!-- Materialize & Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="center-align section">
+    <h1>Admin Panel</h1>
+  </header>
+
+  <!-- Navbar -->
+  <nav class="white z-depth-1">
+    <div class="nav-wrapper container">
+      <a href="index.html" class="brand-logo">
+        <img src="images/Logo/Logo.jpg" alt="MystiKraft Logo" style="height: 40px; vertical-align: middle;">
+        MystiKraft
+      </a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li class="active"><a href="admin.html">Admin</a></li>
+        <li><a href="shop.html">Shop</a></li>
+        <li>
+          <a href="cart.html">
+            My Cart <span id="cart-count" class="new badge" data-badge-caption="">0</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container section">
+    <!--  Add Product Form  -->
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title">Add New Product</span>
+
+        <!-- This form posts to /api/products via fetch in admin.js -->
+        <form id="addForm">
+          <div class="row">
+            <div class="input-field col s12 m6">
+              <input id="name" type="text" required>
+              <label for="name">Name *</label>
+            </div>
+            <div class="input-field col s12 m6">
+              <input id="price" type="number" step="0.01" min="0" required>
+              <label for="price">Price *</label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="input-field col s12 m6">
+              <!-- match your backend, e.g. 'shoes/Running' or 'mens' -->
+              <input id="category" type="text" placeholder="e.g. shoes/Running or mens" required>
+              <label for="category">Category *</label>
+            </div>
+            <div class="input-field col s12 m6">
+              <!-- can be absolute URL or /images/... if you serve static -->
+              <input id="image" type="text" placeholder="/images/shoes/NikeAir.jpg" required>
+              <label for="image">Image URL *</label>
+            </div>
+          </div>
+
+          <div class="input-field">
+            <textarea id="description" class="materialize-textarea" placeholder="Optional"></textarea>
+            <label for="description">Description</label>
+          </div>
+
+          <div class="right-align">
+            <button class="btn black waves-effect waves-light" type="submit">
+              <i class="material-icons left">add</i>Add Product
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!--  Product List Table  -->
+    <div class="section">
+      <h5>Products</h5>
+      <table class="striped responsive-table">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th style="min-width:100px;">Price</th>
+            <th>Category</th>
+            <th>Slug</th>
+            <th style="min-width:120px;">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="productTableBody">
+          <!-- Rows injected by admin.js -->
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <footer class="page-footer black">
+    <div class="container center-align">
+      <p>© 2025 MystiKraft</p>
+    </div>
+  </footer>
+
+  <!-- Socket.IO client (served automatically by socket.io on the server) -->
+  <script src="/socket.io/socket.io.js"></script>
+  <!-- Materialize JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!-- Cart count logic -->
+  <script src="js/cart-count.js"></script>
+  <!-- Admin logic -->
+  <script src="js/admin.js"></script>
+</body>
+</html>

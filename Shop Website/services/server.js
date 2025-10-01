@@ -1,3 +1,4 @@
+// server.js
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
@@ -5,6 +6,10 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const passport = require('passport');
+
+// NEW: http + socket.io
+const http = require('http');
+const { Server } = require('socket.io');
 
 const app = express();
 
@@ -46,10 +51,10 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use('/contact', require('../controllers/contact'));
 app.use('/api/search', require('../controllers/search'));
 app.use('/api/auth', require('../routes/auth'));
-app.use('/api/products', require('../controllers/products'));
+app.use('/api/products', require('../controllers/products')); // 
 app.use('/api/cart', require('../controllers/cartController'));
-app.use('/api/user', require('../routes/user')); 
-app.use('/api/orders', require('../routes/orders')); 
+app.use('/api/user', require('../routes/user'));
+app.use('/api/orders', require('../routes/orders'));
 
 // Serve index
 app.get('/', (req, res) => {
@@ -65,9 +70,24 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: 'Something went wrong!' });
 });
 
+//  NEW: create HTTP server and attach Socket.IO
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
+const server = http.createServer(app);
+
+const io = new Server(server);
+
+// Make io available inside routes via req.app.locals.io
+app.locals.io = io;
+
+// Basic connection logging
+io.on('connection', socket => {
+  console.log('Socket connected:', socket.id);
+  socket.on('disconnect', () => console.log('Socket disconnected:', socket.id));
+});
+
+// use server.listen (replace app.listen)
+server.listen(port, () => {
   console.log(`MystiKraft server running at http://localhost:${port}`);
 });
 
-module.exports = app;
+module.exports = app; 

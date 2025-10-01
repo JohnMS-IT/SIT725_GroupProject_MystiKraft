@@ -11,7 +11,8 @@ class OrderController {
       const cart = await cartService.getCartWithProducts(sessionId);
       if (!cart.items || cart.items.length === 0) return res.status(400).json({ error: 'Cart is empty' });
 
-      const order = await orderService.createOrder(sessionId, customerInfo, cart.items);
+      // Pass io instance to createOrder
+      const order = await orderService.createOrder(sessionId, customerInfo, cart.items, req.app.locals.io);
 
       await cartService.clearCart(sessionId);
 

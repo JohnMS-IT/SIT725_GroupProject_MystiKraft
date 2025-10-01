@@ -2,8 +2,15 @@
 const tBody = document.getElementById('productTableBody');
 const form = document.getElementById('addForm');
 const socket = io();
+console.log('[ADMIN SOCKET] Socket.IO connecting...');
+socket.on('connect', () => {
+  console.log('[ADMIN SOCKET] Connected! Socket ID:', socket.id);
+});
+socket.on('disconnect', (reason) => {
+  console.log('[ADMIN SOCKET] Disconnected:', reason);
+});
 
-// Toast helper
+// Toast helper function
 function toast(msg, ok = true) {
   if (window.CartUtils && window.CartUtils.notifyCartChange) {
     return window.CartUtils.notifyCartChange(msg, ok);
@@ -11,7 +18,7 @@ function toast(msg, ok = true) {
   M.toast({ html: msg, classes: ok ? 'green darken-1' : 'red darken-1' });
 }
 
-// Render table row
+// Render table row for product
 function renderRow(p) {
   const tr = document.createElement('tr');
   tr.dataset.id = p._id;
@@ -34,7 +41,8 @@ function renderRow(p) {
       </a>
     </td>
   `;
-  // Bind stock update
+
+  // Bind stock update event
   const stockBtn = tr.querySelector('.stock-btn');
   const stockInput = tr.querySelector('.stock-input');
   stockBtn.addEventListener('click', async () => {
@@ -60,7 +68,7 @@ function renderRow(p) {
   return tr;
 }
 
-// Load products
+// Load products from API
 async function loadProducts() {
   tBody.innerHTML = '<tr><td colspan="7">Loading…</td></tr>';
   const res = await fetch('/api/products');
@@ -73,7 +81,7 @@ async function loadProducts() {
   data.items.forEach(p => tBody.appendChild(renderRow(p)));
 }
 
-// Add product form
+// Handle add product form submission
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
   const name = document.getElementById('name').value.trim();
@@ -81,19 +89,24 @@ form.addEventListener('submit', async (e) => {
   const category = document.getElementById('category').value.trim();
   const image = document.getElementById('image').value.trim();
   const description = document.getElementById('description').value.trim();
+  const stock = document.getElementById('stock') ? document.getElementById('stock').value.trim() : 0;
+
   if (!name || !price || !category || !image) {
     toast('Please fill required fields', false);
     return;
   }
+
   const res = await fetch('/api/products', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, price, category, image, description })
+    body: JSON.stringify({ name, price, category, image, description, stock })
   });
+
   if (!res.ok) {
     toast('Failed to add product', false);
     return;
   }
+
   const p = await res.json();
   tBody.prepend(renderRow(p));
   form.reset();
@@ -101,7 +114,7 @@ form.addEventListener('submit', async (e) => {
   toast(`Added: ${p.name}`);
 });
 
-// Delete product
+// Handle product deletion
 tBody.addEventListener('click', async (e) => {
   const btn = e.target.closest('[data-act="del"]');
   if (!btn) return;
@@ -116,15 +129,40 @@ tBody.addEventListener('click', async (e) => {
   toast('Product deleted');
 });
 
-// Socket updates
+// Socket event handlers for real-time updates
 socket.on('product-added', (p) => {
   if (!tBody.querySelector(`tr[data-id="${p._id}"]`)) tBody.prepend(renderRow(p));
 });
+
 socket.on('product-removed', ({ id }) => {
   const row = tBody.querySelector(`tr[data-id="${id}"]`);
   if (row) row.remove();
 });
 
+// Listen for stock alerts - but only show admin-specific notifications
+socket.on('stock-alert', (alert) => {
+  console.log('[ADMIN SOCKET] stock-alert event received:', alert);
+  // Don't show the same notifications as users see
+  // Instead, log them for admin reference
+  if (alert.type === 'restocked') {
+    console.log(`[ADMIN SOCKET] Admin: ${alert.productName} was restocked to ${alert.stock}`);
+  } else if (alert.type === 'low-stock') {
+    console.log(`[ADMIN SOCKET] Admin: ${alert.productName} is low on stock (${alert.stock})`);
+  }
+});
+
+// Listen for stock updates to refresh UI
+socket.on('stock-updated', (data) => {
+  const row = tBody.querySelector(`tr[data-id="${data.id}"]`);
+  if (row) {
+    const stockInput = row.querySelector('.stock-input');
+    if (stockInput) {
+      stockInput.value = data.stock;
+    }
+  }
+});
+
+// Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
   M.updateTextFields();
   loadProducts();

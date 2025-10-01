@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,38 +9,77 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
   <header class="center-align section">
     <h1>Contact MystiKraft</h1>
   </header>
 
   <!-- Navbar -->
-  <nav class="white">
+  <nav class="white z-depth-1">
     <div class="nav-wrapper container">
+      <!-- Brand -->
       <a href="index.html" class="brand-logo">
         <img src="images/Logo/Logo.jpg" alt="MystiKraft Logo" style="height: 40px; vertical-align: middle;">
         MystiKraft
       </a>
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="shop.html">Shop</a></li>
-        <li><a href="about.html">About</a></li>
-        <li class="active"><a href="contact.html">Contact</a></li>
-        <li><a href="search.html">Search</a></li>
+
+      <!-- Burger icon for mobile -->
+      <a href="#" data-target="mobile-nav" class="sidenav-trigger right" aria-label="Open navigation">
+        <i class="material-icons black-text">menu</i>
+      </a>
+
+      <!-- Desktop links -->
+      <ul class="right hide-on-med-and-down">
+        <li><a href="index.html" class="black-text">Home</a></li>
+        <li><a href="shop.html" class="black-text">Shop</a></li>
+        <li><a href="about.html" class="black-text">About</a></li>
+        <li><a href="contact.html" class="black-text">Contact</a></li>
+        <li><a href="search.html" class="black-text">Search</a></li>
         <li>
-          <a href="cart.html">
-            My Cart <span id="cart-count" class="new badge black">0</span>
+          <a href="cart.html" class="black-text">
+            My Cart <span id="cart-count" class="new badge" data-badge-caption="">0</span>
           </a>
         </li>
-        <!-- 添加登录/用户菜单 -->
-        <li id="authLinks"><a href="#loginModal" class="modal-trigger">Login</a></li>
+
+        <!-- Auth (desktop) -->
+        <li id="authLinks"><a href="#loginModal" class="modal-trigger black-text">Login</a></li>
         <li id="userMenu" class="hide">
-          <a class="dropdown-trigger" href="#!" data-target="dropdown1"><span id="userEmail">User</span><i
-              class="material-icons right">arrow_drop_down</i></a>
+          <a class="dropdown-trigger black-text" href="#!" data-target="dropdown1">
+            <span id="userEmail">User</span>
+            <i class="material-icons right">arrow_drop_down</i>
+          </a>
         </li>
       </ul>
     </div>
   </nav>
+
+  <!-- User dropdown (desktop) -->
+  <ul id="dropdown1" class="dropdown-content">
+    <li><a href="profile.html">Profile</a></li>
+    <li><a href="#" id="logoutBtn">Logout</a></li>
+  </ul>
+
+  <!-- Mobile sidenav (shows on small screens) -->
+  <ul class="sidenav" id="mobile-nav">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="search.html">Search</a></li>
+    <li>
+      <a href="cart.html">
+        My Cart <span id="cart-count" class="new badge" data-badge-caption="">0</span>
+      </a>
+    </li>
+
+    <!-- Auth (mobile) — simple links -->
+    <li class="divider" tabindex="-1"></li>
+    <li id="mobileAuthLinks"><a href="#loginModal" class="modal-trigger">Login</a></li>
+    <li id="mobileUserEmail" class="hide"><a href="profile.html"><span id="mobileUserLabel">User</span></a></li>
+    <li id="mobileLogout" class="hide"><a href="#" id="logoutBtnMobile">Logout</a></li>
+  </ul>
+
 
   <!-- User Dropdown -->
   <ul id="dropdown1" class="dropdown-content">
@@ -157,13 +197,13 @@
   <script src="js/auth.js"></script>
   <script>
     // Initialize Materialize select dropdowns
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       const elems = document.querySelectorAll('select');
       M.FormSelect.init(elems);
     });
 
     // Form validation + submission
-    document.getElementById("contactForm").addEventListener("submit", function(event) {
+    document.getElementById("contactForm").addEventListener("submit", function (event) {
       event.preventDefault();
       let isValid = true;
 
@@ -193,20 +233,44 @@
             message: message.value.trim()
           })
         })
-        .then(res => res.text())
-        .then(data => {
-          M.toast({html: data, classes: 'green'});
-          document.getElementById("contactForm").reset();
-        })
-        .catch(error => {
-          M.toast({html: "Submission failed: " + error.message, classes: 'red'});
-        });
+          .then(res => res.text())
+          .then(data => {
+            M.toast({ html: data, classes: 'green' });
+            document.getElementById("contactForm").reset();
+          })
+          .catch(error => {
+            M.toast({ html: "Submission failed: " + error.message, classes: 'red' });
+          });
       } else {
-        M.toast({html: "Please fill all fields correctly", classes: 'red'});
+        M.toast({ html: "Please fill all fields correctly", classes: 'red' });
       }
     });
   </script>
   <script src="/socket.io/socket.io.js"></script>
   <script src="js/cart-count.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="js/auth.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Mobile sidenav
+      const sidenavs = document.querySelectorAll('.sidenav');
+      M.Sidenav.init(sidenavs, { edge: 'left' });
+
+      // Dropdown (for desktop user menu)
+      const dropdowns = document.querySelectorAll('.dropdown-trigger');
+      M.Dropdown.init(dropdowns, {
+        alignment: 'right',
+        constrainWidth: false,
+        coverTrigger: false
+      });
+
+      // Modals (login/register)
+      const modals = document.querySelectorAll('.modal');
+      M.Modal.init(modals);
+    });
+  </script>
+
 </body>
+
 </html>

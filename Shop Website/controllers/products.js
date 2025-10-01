@@ -75,6 +75,7 @@ router.post('/', async (req, res) => {
       category,
       image,
       description,
+      stock: Number(stock), 
       slug: slugify(name)
     });
 

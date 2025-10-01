@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const Product = require('../models/Product');
+const { requireAdmin } = require('../utils/adminAuth');
 
 // Utility: make slugs from names
 function slugify(name) {
@@ -12,6 +13,95 @@ function slugify(name) {
     .replace(/(^-|-$)/g, '')
     .substring(0, 80);
 }
+
+// POST /api/products  (Admin: create product)
+router.post('/', requireAdmin, async (req, res) => {
+  try {
+    const { name, price, category, image, description = '', brand, stock, size, colour, featured } = req.body;
+    if (!name || !price || !category || !image) {
+      return res.status(400).json({ error: 'name, price, category, and image are required' });
+    }
+
+    const doc = new Product({
+      name,
+      price: Number(price),
+      category,
+      image,
+      description,
+      slug: slugify(name),
+      brand: brand || undefined,
+      stock: stock ? Number(stock) : 0,
+      size: size || [],
+      colour: colour || [],
+      featured: featured || false
+    });
+
+    const saved = await doc.save();
+
+    // Broadcast new product to all sockets
+    req.app.locals.io.emit('product-added', saved);
+
+    res.status(201).json(saved);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Unable to create product' });
+  }
+});
+
+// PUT /api/products/:id  (Admin: update product)
+router.put('/:id', requireAdmin, async (req, res) => {
+  try {
+    const { name, price, category, image, description, stock, featured, brand, size, colour } = req.body;
+    
+    const updateData = {};
+    if (name !== undefined) {
+      updateData.name = name;
+      updateData.slug = slugify(name);
+    }
+    if (price !== undefined) updateData.price = Number(price);
+    if (category !== undefined) updateData.category = category;
+    if (image !== undefined) updateData.image = image;
+    if (description !== undefined) updateData.description = description;
+    if (stock !== undefined) updateData.stock = Number(stock);
+    if (featured !== undefined) updateData.featured = featured;
+    if (brand !== undefined) updateData.brand = brand;
+    if (size !== undefined) updateData.size = size;
+    if (colour !== undefined) updateData.colour = colour;
+    updateData.updatedAt = Date.now();
+
+    const updated = await Product.findByIdAndUpdate(
+      req.params.id,
+      updateData,
+      { new: true, runValidators: true }
+    );
+
+    if (!updated) return res.status(404).json({ error: 'Product not found' });
+
+    // Broadcast update to all sockets
+    req.app.locals.io.emit('product-updated', updated);
+
+    res.json(updated);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Unable to update product' });
+  }
+});
+
+// DELETE /api/products/:id  (Admin: delete)
+router.delete('/:id', requireAdmin, async (req, res) => {
+  try {
+    const removed = await Product.findByIdAndDelete(req.params.id);
+    if (!removed) return res.status(404).json({ error: 'Product not found' });
+
+    // 🔌 Broadcast removal
+    req.app.locals.io.emit('product-removed', { id: removed._id.toString(), slug: removed.slug });
+
+    res.json({ ok: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Unable to delete product' });
+  }
+});
 
 // GET /api/products (with category, q, price, sort, pagination)
 router.get('/', async (req, res) => {
@@ -148,4 +238,5 @@ router.put('/:id/stock', async (req, res) => {
     res.status(500).json({ error: 'Failed to update stock' });
   }
 });
+
 module.exports = router;

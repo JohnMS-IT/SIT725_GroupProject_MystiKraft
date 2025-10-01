@@ -41,7 +41,7 @@ io.on('connection', socket => {
 app.use(session({
   secret: process.env.SESSION_SECRET || 'secret-key',
   resave: false,
-  saveUninitialized: false,
+  saveUninitialized: true, // Changed to true to support guest cart functionality
   store: MongoStore.create({ mongoUrl: mongoURI }),
   cookie: {
     maxAge: 24 * 60 * 60 * 1000,
@@ -67,6 +67,7 @@ app.use('/api/products', require('../controllers/products'));
 app.use('/api/cart', require('../controllers/cartController'));
 app.use('/api/user', require('../routes/user'));
 app.use('/api/orders', require('../routes/orders'));
+app.use('/api/admin/users', require('../routes/admin-users'));
 
 // Serve index
 app.get('/', (req, res) => {

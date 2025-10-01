@@ -26,12 +26,7 @@ passport.use(new LocalStrategy(
           return done(null, false, { message: 'Password incorrect' });
         }
 
-        // Check if email is verified
-        if (!user.emailVerified) {
-          return done(null, false, { message: 'Please verify your email first' });
-        }
-
-        // Authentication successful
+        // Authentication successful (email verification disabled for now)
         return done(null, user);
       });
     } catch (err) {

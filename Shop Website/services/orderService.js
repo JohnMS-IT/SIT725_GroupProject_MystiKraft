@@ -100,6 +100,21 @@ class OrderService {
   async getOrderByNumber(orderNumber) {
     return await Order.findOne({ orderNumber }).populate('items.productId');
   }
+
+  // Get orders by user email
+  async getOrdersByUserEmail(email) {
+    return await Order.find({ 'customerInfo.email': email }).sort({ createdAt: -1 });
+  }
+
+  // Get all orders
+  async getAllOrders() {
+    return await Order.find({}).sort({ createdAt: -1 });
+  }
+
+  // Update order status
+  async updateOrderStatus(id, status) {
+    return await Order.findByIdAndUpdate(id, { status }, { new: true, runValidators: true });
+  }
 }
 
 module.exports = new OrderService();

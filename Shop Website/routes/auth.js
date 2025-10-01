@@ -38,14 +38,21 @@
           return res.status(400).json({ success: false, message: 'Email already registered' });
         }
 
-        // Create new user and generate email verification token
-        const user = new User({ email });
-        user.generateVerificationToken();
+        // Create new user
+        const user = new User({ email, emailVerified: true }); // Auto-verify for now
         await User.register(user, password); // Hash password with passport-local-mongoose
-        await authUtils.sendVerificationEmail(user, req);
+        
+        // Try to send verification email, but don't fail if it doesn't work
+        try {
+          user.generateVerificationToken();
+          await user.save();
+          await authUtils.sendVerificationEmail(user, req);
+        } catch (emailErr) {
+          console.error('Email sending failed (non-critical):', emailErr.message);
+        }
 
         // Respond with success message
-        res.json({ success: true, message: 'Registration successful. Please check your email for verification.' });
+        res.json({ success: true, message: 'Registration successful! You can now login.' });
       } catch (error) {
         console.error('Registration error:', error);
         res.status(500).json({ success: false, message: 'Registration failed' });

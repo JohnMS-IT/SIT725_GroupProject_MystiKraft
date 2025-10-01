@@ -1,6 +1,3 @@
-// Cart Utils for badge and notifications (API-based)
-
-// Fetch cart from backend
 async function fetchCart() {
   try {
     const res = await fetch('/api/cart');
@@ -13,7 +10,6 @@ async function fetchCart() {
   }
 }
 
-// Update cart count badge in navbar
 async function updateCartCount() {
   const cart = await fetchCart();
   const count = cart.reduce((sum, i) => sum + (i.quantity || 1), 0);
@@ -21,7 +17,6 @@ async function updateCartCount() {
   if (el) el.textContent = count;
 }
 
-// Show toast notification
 function notifyCartChange(message, success = true) {
   if (M && M.toast) {
     M.toast({
@@ -33,12 +28,10 @@ function notifyCartChange(message, success = true) {
   }
 }
 
-// Expose globally
 window.CartUtils = {
   fetchCart,
   updateCartCount,
   notifyCartChange
 };
 
-// Initial update
 updateCartCount();

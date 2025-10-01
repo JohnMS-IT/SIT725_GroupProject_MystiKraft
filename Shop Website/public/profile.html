@@ -144,45 +144,60 @@
   </div>
 </div>
 
-    <!-- Shipping Address -->
+    <!-- Shipping Addresses -->
     <div class="card profile-section">
       <div class="card-content">
         <span class="card-title section-header">
-          <i class="material-icons left">home</i>Shipping Address
+          <i class="material-icons left">home</i>Shipping Addresses
         </span>
-        <form id="shippingAddressForm">
+        <ul id="addressList" class="collection">
+          <!-- Address items will be injected here by profile.js -->
+        </ul>
+        <button class="btn black waves-effect waves-light" id="addAddressBtn">
+          <i class="material-icons left">add</i>Add New Address
+        </button>
+      </div>
+    </div>
+
+    <!-- Add/Edit Address Modal -->
+    <div id="addressModal" class="modal">
+      <div class="modal-content">
+        <h4 id="addressModalTitle">Add Address</h4>
+        <form id="addressForm">
+          <input type="hidden" id="addressIndex">
           <div class="row">
             <div class="input-field col s12">
-              <input id="addressStreet" name="street" type="text" class="validate" required>
-              <label for="addressStreet">Street Address</label>
+              <input id="modalAddressStreet" name="street" type="text" class="validate" required>
+              <label for="modalAddressStreet">Street Address</label>
             </div>
           </div>
           <div class="row">
             <div class="input-field col s12 m4">
-              <input id="addressCity" name="city" type="text" class="validate" required>
-              <label for="addressCity">City</label>
+              <input id="modalAddressCity" name="city" type="text" class="validate" required>
+              <label for="modalAddressCity">City</label>
             </div>
             <div class="input-field col s12 m4">
-              <input id="addressState" name="state" type="text" class="validate" required>
-              <label for="addressState">State</label>
+              <input id="modalAddressState" name="state" type="text" class="validate" required>
+              <label for="modalAddressState">State</label>
             </div>
             <div class="input-field col s12 m4">
-              <input id="addressZipCode" name="zipCode" type="text" class="validate" required>
-              <label for="addressZipCode">ZIP Code</label>
+              <input id="modalAddressZipCode" name="zipCode" type="text" class="validate" required>
+              <label for="modalAddressZipCode">ZIP Code</label>
             </div>
           </div>
           <div class="row">
             <div class="input-field col s12">
-              <input id="addressCountry" name="country" type="text" class="validate" value="Australia" required>
-              <label for="addressCountry">Country</label>
+              <input id="modalAddressCountry" name="country" type="text" class="validate" value="Australia" required>
+              <label for="modalAddressCountry">Country</label>
             </div>
-          </div>
-          <div class="center-align">
-            <button type="submit" class="btn black waves-effect waves-light">
-              <i class="material-icons left">save</i>Save Shipping Address
-            </button>
           </div>
         </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-flat modal-close waves-effect">Cancel</button>
+        <button class="btn black waves-effect waves-light" id="saveAddressBtn">
+          <i class="material-icons left">save</i>Save Address
+        </button>
       </div>
     </div>
 
@@ -233,6 +248,33 @@
   </div>
 </div>
 
+    <!-- Order History -->
+    <div class="card profile-section">
+      <div class="card-content">
+        <span class="card-title section-header">
+          <i class="material-icons left">history</i>Order History
+        </span>
+        <ul id="orderHistoryList" class="collection">
+          <!-- Order items will be injected here by profile.js -->
+        </ul>
+      </div>
+    </div>
+
+    <!-- Danger Zone - Delete Account -->
+    <div class="card profile-section" style="border: 2px solid #f44336;">
+      <div class="card-content">
+        <span class="card-title section-header" style="color: #f44336;">
+          <i class="material-icons left">warning</i>Danger Zone
+        </span>
+        <p>Once you delete your account, there is no going back. Please be certain.</p>
+        <div class="center-align" style="margin-top: 20px;">
+          <button id="deleteAccountBtn" class="btn red waves-effect waves-light">
+            <i class="material-icons left">delete_forever</i>Delete My Account
+          </button>
+        </div>
+      </div>
+    </div>
+
   </main>
 
   <footer class="page-footer black">
@@ -247,4 +289,5 @@
   <script src="js/cart-count.js"></script>
   <script src="js/profile.js"></script>
 </body>
+</html>
 </html>

@@ -61,6 +61,52 @@ class OrderController {
       res.status(500).json({ error: error.message });
     }
   }
+
+  // Get user's order history
+  async getUserOrders(req, res) {
+    try {
+      if (!req.user || !req.user.email) {
+        return res.status(401).json({ error: 'User not authenticated' });
+      }
+
+      const orders = await orderService.getOrdersByUserEmail(req.user.email);
+      res.json(orders);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+
+  // Get all orders (admin only)
+  async getAllOrders(req, res) {
+    try {
+      const orders = await orderService.getAllOrders();
+      res.json(orders);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+
+  // Update order status (admin only)
+  async updateOrderStatus(req, res) {
+    try {
+      const { id } = req.params;
+      const { status } = req.body;
+
+      if (!status) {
+        return res.status(400).json({ error: 'Status is required' });
+      }
+
+      const order = await orderService.updateOrderStatus(id, status);
+      
+      if (!order) {
+        return res.status(404).json({ error: 'Order not found' });
+      }
+
+      res.json(order);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
 }
 
 module.exports = new OrderController();

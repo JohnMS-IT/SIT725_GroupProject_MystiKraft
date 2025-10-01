@@ -66,8 +66,26 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        if (password.length < 6) {
-            M.toast({html: 'Password must be at least 6 characters', classes: 'red'});
+        if (password.length < 8) {
+            M.toast({html: 'Password must be at least 8 characters', classes: 'red'});
+            return;
+        }
+        
+        // Validate password requirements
+        if (!/[A-Z]/.test(password)) {
+            M.toast({html: 'Password must contain at least one uppercase letter', classes: 'red'});
+            return;
+        }
+        if (!/[a-z]/.test(password)) {
+            M.toast({html: 'Password must contain at least one lowercase letter', classes: 'red'});
+            return;
+        }
+        if (!/\d/.test(password)) {
+            M.toast({html: 'Password must contain at least one number', classes: 'red'});
+            return;
+        }
+        if (!/[@$!%*?&]/.test(password)) {
+            M.toast({html: 'Password must contain at least one special character (@$!%*?&)', classes: 'red'});
             return;
         }
         

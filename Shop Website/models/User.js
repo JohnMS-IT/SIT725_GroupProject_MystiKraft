@@ -29,8 +29,8 @@ const UserSchema = new Schema({
     type: String,
     trim: true
   },
-  // User's shipping address
-  shippingAddress: {
+  // User's shipping addresses
+  shippingAddresses: [{
     street: {
       type: String,
       trim: true
@@ -52,7 +52,7 @@ const UserSchema = new Schema({
       default: 'Australia',
       trim: true
     }
-  },
+  }],
   // User's preferred payment method
   paymentMethod: {
     type: String,
@@ -100,6 +100,12 @@ const UserSchema = new Schema({
   updatedAt: {
     type: Date,
     default: Date.now
+  },
+  // User role for access control
+  role: {
+    type: String,
+    enum: ['user', 'admin'],
+    default: 'user'
   }
 });
 

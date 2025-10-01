@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const Product = require('../models/Product');
+const { requireAdmin } = require('../utils/adminAuth');
 
 // Utility: make slugs from names
 function slugify(name) {
@@ -62,7 +63,7 @@ router.get('/', async (req, res) => {
 });
 
 // POST /api/products  (Admin: create product)
-router.post('/', async (req, res) => {
+router.post('/', requireAdmin, async (req, res) => {
   try {
     const { name, price, category, image, description = '' } = req.body;
     if (!name || !price || !category || !image) {
@@ -90,8 +91,44 @@ router.post('/', async (req, res) => {
   }
 });
 
+// PUT /api/products/:id  (Admin: update product)
+router.put('/:id', requireAdmin, async (req, res) => {
+  try {
+    const { name, price, category, image, description, stock, featured } = req.body;
+    
+    const updateData = {};
+    if (name !== undefined) {
+      updateData.name = name;
+      updateData.slug = slugify(name);
+    }
+    if (price !== undefined) updateData.price = Number(price);
+    if (category !== undefined) updateData.category = category;
+    if (image !== undefined) updateData.image = image;
+    if (description !== undefined) updateData.description = description;
+    if (stock !== undefined) updateData.stock = Number(stock);
+    if (featured !== undefined) updateData.featured = featured;
+    updateData.updatedAt = Date.now();
+
+    const updated = await Product.findByIdAndUpdate(
+      req.params.id,
+      updateData,
+      { new: true, runValidators: true }
+    );
+
+    if (!updated) return res.status(404).json({ error: 'Product not found' });
+
+    // Broadcast update to all sockets
+    req.app.locals.io.emit('product-updated', updated);
+
+    res.json(updated);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Unable to update product' });
+  }
+});
+
 // DELETE /api/products/:id  (Admin: delete)
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', requireAdmin, async (req, res) => {
   try {
     const removed = await Product.findByIdAndDelete(req.params.id);
     if (!removed) return res.status(404).json({ error: 'Product not found' });

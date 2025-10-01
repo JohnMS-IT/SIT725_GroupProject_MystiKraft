@@ -37,6 +37,7 @@ function renderRow(p) {
            style="width:64px;height:64px;object-fit:cover;border-radius:6px;">
     </td>
     <td>${p.name}</td>
+    <td>${p.brand || 'N/A'}</td>
     <td>$${Number(p.price).toFixed(2)}</td>
     <td>${p.category}</td>
     <td>${p.stock !== undefined ? p.stock : 'N/A'}</td>
@@ -54,12 +55,12 @@ function renderRow(p) {
 
 // Load current products (first page, large limit)
 async function loadProducts() {
-  tBody.innerHTML = '<tr><td colspan="6">Loading…</td></tr>';
+  tBody.innerHTML = '<tr><td colspan="7">Loading…</td></tr>';
 
   // reuse existing API with pagination
   const res = await fetch('/api/products?limit=200&page=1&sort=newest');
   if (!res.ok) {
-    tBody.innerHTML = '<tr><td colspan="6" class="red-text">Failed to load products</td></tr>';
+    tBody.innerHTML = '<tr><td colspan="7" class="red-text">Failed to load products</td></tr>';
     return;
   }
   const data = await res.json();
@@ -83,15 +84,16 @@ function searchProducts(query) {
     return;
   }
 
-  // Filter products by name or category
+  // Filter products by name, category, or brand
   const filtered = allProducts.filter(p => 
     p.name.toLowerCase().includes(searchTerm) || 
-    (p.category && p.category.toLowerCase().includes(searchTerm))
+    (p.category && p.category.toLowerCase().includes(searchTerm)) ||
+    (p.brand && p.brand.toLowerCase().includes(searchTerm))
   );
 
   tBody.innerHTML = '';
   if (filtered.length === 0) {
-    tBody.innerHTML = '<tr><td colspan="6" class="center">No products found</td></tr>';
+    tBody.innerHTML = '<tr><td colspan="7" class="center">No products found</td></tr>';
   } else {
     filtered.forEach(p => tBody.appendChild(renderRow(p)));
   }
@@ -107,6 +109,10 @@ form.addEventListener('submit', async (e) => {
   const category = document.getElementById('category').value.trim();
   const image = document.getElementById('image').value.trim();
   const description = document.getElementById('description').value.trim();
+  const brand = document.getElementById('brand').value.trim();
+  const stock = document.getElementById('stock').value.trim();
+  const sizes = document.getElementById('sizes').value.trim();
+  const colours = document.getElementById('colours').value.trim();
 
   // validation
   if (!name || !price || !category || !image) {
@@ -114,11 +120,18 @@ form.addEventListener('submit', async (e) => {
     return;
   }
 
+  // Prepare product data
+  const productData = { name, price, category, image, description };
+  if (brand) productData.brand = brand;
+  if (stock) productData.stock = stock;
+  if (sizes) productData.size = sizes.split(',').map(s => s.trim());
+  if (colours) productData.colour = colours.split(',').map(c => c.trim());
+
   // POST to backend
   const res = await fetch('/api/products', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, price, category, image, description })
+    body: JSON.stringify(productData)
   });
 
   if (!res.ok) {
@@ -186,6 +199,9 @@ function openEditModal(product) {
   document.getElementById('editImage').value = product.image;
   document.getElementById('editDescription').value = product.description || '';
   document.getElementById('editStock').value = product.stock || 0;
+  document.getElementById('editBrand').value = product.brand || '';
+  document.getElementById('editSizes').value = product.size ? product.size.join(', ') : '';
+  document.getElementById('editColours').value = product.colour ? product.colour.join(', ') : '';
   document.getElementById('editFeatured').checked = product.featured || false;
 
   // Update Materialize labels
@@ -207,6 +223,9 @@ saveEditBtn.addEventListener('click', async (e) => {
   const image = document.getElementById('editImage').value.trim();
   const description = document.getElementById('editDescription').value.trim();
   const stock = document.getElementById('editStock').value.trim();
+  const brand = document.getElementById('editBrand').value.trim();
+  const sizes = document.getElementById('editSizes').value.trim();
+  const colours = document.getElementById('editColours').value.trim();
   const featured = document.getElementById('editFeatured').checked;
 
   if (!name || !price || !category || !image) {
@@ -214,10 +233,16 @@ saveEditBtn.addEventListener('click', async (e) => {
     return;
   }
 
+  // Prepare update data
+  const updateData = { name, price, category, image, description, stock, featured };
+  if (brand) updateData.brand = brand;
+  if (sizes) updateData.size = sizes.split(',').map(s => s.trim());
+  if (colours) updateData.colour = colours.split(',').map(c => c.trim());
+
   const res = await fetch(`/api/products/${id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, price, category, image, description, stock, featured })
+    body: JSON.stringify(updateData)
   });
 
   if (!res.ok) {

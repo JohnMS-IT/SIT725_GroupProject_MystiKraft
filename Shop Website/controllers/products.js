@@ -32,17 +32,30 @@ router.get('/', async (req, res) => {
       q = '',
       price = 'all',
       sort = 'newest',
+      brand,
+      size,
+      colour,
       page = 1,
       limit = 12
     } = req.query;
 
     const filter = {};
-    if (category) filter.category = category;
+    if (category && category !== 'all') filter.category = category;
     if (q) filter.name = { $regex: q, $options: 'i' };
 
+    // Price filtering
     if (price === '0-50') filter.price = { $gte: 0, $lte: 50 };
     else if (price === '50-100') filter.price = { $gte: 50, $lte: 100 };
     else if (price === '100+') filter.price = { $gte: 100 };
+
+    // Brand filtering
+    if (brand && brand !== 'all') filter.brand = brand;
+
+    // Size filtering (check if size array contains the value)
+    if (size && size !== 'all') filter.size = size;
+
+    // Colour filtering (check if colour array contains the value)
+    if (colour && colour !== 'all') filter.colour = colour;
 
     const sortOption = sort === 'oldest' ? { createdAt: 1 } : { createdAt: -1 };
 
@@ -65,7 +78,7 @@ router.get('/', async (req, res) => {
 // POST /api/products  (Admin: create product)
 router.post('/', requireAdmin, async (req, res) => {
   try {
-    const { name, price, category, image, description = '' } = req.body;
+    const { name, price, category, image, description = '', brand, stock, size, colour, featured } = req.body;
     if (!name || !price || !category || !image) {
       return res.status(400).json({ error: 'name, price, category, and image are required' });
     }
@@ -76,7 +89,12 @@ router.post('/', requireAdmin, async (req, res) => {
       category,
       image,
       description,
-      slug: slugify(name)
+      slug: slugify(name),
+      brand: brand || undefined,
+      stock: stock ? Number(stock) : 0,
+      size: size || [],
+      colour: colour || [],
+      featured: featured || false
     });
 
     const saved = await doc.save();
@@ -94,7 +112,7 @@ router.post('/', requireAdmin, async (req, res) => {
 // PUT /api/products/:id  (Admin: update product)
 router.put('/:id', requireAdmin, async (req, res) => {
   try {
-    const { name, price, category, image, description, stock, featured } = req.body;
+    const { name, price, category, image, description, stock, featured, brand, size, colour } = req.body;
     
     const updateData = {};
     if (name !== undefined) {
@@ -107,6 +125,9 @@ router.put('/:id', requireAdmin, async (req, res) => {
     if (description !== undefined) updateData.description = description;
     if (stock !== undefined) updateData.stock = Number(stock);
     if (featured !== undefined) updateData.featured = featured;
+    if (brand !== undefined) updateData.brand = brand;
+    if (size !== undefined) updateData.size = size;
+    if (colour !== undefined) updateData.colour = colour;
     updateData.updatedAt = Date.now();
 
     const updated = await Product.findByIdAndUpdate(

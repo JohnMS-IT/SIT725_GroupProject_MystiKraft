@@ -3,6 +3,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const categoryFilter = document.getElementById('category-filter');
   const priceFilter = document.getElementById('price-filter');
   const sortFilter = document.getElementById('sort-filter');
+  const brandFilter = document.getElementById('brand-filter');
+  const sizeFilter = document.getElementById('size-filter');
+  const colourFilter = document.getElementById('colour-filter');
 
   // Fetch products
   const fetchProducts = async (query = '') => {
@@ -64,6 +67,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const query = [];
     if (categoryFilter.value !== 'all') query.push(`category=${categoryFilter.value}`);
     if (priceFilter.value !== 'all') query.push(`price=${priceFilter.value}`);
+    if (brandFilter.value !== 'all') query.push(`brand=${brandFilter.value}`);
+    if (sizeFilter.value !== 'all') query.push(`size=${sizeFilter.value}`);
+    if (colourFilter.value !== 'all') query.push(`colour=${colourFilter.value}`);
     if (sortFilter.value) query.push(`sort=${sortFilter.value}`);
     return query.length ? `?${query.join('&')}` : '';
   };

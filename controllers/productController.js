@@ -79,7 +79,7 @@ exports.addProduct = async (req, res) => {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
-
+// Update product details
 exports.updateProduct = async (req, res) => {
   try {
     if (!req.user || req.user.role !== 'seller') {
@@ -95,7 +95,7 @@ exports.updateProduct = async (req, res) => {
     const { name, slug, price, category, description } = req.body;
     if (!name || !slug || !price || !category || !description) {
       return res.status(400).json({ message: 'All fields are required', missing: { name, slug, price, category, description } });
-    }
+    }// Validate price
     const priceValue = parseFloat(price);
     if (priceValue < 1) {
       return res.status(400).json({ message: 'Price must be 1 or higher' });

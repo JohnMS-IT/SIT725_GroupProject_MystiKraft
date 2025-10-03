@@ -14,7 +14,7 @@ exports.getProducts = async (req, res) => {
       if (price === '0-50') filter.price = { $gte: 0, $lte: 50 };
       else if (price === '50-100') filter.price = { $gte: 50, $lte: 100 };
       else if (price === '100+') filter.price = { $gte: 100 };
-    }
+    }// Sorting
     const sortOptions = sort === 'newest' ? { createdAt: -1 } : sort === 'oldest' ? { createdAt: 1 } : {};
     const products = await Product.find(filter)
       .sort(sortOptions)
@@ -26,7 +26,7 @@ exports.getProducts = async (req, res) => {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 };
-
+// Get products for the logged-in seller
 exports.getMyProducts = async (req, res) => {
   try {
     if (!req.user || req.user.role !== 'seller') {

@@ -1,33 +1,31 @@
 // test/checkoutWorkflow.test.js
 const { expect } = require('chai');
-const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
+// Use built-in fetch (Node.js 18+) or fallback to node-fetch
+const fetch = globalThis.fetch || require('node-fetch');
+const mongoose = require('mongoose');
+const Product = require('../models/Product');
 const baseUrl = 'http://localhost:3000';
 
 let productId;
 let userEmail, userPassword, cookie = '';
 
 async function deleteTestProduct(productId) {
-    await fetch(`${baseUrl}/api/products/${productId}`, { method: 'DELETE' });
+    await Product.findByIdAndDelete(productId);
 }
 
 describe('Checkout Workflows', function () {
     this.timeout(15000);
 
     before(async () => {
-        // 创建一个测试商品
-        const res = await fetch(`${baseUrl}/api/products`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                name: 'Test Product For Checkout',
-                price: 9.99,
-                category: 'test',
-                image: '/images/test.jpg',
-                stock: 10
-            })
+        // Create test product directly in database
+        const testProduct = await Product.create({
+            name: 'Test Product For Checkout',
+            price: 9.99,
+            category: 'men', // Use valid category
+            image: '/images/test.jpg',
+            stock: 10
         });
-        const data = await res.json();
-        productId = data._id;
+        productId = testProduct._id.toString();
         expect(productId).to.be.a('string');
         userEmail = `testuser_${Date.now()}@example.com`;
         userPassword = 'Test1234!'; 

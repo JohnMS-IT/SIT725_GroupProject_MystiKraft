@@ -87,7 +87,8 @@ describe("Service Layer Tests", function () {
         name: "Test Product",
         price: 50,
         category: "men",
-        image: "/test.jpg"
+        image: "/test.jpg",
+        stock: 20 // Add stock for testing
       });
       testProductId = product._id;
     });
@@ -135,7 +136,8 @@ describe("Service Layer Tests", function () {
         name: "Test Wishlist Product",
         price: 75,
         category: "women",
-        image: "/test.jpg"
+        image: "/test.jpg",
+        stock: 15 // Add stock for testing
       });
       testProductId = product._id;
     });

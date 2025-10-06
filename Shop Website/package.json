@@ -9,7 +9,8 @@
     "test:checkout": "mocha ./test/checkoutWorkflow.test.js",
     "start": "node services/server.js",
     "seed": "node services/seed.js",
-    "seed:coupons": "node services/seedCoupons.js"
+    "seed:coupons": "node services/seedCoupons.js",
+    "create:admin": "node services/createAdmin.js"
   },
   "repository": {
     "type": "git",

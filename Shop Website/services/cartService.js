@@ -14,16 +14,21 @@ class CartService {
   async addToCart(sessionId, productId, quantity = 1) {
     const product = await Product.findById(productId);
     if (!product) throw new Error('Product not found');
+    if (product.stock < 1) throw new Error('Product out of stock');
 
     const cart = await this.getOrCreateCart(sessionId);
     const existingItem = cart.items.find(item => item.productId.toString() === productId);
 
     if (existingItem) {
-      existingItem.quantity = Math.min(existingItem.quantity + quantity, product.stock);
+      const newQuantity = Math.min(existingItem.quantity + quantity, product.stock);
+      if (newQuantity < 1) throw new Error('Cannot add product - insufficient stock');
+      existingItem.quantity = newQuantity;
     } else {
+      const itemQuantity = Math.min(quantity, product.stock);
+      if (itemQuantity < 1) throw new Error('Cannot add product - insufficient stock');
       cart.items.push({
         productId,
-        quantity: Math.min(quantity, product.stock),
+        quantity: itemQuantity,
         price: product.price
       });
     }
@@ -38,15 +43,22 @@ class CartService {
     const product = await Product.findById(productId);
     if (!product) throw new Error('Product not found');
 
+    // If quantity is 0 or less, remove the item
+    if (quantity <= 0) {
+      return this.removeFromCart(sessionId, productId);
+    }
+
     const cart = await this.getOrCreateCart(sessionId);
     const existingItem = cart.items.find(item => item.productId.toString() === productId);
 
+    const finalQuantity = Math.max(1, Math.min(quantity, product.stock));
+
     if (existingItem) {
-      existingItem.quantity = Math.min(quantity, product.stock);
+      existingItem.quantity = finalQuantity;
     } else {
       cart.items.push({
         productId,
-        quantity: Math.min(quantity, product.stock),
+        quantity: finalQuantity,
         price: product.price
       });
     }
